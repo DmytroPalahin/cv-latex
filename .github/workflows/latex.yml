@@ -150,7 +150,7 @@ jobs:
             echo "See [CHANGELOG.md]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/$GITHUB_REF_NAME/CHANGELOG.md)." > changes.md
           fi
           {
-            echo "## 📄 Dmytro Palahin — CV \`$GITHUB_REF_NAME\`"
+            echo "## 📄 Curriculum Vitae — \`$GITHUB_REF_NAME\`"
             echo
             cat changes.md
             echo
