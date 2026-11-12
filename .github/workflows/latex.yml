@@ -119,7 +119,7 @@ jobs:
   # JOB 2 — Create the GitHub Release (only on git tag push: v*.*.*)
   # ─────────────────────────────────────────────────────────────────────────────
   release:
-    name: "🚀 Release ${{ github.ref_name }}"
+    name: "🚀 Release"          # static: GitHub does not evaluate expressions in the name of a skipped job
     needs: build
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
