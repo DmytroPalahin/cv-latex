@@ -85,6 +85,7 @@ git push origin v2.0.1
 
 - On every push or pull request that touches `src/en`, `src/fr` or the workflow, CI checks that each CV fits on **one page**, that its **text is extractable** (name, title, Python, SQL, GitHub link) and warns if the **committed PDF is older** than its `.tex` source
 - The release notes are the `CHANGELOG.md` section whose version matches the tag exactly (`## [v2.0.1] - ...`): add it before tagging
-- The release keeps the file names `cv-dmytro-palahin-en-d.pdf` / `cv-dmytro-palahin-fr-d.pdf`, so the README download links always point to the latest version
+- The README download buttons serve the PDFs from `main`, so they are up to date as soon as the new PDF is pushed
+- The release keeps the file names `cv-dmytro-palahin-en-d.pdf` / `cv-dmytro-palahin-fr-d.pdf`, so the "Latest release" links in the README always point to the newest release
 
 Versioning: `MAJOR` for a new template or repository structure, `MINOR` for new content or sections, `PATCH` for wording and small fixes.

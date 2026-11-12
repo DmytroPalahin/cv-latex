@@ -12,7 +12,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/): `[vMAJ
 - New **ATS-friendly template** for `en-d` and `fr-d`: single column, Latin Modern, no icons or tables, ToUnicode map, no ligatures or hyphenation, real space glyphs around bold / italic text (`\B`, `\I`)
 - PDF metadata in the `.tex` sources: `pdftitle`, `pdfsubject`, `pdfkeywords`, `pdflang`
 - Commented **Reserve** blocks in the `.tex` sources: missions, skills, courses and projects to re-enable depending on the job offer
-- `README.md`: centered header, badges, download buttons, side-by-side EN / FR previews, ATS notes, certificates
+- `README.md`: centered header, badges, download buttons, side-by-side EN / FR previews, highlights, tech stack, ATS notes, certificates
+- `README.md`: download buttons serve the latest PDFs from `main`
 
 ### Changed
 
