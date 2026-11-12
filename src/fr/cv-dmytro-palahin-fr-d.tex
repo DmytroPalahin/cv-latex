@@ -3,8 +3,7 @@
 %%  Style LaTeX classique : Latin Modern, noir et blanc, gras et italique.
 %% -----------------------------------------------------------------------------
 %%  Fichier source : cv-dmytro-palahin-fr-d.tex  (fr = langue, d = Data ; version anglaise : en-d)
-%%  Compilation    : latexmk -pdf -jobname=CV_Dmytro_Palahin_Data_Engineer cv-dmytro-palahin-fr-d.tex
-%%                   -> produit directement le PDF a envoyer : CV_Dmytro_Palahin_Data_Engineer.pdf
+%%  Compilation    : /Library/TeX/texbin/latexmk -pdf -g -interaction=nonstopmode -file-line-error -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-fr-d.tex
 %%
 %%  RESERVE : les blocs commentes (%) marques « Reserve » contiennent des missions,
 %%  projets, cours et competences a reactiver selon l'offre. Une ligne commentee
@@ -561,7 +560,7 @@
 \begin{itemize}[itemsep=1.6pt]
     \project{Système de détection de phishing par email}{https://github.com/DmytroPalahin/phishing-email-detection}
     {Python, Machine Learning, NLP}{2026}
-    {Classification de \B{76~677 emails} (5 datasets réels) : NLP (TF-IDF, extraction d'URLs),
+    {Classification de 76,7k emails (5 datasets réels) : NLP (TF-IDF, extraction d'URLs),
         ensemble LightGBM + Naive Bayes + LSTM}
     \project{Placement de centres logistiques}{https://github.com/DmytroPalahin/logistics-center-placement}
     {Python, Julia, CPLEX, Optimisation}{2025}
@@ -581,6 +580,15 @@
     {Python, Machine Learning}{2021}
     {Méthodes pour l'étiquetage partiel de données}
     %% ----- Reserve : projets -----
+    %% Cellula (postes Java / POO / génie logiciel) : a placer apres « Placement de centres logistiques » (2024) ;
+    %%   la page est pleine : deplacer un projet de 2021 dans cette Reserve pour garder une page
+    % \project{Moteur d'automates cellulaires (Cellula)}{https://github.com/DmytroPalahin/cellular-automata}
+    % {Java 21, POO, Swing, JUnit}{2024}
+    % {Grilles de dimension quelconque : langage de règles et parseur, validation XML Schema, interface Swing, CLI ; 409 tests JUnit}
+    % % Cellula, description longue (2 lignes) : langage de règles propre (lexer, parseur, arbre syntaxique), définitions XML
+    % %   validées par XML Schema, interface Swing avec un thread de simulation dédié, CLI ; explorateur de règles bonus
+    % %   parmi les 2^32 règles de rayon 2 (motifs fractals et chaotiques) ; 97 % de couverture de lignes hors classes
+    % %   Swing ; CI sous Linux, macOS et Windows
     % \project{Filtrage d'images}{https://github.com/DmytroPalahin/Filtering_Images}
     % {HTML, CSS, JS, Algorithmes}{2019}
     % {Implémentation de méthodes mathématiques de filtrage du bruit dans les images numériques
@@ -642,5 +650,5 @@ latexmk -pdf -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-fr-d.tex
 
 /Library/TeX/texbin/latexmk -pdf -g -interaction=nonstopmode -file-line-error -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-fr-d.tex
 
-pdftoppm -png -r 600 -singlefile cv-dmytro-palahin-fr-d.pdf ../../resources/img/cv-dmytro-palahin-fr-d
+pdftoppm -png -r 600 -singlefile src/fr/cv-dmytro-palahin-fr-d.pdf resources/img/cv-dmytro-palahin-fr-d
 */

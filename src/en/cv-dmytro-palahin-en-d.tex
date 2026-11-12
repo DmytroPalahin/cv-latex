@@ -3,8 +3,7 @@
 %%  Classic LaTeX style: Latin Modern, black and white, bold and italic.
 %% -----------------------------------------------------------------------------
 %%  Source file : cv-dmytro-palahin-en-d.tex  (en = language, d = Data; French version: fr-d)
-%%  Compilation : latexmk -pdf -jobname=CV_Dmytro_Palahin_Data_Engineer cv-dmytro-palahin-en-d.tex
-%%                -> directly produces the PDF to send: CV_Dmytro_Palahin_Data_Engineer.pdf
+%%  Compilation : /Library/TeX/texbin/latexmk -pdf -g -interaction=nonstopmode -file-line-error -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-en-d.tex
 %%
 %%  RESERVE: commented blocks (%) marked "Reserve" contain missions, projects,
 %%  courses and skills to re-enable depending on the job offer. A commented line
@@ -560,7 +559,7 @@
 \begin{itemize}[itemsep=1.6pt]
     \project{Email Phishing Detection System}{https://github.com/DmytroPalahin/phishing-email-detection}
     {Python, Machine Learning, NLP}{2026}
-    {Classification of \B{76,677 emails} (5 real datasets): NLP (TF-IDF, URL extraction),
+    {Classification of 76.7k emails (5 real datasets): NLP (TF-IDF, URL extraction),
         LightGBM + Naive Bayes + LSTM ensemble}
     \project{Logistics Center Placement}{https://github.com/DmytroPalahin/logistics-center-placement}
     {Python, Julia, CPLEX, Optimization}{2025}
@@ -580,6 +579,15 @@
     {Python, Machine Learning}{2021}
     {Methods for partial data labeling}
     %% ----- Reserve: projects -----
+    %% Cellula (Java / OOP / software engineering roles): put it after "Logistics Center Placement" (2024);
+    %%   the page is full, so move a 2021 project to this Reserve to keep one page
+    % \project{Cellular Automaton Engine (Cellula)}{https://github.com/DmytroPalahin/cellular-automata}
+    % {Java 21, OOP, Swing, JUnit}{2024}
+    % {Engine for grids of any dimension: own rule language and parser, XML Schema validation, Swing viewer, CLI; 409 JUnit tests}
+    % % Cellula, longer description (2 lines): own rule language (lexer, parser, syntax tree), XML definitions validated
+    % %   by XML Schema, Swing viewer with a dedicated simulation thread, CLI; bonus rule explorer searching the 2^32
+    % %   radius-2 rules for fractal and chaotic patterns; 97% line coverage outside the Swing classes; CI on Linux,
+    % %   macOS and Windows
     % \project{Image Filtering}{https://github.com/DmytroPalahin/Filtering_Images}
     % {HTML, CSS, JS, Algorithms}{2019}
     % {Implementation of mathematical noise-filtering methods for digital images
@@ -641,5 +649,5 @@ latexmk -pdf -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-en-d.tex
 
 /Library/TeX/texbin/latexmk -pdf -g -interaction=nonstopmode -file-line-error -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-en-d.tex
 
-pdftoppm -png -r 600 -singlefile cv-dmytro-palahin-en-d.pdf ../../resources/img/cv-dmytro-palahin-en-d
+pdftoppm -png -r 600 -singlefile src/en/cv-dmytro-palahin-en-d.pdf resources/img/cv-dmytro-palahin-en-d
 */
