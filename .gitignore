@@ -294,5 +294,10 @@ airflow.db
 /src/fr/*
 !/src/fr/cv-dmytro-palahin-fr-d.tex
 !/src/fr/cv-dmytro-palahin-fr-d.pdf
+/application/*
+/interview-prep/*
+/motivation-letter/*
+/prompt/*
+/recommendation-letter/*
 # private job-application texts (contacts of references)
 /academic_profil/profil-dmytro-palahin.md
