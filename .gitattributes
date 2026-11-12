@@ -1,0 +1,9 @@
+# Normalize line endings: text files are stored with LF in the repository.
+* text=auto eol=lf
+
+# LaTeX sources: LaTeX-aware word diff (git diff --word-diff).
+*.tex text diff=tex
+
+# Binary files must never be touched.
+*.pdf binary
+*.png binary
