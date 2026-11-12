@@ -67,12 +67,14 @@ $RECYCLE.BIN/
 *.so
 *.dylib
 
-# python
+# python / uv
 __pycache__/
 *.pyc
 *.pyo
 *.py[cod]
 *$py.class
+.ruff_cache/
+*.egg-info/
 
 # packaging
 .Python
@@ -82,7 +84,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+# lib/
 lib64/
 parts/
 sdist/
@@ -109,6 +111,7 @@ htmlcov/
 .nox/
 .coverage
 .coverage.*
+/coverage/
 .cache
 nosetests.xml
 coverage.xml
@@ -165,7 +168,10 @@ celerybeat-schedule
 
 # environments
 .env
+.env.*
+# !.env.example
 .venv
+.venv.nosync/
 env/
 venv/
 ENV/
@@ -187,7 +193,7 @@ exploration/
 # kedro-viz
 stats.json
 .viz
-env*
+# env*
 !environement.yml
 post_init_vars
 vars.json
@@ -217,11 +223,8 @@ node_modules
 *.yarnrc
 *.qps-ploc.json
 l10n/bundle.l10n.json
-.nvmrc
 .npmrc
 .prettieignore
-.prettierrc
-prettier.config.js
 pull_request_template.md
 # *.vsix
 # .eslintignore
@@ -251,3 +254,45 @@ screenlog*
 instances
 labels
 predictions
+
+# next.js
+/.next/
+/out/
+/.vercel/
+
+# dependencies and build cache
+/node_modules/
+/.turbo/
+
+# test results
+/coverage/
+/playwright-report/
+/test-results/
+
+# private documents
+/references/
+
+# private claude session settings and review memory
+/.claude/settings.local.json
+/.claude/agent-memory/
+/.claude/agent-memory-local/
+
+# airflow (logs normally live in a Docker volume)
+logs/
+airflow.cfg
+airflow.db
+
+# cv-latex
+/src/other/
+/src/old/
+# personal photo (not published)
+/resources/img/photo.png
+# en / fr: publish only the base Data Engineer CV (-d)
+/src/en/*
+!/src/en/cv-dmytro-palahin-en-d.tex
+!/src/en/cv-dmytro-palahin-en-d.pdf
+/src/fr/*
+!/src/fr/cv-dmytro-palahin-fr-d.tex
+!/src/fr/cv-dmytro-palahin-fr-d.pdf
+# private job-application texts (contacts of references)
+/academic_profil/profil-dmytro-palahin.md

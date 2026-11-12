@@ -1,547 +1,647 @@
-%----------------------------------------------------------------------------------------
-% DOCUMENT CONFIGURATION
-%----------------------------------------------------------------------------------------
-\documentclass[10pt,english,french]{article}
+%% =============================================================================
+%%  CV - Dmytro PALAHIN - version de base (francais)
+%%  Style LaTeX classique : Latin Modern, noir et blanc, gras et italique.
+%% -----------------------------------------------------------------------------
+%%  Fichier source : cv-dmytro-palahin-fr-d.tex  (fr = langue, d = Data ; ancienne version a icones : fr-d-c)
+%%  Compilation    : latexmk -pdf -jobname=CV_Dmytro_Palahin_Data_Engineer cv-dmytro-palahin-fr-d.tex
+%%                   -> produit directement le PDF a envoyer : CV_Dmytro_Palahin_Data_Engineer.pdf
+%%
+%%  RESERVE : les blocs commentes (%) marques « Reserve » contiennent des missions,
+%%  projets, cours et competences a reactiver selon l'offre. Une ligne commentee
+%%  n'apparait pas dans le PDF : ni l'ATS ni le recruteur ne la voient.
+%%  Attention si ce .tex est publie (GitHub) : les commentaires y sont lisibles.
+%%
+%%  Compatibilite ATS (testee avec 10 extracteurs PDF) :
+%%   - une seule colonne, aucun tableau, aucune icone : ordre du texte = ordre de lecture ;
+%%   - dates alignees a droite par \hfill (pas de tabular) ;
+%%   - liens LinkedIn / GitHub affiches en clair ;
+%%   - table ToUnicode : accents et symboles extraits correctement ;
+%%   - ligatures fi/fl et cesures desactivees : aucun mot-cle coupe ;
+%%   - \B{...} (gras) et \I{...} (italique) inserent un VRAI caractere espace
+%%     autour du texte mis en valeur. Sans cela, plusieurs extracteurs
+%%     (pdf-parse, pdf2json, pypdf...) collent les mots : "d'unsystème".
+%%     => dans le texte courant, utiliser \B et \I plutot que \textbf / \textit.
+%% =============================================================================
+\documentclass[10pt,a4paper]{article}
 
-%----------------------------------------------------------------------------------------
-% ENCODING
-%----------------------------------------------------------------------------------------
-\usepackage[T1]{fontenc}
+%% ---------- Encodage, langue, police -----------------------------------------
+\input{glyphtounicode}
+\pdfgentounicode=1          % chaque glyphe -> Unicode (accents, symboles)
+\usepackage{lmodern}        % police LaTeX par defaut (Latin Modern)
+\usepackage[LY1]{fontenc}   % LY1 : contient un vrai glyphe "espace" (position 32)
 \usepackage[utf8]{inputenc}
-\usepackage[USenglish, french]{isodate}
-\usepackage{fancyhdr}
-\usepackage[numbers]{natbib}
+\usepackage[french]{babel}
+\frenchsetup{StandardLists=true}
+\usepackage[final]{microtype}
+\DisableLigatures[f]{encoding = *, family = *}
 
-%----------------------------------------------------------------------------------------
-% LOGIC
-%----------------------------------------------------------------------------------------
-\usepackage{xstring, xifthen}
+%% ---------- Mise en page -----------------------------------------------------
+\usepackage[a4paper, top=0.5cm, bottom=0.5cm, left=0.85cm, right=0.85cm]{geometry}
 \usepackage{enumitem}
-\usepackage[english, french]{babel}
-\usepackage{blindtext}
-\usepackage{pdfpages}
-\usepackage{changepage}
-\usepackage{etoolbox}
-\usepackage{tabularx}
-
-%----------------------------------------------------------------------------------------
-% FONT SETTINGS
-%----------------------------------------------------------------------------------------
-% -------> Roboto
-% \usepackage[sfdefault]{roboto}
-% \renewcommand*\familydefault{\sfdefault}
-% \renewcommand{\familydefault}{\sfdefault}
-% \usepackage{moresize}
-% -------> TeX Gyre Heros
-% \usepackage{tgheros}
-% \renewcommand{\familydefault}{\sfdefault}
-% -------> Source Sans Pro
-% \usepackage[default]{sourcesanspro}
-% \renewcommand*\familydefault{\sfdefault}
-% -------> To use LaTeX default font do not include any font package
-
-%----------------------------------------------------------------------------------------
-% ICONS / EMOJIS
-%----------------------------------------------------------------------------------------
-\usepackage{xparse}
-\usepackage{twemojis}
-\usepackage{fontawesome5}
-\usepackage{xcolor}
-
-% icon shortcut
-\newcommand{\icon}[3]{\makebox(#2,#2){\textcolor{deep_blue}{\csname fa#1\endcsname}}}
-% icon with text shortcut
-\newcommand{\icontext}[4]{\vcenteredhbox{\icon{#1}{#2}{#3}}\hspace{2pt}\parbox{0.9\mpwidth}{\textcolor{#4}{#3}}}
-
-% define custom commands for colored icons
-\newcommand{\linkedinIcon}[1][black]{\textcolor{#1}{\faLinkedin}}
-\newcommand{\githubIcon}[1][black]{\textcolor{#1}{\faGithub}}
-\newcommand{\emailIcon}[1][black]{\textcolor{#1}{\faEnvelope}}
-\newcommand{\emailLink}[2][black]{\href{mailto:#2}{\emailIcon[black] \textcolor{#1}{#2}}}
-\newcommand{\locationIcon}[1][black]{\textcolor{#1}{\faMapMarker}}
-\newcommand{\phoneIcon}[1][black]{\textcolor{#1}{\faPhone}}
-\newcommand{\checkIcon}[1][black]{\textcolor{#1}{\faCheck}}
-\newcommand{\chessIcon}[1][black]{\textcolor{#1}{\faChess}}
-\newcommand{\skiIcon}[1][black]{\textcolor{#1}{\faSkiing}}
-\newcommand{\cryptoIcon}[1][black]{\textcolor{#1}{\faBitcoin}}
-\newcommand{\swimmingIcon}[1][black]{\textcolor{#1}{\faSwimmer}}
-\newcommand{\mountainsIcon}[1][black]{\textcolor{#1}{\faMountain}}
-\newcommand{\hourglassIcon}[1][black]{\textcolor{#1}{\faHourglassHalf}}
-\newcommand{\calendarCheckIcon}[1][black]{\textcolor{#1}{\faCalendarCheck}}
-\newcommand{\goalIcon}[1][black]{\textcolor{#1}{\faBullseye}}
-\newcommand{\educationIcon}[1][black]{\textcolor{#1}{\faGraduationCap}}
-\newcommand{\birthdayIcon}[1][black]{\textcolor{#1}{\faUser}}
-\newcommand{\nationalityIcon}[1][black]{\textcolor{#1}{\faGlobe}}
-\newcommand{\workIcon}[1][black]{\textcolor{#1}{\faBriefcase}}
-\newcommand{\itProjectIcon}[1][black]{\textcolor{#1}{\faLaptopCode}}
-\newcommand{\awardIcon}[1][black]{\textcolor{#1}{\faTrophy}}
-\newcommand{\circlednumber}[1][black]{\textcircled{\raisebox{-0.9pt}{#1}}}
-\newcommand{\gearIcon}[1][black]{\textcolor{#1}{\faCog}}
-\newcommand{\speechBubbleIcon}[1][black]{\textcolor{#1}{\faComment}}
-\newcommand{\certificateIcon}[1][black]{\textcolor{#1}{\faClipboard}}
-\newcommand{\starIcon}[1][black]{\textcolor{#1}{\faStar}}
-\newcommand{\tradingIcon}[1][black]{\textcolor{#1}{\faChartBar}}
-\newcommand{\tennisIcon}[1][black]{\textcolor{#1}{\faBaseballBall}}
-\newcommand{\flagIcon}[1][black]{\textcolor{#1}{\faFlagCheckered}}
-
-%----------------------------------------------------------------------------------------
-% PAGE LAYOUT DEFINITIONS
-%----------------------------------------------------------------------------------------
-%-------------------------------------
-% page outer frames for debugging
-% \usepackage{showframe}
-%-------------------------------------
-\usepackage{paracol}
-\usepackage{tikzpagenodes}
-\usetikzlibrary{calc}
-\usepackage{lmodern}
-\usepackage{multicol}
-\usepackage{lipsum}
-\usepackage{atbegshi}
-\usepackage[a4paper]{geometry}
-\geometry{top=0.25cm, bottom=0.0625cm, left=0.1875cm, right=0.1875cm}
-
-\pagestyle{empty}
-\setlength{\parindent}{0mm}
-
-%----------------------------------------------------------------------------------------
-% TABLE / ARRAY DEFINITIONS
-%----------------------------------------------------------------------------------------
-\usepackage{array}
-\newcolumntype{x}[1]{>{\raggedleft\hspace{0pt}}p{#1}}
-
-%----------------------------------------------------------------------------------------
-% GRAPHICS DEFINITIONS
-%----------------------------------------------------------------------------------------
 \usepackage{graphicx}
-\usepackage{wrapfig}
-\usepackage{float}
-\floatstyle{boxed}
-\restylefloat{figure}
-\usepackage{tikz}
-\usepackage{ragged2e}
-\usetikzlibrary{shapes, backgrounds, mindmap, trees}
-
-%----------------------------------------------------------------------------------------
-% COLOR DEFINITIONS
-%----------------------------------------------------------------------------------------
-\usepackage{transparent}
-\usepackage{color}
-\usepackage[most]{tcolorbox}
-% natural colors
-\definecolor{black}{RGB}{0, 0, 0}
-\definecolor{white}{RGB}{255, 255, 255}
-\definecolor{blue}{RGB}{46, 134, 193}
-\definecolor{brown}{RGB}{175, 96, 26}
-% deep colors
-\definecolor{deep_blue}{RGB}{52, 73, 94}
-\definecolor{middle_deep_blue}{RGB}{46, 134, 193}
-\definecolor{deep_green}{RGB}{34, 153, 84}
-\definecolor{deep_grey}{RGB}{113, 125, 126}
-% light colors
-\definecolor{light_gray}{RGB}{245, 245, 245}
-\definecolor{middle_light_gray}{RGB}{230, 230, 230}
-\definecolor{light_orange}{RGB}{230, 126, 34}
-\definecolor{light_green}{RGB}{234, 250, 241}
-\definecolor{light_beige}{RGB}{253, 242, 233}
-\definecolor{light_yellow}{RGB}{255, 255, 204}
-% additional colors
-\definecolor{soft_coral}{RGB}{255, 152, 133}
-\definecolor{light_aqua}{RGB}{173, 232, 244}
-\definecolor{teal}{RGB}{38, 170, 165}
-\definecolor{middle_blue}{RGB}{84, 153, 199}
-
-%----------------------------------------------------------------------------------------
-% LINKS
-%----------------------------------------------------------------------------------------
-\usepackage{url}                                                
-\usepackage[hidelinks]{hyperref}
-% \usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue, filecolor=blue]{hyperref}                                           
-% \usepackage[colorlinks=false]{hyperref}
-% added to ensure correct hyperlinks                                
-\phantomsection{}
+\usepackage[unicode, hidelinks, pdflang={fr-FR}]{hyperref}
 \usepackage{bookmark}
 
-%-------------------------------------------------------------------------------------------------------
-% AVOID WARNINGS
-%-------------------------------------------------------------------------------------------------------
-% chktex-file 12
-% to avoid'Underfull \hbox (badness 10000)LaTeX' which reports issues with text distribution across lines or pages
-\hbadness=10001
+\pagestyle{empty}
+%% ---------- Tailles de police (texte 9,5 pt : plus d'air sur la page) ---------
+\makeatletter
+\renewcommand\normalsize{\@setfontsize\normalsize{9.5}{11.4}}
+\renewcommand\small{\@setfontsize\small{8.8}{10.5}}
+\renewcommand\footnotesize{\@setfontsize\footnotesize{8.5}{10.3}}
+\renewcommand\large{\@setfontsize\large{11}{13.5}}
+\renewcommand\LARGE{\@setfontsize\LARGE{14}{16.5}}   % nom : 14 pt
+\makeatother
+\normalsize
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\hyphenpenalty=10000        % pas de cesure : mots-cles intacts
+\exhyphenpenalty=10000
+\raggedright
+% Espaces jamais comprimes : un espace trop etroit (< 3 pt) est lu comme
+% l'interieur d'un mot par certains extracteurs (pdfplumber)
+% et jamais plus etroits que 3,15 pt (petites tailles de police)
+\AddToHook{selectfont}{\fontdimen4\font=0pt\ifdim\fontdimen2\font<3.15pt\fontdimen2\font=3.15pt\fi}
 
-%----------------------------------------------------------------------------------------
-% CV COMMANDS
-%----------------------------------------------------------------------------------------
-\newlength{\mpwidth}
-\setlength{\mpwidth}{\textwidth}
-
-\newcommand{\cvname}[1]{
-    \begin{center}
-        \textbf{\textcolor{black}{\fontsize{17pt}{12pt}\selectfont #1}}
-    \end{center}
+%% ---------- Metadonnees du PDF (invisibles sur la page) -------------------------
+%% Lisibles dans « Fichier > Proprietes » d'un lecteur PDF ; pdftitle s'affiche dans l'onglet
+%% du navigateur et dans certains apercus (messagerie, portails). Les ATS classent surtout
+%% le TEXTE VISIBLE : ces champs ne sont qu'un signal faible, pas un levier de classement.
+%% A adapter a chaque offre : pdftitle / pdfsubject = intitule de l'offre (comme \cvtitle) ;
+%% pdfkeywords = 10 a 15 mots-cles reels de l'offre, deja presents dans le texte du CV.
+%% Pas de liste de 50 mots (bourrage visible par le recruteur dans les proprietes) et jamais de
+%% texte cache dans la page (blanc, minuscule, hors page, sous une image) : detecte et elimine.
+%% Leviers invisibles honnetes deja en place : nom du fichier (-jobname), pdftitle, pdflang
+%% (fr-FR), table ToUnicode (\pdfgentounicode), signet \pdfbookmark. Option non activee :
+%% metadonnees XMP (paquet hyperxmp) ; gain quasi nul pour un ATS.
+\hypersetup{
+  pdftitle    = {CV Dmytro Palahin - Data Engineer},
+  pdfauthor   = {Dmytro Palahin},
+  pdfsubject  = {Curriculum vitae - Data Engineer / MLOps - Python, SQL, AWS S3},
+  pdfkeywords = {Data Engineer, AI Engineer, MLOps, Python, SQL, AWS S3, ETL/ELT, Data Pipelines, Data Migration, Airflow, SAS, Machine Learning}
 }
 
-\newcommand{\cvsection}[1]{
-    \vspace{4pt}
-    \textbf{\fontsize{9pt}{10pt}\selectfont \textcolor{black}{#1}}
-    \vspace{6pt}
-    \hrule
-    \vspace{6pt}
+%% =============================================================================
+%%  PARAMETRES
+%% =============================================================================
+\newcommand{\cvtitle}{Data Engineer}          % intitule du poste vise
+%% Reserve intitules : Quant Developer / Quantitative Engineer (ancien CV fr-q-2) ;
+%%   Quantitative Researcher / Quantitative Engineer (fr-q-1) ; Quantitative Trading Analyst /
+%%   Quantitative Researcher (fr-tr) ; deja utilises par offre : Data & AI Engineer (IBM),
+%%   Collateral Trader Assistant (SGCIB). Mettre le meme intitule dans pdftitle / pdfsubject.
+\newif\ifshowphoto
+\showphotofalse                               % \showphototrue pour afficher la photo
+\newcommand{\photofile}{../../resources/img/photo.png}
+\newlength{\cvsecskip}
+\ifshowphoto\setlength{\cvsecskip}{2.6pt}\else\setlength{\cvsecskip}{3.2pt}\fi % mode photo : un peu plus compact
+
+%% =============================================================================
+%%  COMMANDES
+%% =============================================================================
+\makeatletter
+% Vrai caractere espace (glyphe LY1 n°32) ; \realspace autorise une coupure de ligne
+\newcommand{\nbrealspace}{\char32\relax}
+\newcommand{\realspace}{\char32\penalty\z@}
+% \B{...} gras, \I{...} italique : remplacent les espaces voisins par de vrais espaces
+\newcommand{\cv@before}{\ifhmode\ifdim\lastskip=\fontdimen2\font\unskip\realspace\fi\fi}
+\def\cv@after{\futurelet\@let@token\cv@@after}
+\def\cv@@after{\ifx\@let@token\@sptoken\realspace\expandafter\ignorespaces\fi}
+\newcommand{\B}[1]{\cv@before\textbf{#1}\cv@after}
+\newcommand{\I}[1]{\cv@before\textit{#1}\cv@after}
+\makeatother
+
+\newcommand{\sep}{\unskip\nbrealspace|\realspace\ignorespaces}
+\newcommand{\dotsep}{\unskip\nbrealspace\textperiodcentered\realspace\ignorespaces}
+
+% Puces : le glyphe espace dans l'etiquette separe la puce du premier mot
+\setlist[itemize]{label=\textbullet\nbrealspace, leftmargin=1em, labelsep=0.17em,
+                  itemsep=1.2pt, parsep=0pt, topsep=1.5pt, partopsep=0pt}
+\ifshowphoto\setlist*[itemize]{itemsep=0.8pt}\fi   % mode photo : un peu plus compact
+
+% Titre de section : majuscules en gras + filet
+\newcounter{cvsec}
+\newcommand{\cvsection}[1]{%
+  \par\addvspace{\cvsecskip}%
+  \stepcounter{cvsec}\pdfbookmark[1]{#1}{cvsec\thecvsec}%
+  {\bfseries #1}\par\nobreak
+  \vspace{1.2pt}\hrule height 0.4pt\par\nobreak
+  \vspace{2.6pt}%
 }
 
-\newcommand{\cvtext}[1]{
-    \begin{tabular*}{1\mpwidth}{p{0.98\mpwidth}}
-        \parbox{1\mpwidth}{#1}
-    \end{tabular*}
+% \cvevent{Intitule}{Dates} : intitule en gras a gauche, dates en gras a droite
+\newcommand{\cvevent}[2]{%
+  \par\noindent{\bfseries #1}\nbrealspace\hfill{\bfseries #2}\par\nobreak
 }
 
-\newcommand{\cvtextnotab}[1]{
-    \parbox{1\mpwidth}{#1}
+% \cvplace{Entreprise}{Lieu} : entreprise en gras a gauche, lieu en italique a droite
+\newcommand{\cvplace}[2]{%
+  \par\noindent{\bfseries #1}\nbrealspace\hfill{\itshape #2}\par\nobreak\vspace{2pt}%
 }
 
-% the first argument is the event; the second is the date range
-\newcommand{\cvevent}[2]{
-    \vspace{2pt}
-    \parbox{\mpwidth}{
-        \begin{tabular*}{1\mpwidth}{@{\extracolsep{\fill}} l r}
-            \textcolor{black}{\textbf{\fontsize{11}{12}\selectfont #1}} & \textcolor{black}{\textbf{\fontsize{12}{12}\selectfont #2}} \\
-        \end{tabular*}\\[-8pt] % to reduced some space
-    }
-}
+% \cvsubevent{Lieu} : ligne en italique sous l'intitule
+\newcommand{\cvsubevent}[1]{\par\noindent{\itshape #1}\par\nobreak\vspace{2pt}}
 
-% the first argument is the event; the second is the language and precision; the third is the date range
-\newcommand{\cveventitproject}[3]{
-    \vspace{2pt}
-    \parbox{\mpwidth}{
-        \begin{tabular*}{\mpwidth}{@{\extracolsep{\fill}} l r}
-            \textcolor{black}{\textbf{\fontsize{11}{12}\selectfont #1}}\hspace{-5pt}\textbf{\textcolor{black}{\quad|\quad}}\hspace{-5pt}\textcolor{black}{\textit{\fontsize{11}{12}\selectfont #2}} & 
-            \textcolor{black}{\textbf{\fontsize{12}{12}\selectfont #3}} \\
-        \end{tabular*}\\[-8pt] % to reduce space
-    }
-}
+% Technologies sous une puce (sous-puce en italique)
+\newcommand{\stack}[1]{%
+  \begin{itemize}[label=-\nbrealspace, leftmargin=1em, itemsep=0pt, topsep=0.5pt]
+    \item {\small\itshape #1}
+  \end{itemize}}
 
-% the first argument is the speciality; the second is the place
-\newcommand{\cvsubevent}[2]{
-    \parbox{\mpwidth}{
-        \begin{tabular*}{1\mpwidth}{@{\extracolsep{\fill}} l r}
-            \textcolor{black}{\textit{\fontsize{10}{12}\selectfont #1}} & \textcolor{black}{\textit{\fontsize{10}{12}\selectfont #2}} \\
-        \end{tabular*}\\[-8pt] % to reduced some space
-    }
-    \vspace{-10pt}
-}
+% \project{Titre}{URL}{Technologies}{Annee}{Description}
+\newcommand{\project}[5]{%
+  \item \B{\href{#2}{#1}} | \I{#3}\nbrealspace\hfill\textbf{#4}\par{\small #5\par}}
 
-\newcommand{\cvcourses}[2]{
-    \begin{tabularx}{\mpwidth}{@{}lX@{}}
-        \textcolor{black}{\textbf{\fontsize{10}{12}\selectfont #1}} & \textcolor{black}{\fontsize{10}{12}\selectfont #2}
-    \end{tabularx}
-    \vspace{12pt}
-}
-
-%----------------------------------------------------------------------------------------
-% DOCUMENT CONTENT
-%----------------------------------------------------------------------------------------
+%% =============================================================================
 \begin{document}
-\hbadness=10000     % Suppress overfull warnings globally
-\sloppy             % Better line breaks
-\hfuzz=10000pt      % Suppress box warnings globally
 
-%---------------------------------------------------------------------------------------
-% TITRE
-%---------------------------------------------------------------------------------------
-\pdfbookmark[1]{Contact}{contact}
-\noindent
-\begin{minipage}[c]{0.86\textwidth}
-    \begin{center}
-        \textbf{\textcolor{black}{\fontsize{17pt}{12pt}\selectfont Dmytro Palahin}}
-    \end{center}
-    \vspace{-18pt}
-    \begin{center}
-        {\fontsize{9pt}{11pt}\selectfont
-            \locationIcon[black]\hspace{3pt}Paris, France\hspace{18pt}
-            \href{tel:+33787325878}{\phoneIcon[black]\hspace{3pt}+33 7 87 32 58 78}\hspace{18pt}
-            \emailLink[black]{dmytro.palahin@gmail.com}\hspace{18pt}
-            \linkedinIcon[black]\hspace{3pt}\href{https://www.linkedin.com/in/dmytro-palahin/}{Dmytro Palahin}\hspace{18pt}
-            \githubIcon[black]\hspace{3pt}\href{https://github.com/DmytroPalahin}{DmytroPalahin}\hspace{18pt}
-            % \birthdayIcon[black]\hspace{3pt}05/12/2003\hspace{18pt}
-            % \nationalityIcon[black]\hspace{3pt}Ukrainien
-        }
-    \end{center}
-\end{minipage}%
-\hspace{3pt}
-\begin{minipage}[c]{0.11\textwidth}
-    \vspace{-12pt}
-    \raggedleft{}
-    \begin{tikzpicture}
-        \clip (0,0) circle (1.0cm);
-        \node at (0,0) {\includegraphics[width=1.6cm, keepaspectratio]{../../resources/img/photo.png}};
-    \end{tikzpicture}
-\end{minipage}
-
-%----------------------------------------------------------------------------------------
-% EXPÉRIENCE PROFESSIONNELLE
-%----------------------------------------------------------------------------------------
-\vspace{-15pt}
-\pdfbookmark[1]{Expérience}{work_exp}
-\cvsection{\workIcon[black]\hspace{4pt}EXPÉRIENCE PROFESSIONNELLE}
-
-\vspace{-4pt}
-\pdfbookmark[2]{Société Générale}{sg}
-\cvevent{Data Engineer / MLOps (Alternance) --- Société Générale Assurances}{\fontsize{11pt}{11pt}\selectfont 09/2023\hspace{5pt}--\hspace{5pt}Aujourd'hui}
-\cvsubevent{La Défense, France}{}
-
-\vspace{-3pt}
-\begin{itemize}[leftmargin=0.5cm, label=\textbullet, itemsep=0.0625em]
-    \item Conception d'un \textbf{système d'automatisation de migration SAS
-              vers Python via GitHub Copilot}, intégrant \textbf{prompt engineering},
-          \textbf{Skills} (capacités spécialisées réutilisables) et contexte persistant
-          (\texttt{copilot-instructions.md}), avec validation par tests à 2 niveaux
-          \begin{itemize}[leftmargin=0.25cm,label=\textendash,itemsep=0em,topsep=0.2em]
-              \item \textit{\fontsize{10pt}{9pt}\selectfont Python · Polars · DuckDB · GitHub Copilot · Prompt Engineering · AWS S3}
-          \end{itemize}
-
-    \item Analyse de données sur les erreurs de reconnaissance du \textbf{Callbot Zaion}
-          à partir de \textbf{1 an de données opérationnelles} afin d'évaluer
-          \textbf{l'efficacité du système} et d'identifier les causes principales des
-          erreurs, conduisant à \textbf{3 recommandations d'amélioration}
-          \begin{itemize}[leftmargin=0.25cm,label=\textendash,itemsep=0em,topsep=0.2em]
-              \item \textit{\fontsize{10pt}{9pt}\selectfont Python · Pandas · NumPy · Matplotlib · Seaborn · Plotly · Jupyter Notebook · Conda}
-          \end{itemize}
-
-    \item Développement et déploiement de \textbf{3 extensions VS-Code} afin de
-          simplifier l'utilisation des outils internes de la \textbf{plateforme Data} et
-          d'améliorer l'efficacité des workflows pour \textbf{30\raisebox{0.20ex}{\small
-                  +} utilisateurs (Data Scientists \& Data Analysts)}
-          \begin{itemize}[leftmargin=0.25cm,label=\textendash,itemsep=0em,topsep=0.2em]
-              \item \textit{\fontsize{10pt}{9pt}\selectfont TypeScript · Python · JSON · Bash · Linux · Git · VS-Code}
-          \end{itemize}
-
-    \item Conception et déploiement d'un \textbf{dashboard de pilotage du Callbot Zaion}
-          afin de suivre \textbf{10\raisebox{0.20ex}{\small +} KPI opérationnels} et
-          d'analyser la performance du système pour les équipes internes
-          \begin{itemize}[leftmargin=0.25cm,label=\textendash,itemsep=0em,topsep=0.2em]
-              \item \textit{\fontsize{10pt}{9pt}\selectfont Apache Superset · PostgreSQL}
-          \end{itemize}
-
-    \item Conception et automatisation d'un \textbf{pipeline de migration de données}
-          permettant de transférer \textbf{500\raisebox{0.20ex}{\small +} GB de datasets
-              SAS vers AWS S3}, afin d'améliorer la \textbf{scalabilité, l'accès et le
-              traitement des données} pour les équipes Data
-          \begin{itemize}[leftmargin=0.25cm,label=\textendash,itemsep=0em,topsep=0.2em]
-              \item \textit{\fontsize{10pt}{9pt}\selectfont Python · AWS S3 · fsspec · smbfs · Linux · Bash}
-          \end{itemize}
-
-          % \item Amélioration d'un \textbf{outil interne de gestion des accès} afin de
-          %       simplifier l'administration des \textbf{droits utilisateurs} pour
-          %       \textbf{30\raisebox{0.20ex}{\small +} utilisateurs} des équipes Data
-          %       \begin{itemize}[leftmargin=0.25cm,label=\textendash,itemsep=0em,topsep=0.2em]
-          %           \item \textit{\fontsize{10pt}{9pt}\selectfont Python · JavaScript · API · Git}
-          %       \end{itemize}
-
-    \item Maintenance et mise à jour de \textbf{35\raisebox{0.20ex}{\small +} extensions
-              internes} ainsi que des \textbf{versions de code-server} afin de garantir la
-          \textbf{stabilité et la compatibilité de l'environnement de développement}
-          utilisé par \textbf{40\raisebox{0.20ex}{\small +} utilisateurs} des équipes
-          Data
-          \begin{itemize}[leftmargin=0.25cm,label=\textendash,itemsep=0em,topsep=0.2em]
-              \item \textit{\fontsize{10pt}{9pt}\selectfont Linux · Bash · VS Code · code-server · Git}
-          \end{itemize}
-
-          % \item Analyse et comparaison de \textbf{deux tables de données (SAS vs DataLake S3)}
-          %       sur \textbf{plusieurs milliers de lignes} via des méthodes de \textbf{matching
-          %           et d’analyse d’écarts}, permettant d’identifier des \textbf{incohérences et
-          %           divergences de données} dans un projet de migration
-          %       \begin{itemize}[leftmargin=0.25cm,label=\textendash,itemsep=0em,topsep=0.2em]
-          %           \item \textit{\fontsize{10pt}{9pt}\selectfont Python · Pandas · SAS · AWS S3 · Jupyter Notebook · Git}
-          %       \end{itemize}
-\end{itemize}
-
-% \pdfbookmark[2]{IT Company SPD}{spd}
-% \vspace{-5pt}
-% \cvevent{\textbf{Formation à l'entreprise IT SPD Ukraine} --- Machine Learning / Deep Learning}{\fontsize{11pt}{11pt}\selectfont 2022}
-% \cvsubevent{}{Tcherkassy, Ukraine}
-% \vspace{-18pt}
-% \begin{itemize}[leftmargin=0.75cm,label=\textendash,itemsep=0em,topsep=0.2em]
-%     \item \textit{\fontsize{10pt}{9pt}\selectfont Scikit-Learn · Pandas · NumPy · Matplotlib · Seaborn · TensorFlow · XGBoost}
-% \end{itemize}
-
-%----------------------------------------------------------------------------------------
-% PROJETS INFORMATIQUES
-%----------------------------------------------------------------------------------------
-\vspace{-5pt}
-\pdfbookmark[1]{Projets}{projects}
-\vspace{-1pt}
-\cvsection{\itProjectIcon[black]\hspace{4pt}PROJETS INFORMATIQUES}
-
-\vspace{-6pt}
-\begin{itemize}[leftmargin=0.5cm, label=\textbullet, itemsep=0.2em]
-    \pdfbookmark[2]{Détection de phishing par email}{phishing}
-    \item \href{https://github.com/DmytroPalahin/phishing-email-detection}{\textbf{Système de détection de phishing par email}} | \textit{Python, Machine Learning, NLP} \hfill \textbf{2026}
-
-          Classification d'emails phishing sur \textbf{76\,677 emails} (5 datasets réels) via
-          pipeline NLP complet~: TF-IDF, extraction d'URLs, ensemble LightGBM\,+\,Naive Bayes\,+\,LSTM
-          %   \begin{itemize}[leftmargin=0.25cm,label=\textendash,itemsep=0em,topsep=0.2em]
-          %       \item \textit{\fontsize{10pt}{9pt}\selectfont Python · LightGBM · TensorFlow/Keras · Scikit-Learn · Pandas · NumPy · Jupyter}
-          %   \end{itemize}
-
-          \pdfbookmark[2]{Placement de centres logistiques}{logistics}
-    \item \href{https://github.com/DmytroPalahin/logistics-center-placement}{\textbf{Placement de centres logistiques}} | \textit{Python, Julia, CPLEX, Optimisation} \hfill \textbf{2025}
-
-          Projet d’optimisation combinatoire pour le placement de centres logistiques via
-          modèles MILP résolus avec CPLEX et heuristiques
-
-          \pdfbookmark[2]{Système de réactions}{rs}
-    \item \href{https://github.com/DmytroPalahin/hsReact}{\textbf{Système de réactions}} | \textit{Haskell} \hfill \textbf{2024}
-
-          Représentation de systèmes et processus de réactions en programmation
-          fonctionnelle
-
-          \pdfbookmark[2]{Problème du voyageur}{salesman}
-    \item \href{https://github.com/DmytroPalahin/Probleme_du_Voyageur_de_Commerce}{\textbf{Problème du voyageur de commerce}} | \textit{C, Apprentissage par renforcement} \hfill \textbf{2023}
-
-          Implémentation de l'algorithme d'optimisation par colonies de fourmis
-
-          \pdfbookmark[2]{Article}{article}
-    \item \href{https://www.researchsquare.com/article/rs-2203260/v1}{\textbf{Publication d'un article}} | \textit{Algorithmes mathématiques} --- Méthode de filtration du bruit impulsionnel dans les images vidéo \textit{Informatics and Mathematical Methods in Simulation}, Vol. 11 (2021), No. 4 \hfill \textbf{2021}
-
-          \pdfbookmark[2]{Détection d'anomalies}{anomaly_detection}
-    \item \href{https://github.com/DmytroPalahin/Anomaly_Detection}{\textbf{Détection d'anomalies}} | \textit{Python, Machine Learning} \hfill \textbf{2021}
-
-          Méthodes pour l'étiquetage partiel de données
-
-          %       \pdfbookmark[2]{Filtrage d'images}{filtering_imgs}
-          % \item \href{https://github.com/DmytroPalahin/Filtering_Images}{\textbf{Filtrage d'images}} | \textit{HTML, CSS, JS, Algorithmes} \hfill \textbf{2019}
-
-          %       Implémentation de méthodes mathématiques de filtrage du bruit dans les images
-          %       numériques sous forme de service web
-\end{itemize}
-
-%----------------------------------------------------------------------------------------
-% FORMATION
-%----------------------------------------------------------------------------------------
-\vspace{-7pt}
-\pdfbookmark[1]{Formation}{education}
-\cvsection{\educationIcon[black]\hspace{4pt}FORMATION}
-
-\vspace{-3pt}
-\pdfbookmark[2]{Sup Galilée}{sup_galilee}
-\cvevent{\href{https://www.sup-galilee.univ-paris13.fr/}{École d'ingénieurs Sup Galilée} --- Diplôme d'ingénieur en Informatique}{\fontsize{11pt}{11pt}\selectfont 2023\hspace{5pt}--\hspace{5pt}2026}
-% \cvsubevent{}{Villetaneuse, France}
-
-\vspace{-3pt}
-\cvtextnotab{\textbf{Cours\!:} Cloud Computing, Data Mining et Programmation pour l'IA, Bases de données (MySQL) et NoSQL, Docker, Probabilités et Statistiques, Optimisation linéaire et combinatoire, Algorithmes parallèles et distribués, Algorithmique des graphes, et autres}
-% cours supplémentaires :
-% Cybersécurité
-% UML
-% Analyse / Algèbre
-% Cryptographie
-% Complexité
-% Compilation et théorie des langages
-% Programmation fonctionnelle
-% Programmation logique
-% Administration système
-% Gestion des réseaux
-% Architecture des ordinateurs
-% Méthodes numériques
-% Web sémantique
-% Logique
-% Systèmes d’exploitation
-% C/C++
-% Web (TS/JS)
-
-\vspace{-10pt}
-\noindent{\textcolor{middle_light_gray}{\rule{\mpwidth}{0.2pt}}}
-\vspace{-15pt}
-
-\pdfbookmark[2]{Classe préparatoire}{prepa}
-\cvevent{\href{https://www.univ-spn.fr}{Université Sorbonne Paris Nord} --- \href{https://www.sup-galilee.univ-paris13.fr/index.php/formation/cp2i/}{Classe préparatoire à \textbf{Sup Galilée}}}{\fontsize{11pt}{11pt}\selectfont 2021\hspace{5pt}--\hspace{5pt}2023}
-% \cvsubevent{}{Villetaneuse, France}
-
-\vspace{-10pt}
-\cvtextnotab{\textbf{Cours\!:} Algèbre, Analyse, Topologie et Calcul Différentiel, Calcul scientifique, Algorithmique, Systèmes UNIX}
-
-% \vspace{-5pt}
-% \noindent{\textcolor{middle_light_gray}{\rule{\mpwidth}{0.2pt}}}
-% \vspace{-10pt}
-
-% \pdfbookmark[2]{Lycée}{high_school}
-% \cvevent{Lycée Phymly --- Spécialité Mathématiques, Physique et Informatique}{\fontsize{11pt}{11pt}\selectfont 2016\hspace{5pt}--\hspace{5pt}2021}
-% \cvsubevent{}{Tcherkassy, Ukraine}
-
-%----------------------------------------------------------------------------------------
-% CERTIFICATIONS & COMPÉTENCES
-%----------------------------------------------------------------------------------------
-\vspace{-14pt}
-\pdfbookmark[1]{Certifications et Compétences}{certifications_competences}
-\cvsection{\certificateIcon[black]\hspace{4pt}CERTIFICATIONS \& COMPÉTENCES}
-
-\vspace{-4pt}
-\begin{itemize}[leftmargin=0.5cm, label=\textbullet, itemsep=0.2em]
-    \item \textbf{Langages \& Outils\!:}
-          Python, SQL, Java, C/C++, JS/TS, LaTeX ·
-          Apache Spark, PySpark, Apache Airflow, dbt, Apache Kafka ·
-          Pandas, NumPy, Polars, DuckDB, PostgreSQL, MySQL ·
-          Scikit-Learn, TensorFlow, Keras, LightGBM, XGBoost, MLflow ·
-          Docker, Git, Linux, AWS, Jupyter, UV, Jira ·
-          Matplotlib, Seaborn, Plotly
-
-    \item \textbf{Udemy --- Jose Portilla / Pierian Training\!:}
-          \href{https://www.udemy.com/certificate/UC-51319000-ccb8-4c9c-9320-6cd9860e601c/}
-          {\textit{Python for Data Science and Machine Learning Bootcamp}}
-          |
-          \textit{Python, NumPy, Pandas, Scikit-Learn, Matplotlib, Seaborn, Plotly,
-              Machine Learning, NLP, Deep Learning, TensorFlow/Keras, Apache Spark}
-
-    \item \textbf{Huawei AI Certifications:}
-          \href{https://github.com/DmytroPalahin/cv-latex-simple-en/blob/main/docs/huawei_artificial_intelligence_and_applications.pdf}
-          {\textit{Artificial Intelligence and Applications}}
-          \hspace{4pt}•\hspace{4pt}
-          \href{https://github.com/DmytroPalahin/cv-latex-simple-en/blob/main/docs/huawei_artificial_intelligence_technology_and_applications.pdf}
-          {\textit{Artificial Intelligence Technology and Applications}}
-
-          % \item \textbf{SPD Ukraine\!:} Formation en Machine Learning en entreprise IT
-
-          % \item \textbf{Stepik\!:} Formation en Machine Learning
-\end{itemize}
-
-%----------------------------------------------------------------------------------------
-% PRIX & PARTICIPATIONS
-%----------------------------------------------------------------------------------------
-\vspace{-3pt}
-\pdfbookmark[1]{Participations}{participations}
-\cvsection{\awardIcon[black]\hspace{4pt}PRIX \& PARTICIPATIONS}
-
-\vspace{-6pt}
-\begin{itemize}[leftmargin=0.35cm, label=\textbullet, itemsep=0.15em]
-    \item \textbf{\href{https://www.fondationbesse.com/}{Lauréat de la Fondation Georges Besse}}
-    \item \textbf{Eco\hspace{3pt}--\hspace{3pt}Techno Ukraine ISEF} --- 1\textsuperscript{ère} place en Informatique \& \textbf{Service Internet Intelligence Collective} --- 1\textsuperscript{ère} place en Ukraine
-\end{itemize}
-
-%----------------------------------------------------------------------------------------
-% LANGUES & CENTRES D'INTÉRÊT
-%----------------------------------------------------------------------------------------
-\vspace{-3pt}
-\pdfbookmark[1]{Langues et interets}{languages_interests}
-\cvsection{\speechBubbleIcon[black]\hspace{4pt}LANGUES \& CENTRES D'INTÉRÊT}
-
-\vspace{-3pt}
-\cvtextnotab{\textbf{Français\!:} Courant \hspace{12pt} \textbf{Anglais\!:} Courant \hspace{12pt} \textbf{Ukrainien\!:} Natif \hspace{20pt} \textbf{Russe\!:} Bilingue}
-
-\vspace{-8pt}
-\cvtextnotab{
-    \tradingIcon[black]\hspace{2pt}Invest \hspace{12pt}
-    % \cryptoIcon[black]\hspace{2pt}Crypto \hspace{12pt}
-    \chessIcon[black]\hspace{2pt}Échecs \hspace{12pt}
-    \skiIcon[black]\hspace{2pt}Ski \hspace{12pt}
-    \tennisIcon[black]\hspace{2pt}Tennis \hspace{12pt}
-    \swimmingIcon[black]\hspace{2pt}Natation \hspace{12pt}
-    % \mountainsIcon[black]\hspace{2pt}Randonnée
-    \flagIcon[black]\hspace{2pt}Karting | Formula 1
+%% ---------- En-tete ----------------------------------------------------------
+\newcommand{\headerblock}{%
+    {\LARGE\bfseries Dmytro Palahin}\par\vspace{2pt}
+    {\large\bfseries \cvtitle}\par\vspace{4pt}
+    {\small
+        \mbox{Paris, France}\sep
+        \mbox{\href{tel:+33787325878}{+33 7 87 32 58 78}}\sep
+        \mbox{\href{mailto:dmytro.palahin@gmail.com}{dmytro.palahin@gmail.com}}%
+        \ifshowphoto\par\else\sep\fi   % mode photo : contacts sur deux lignes
+        \mbox{\href{https://www.linkedin.com/in/dmytro-palahin/}{linkedin.com/in/dmytro-palahin}}\sep
+        \mbox{\href{https://github.com/DmytroPalahin}{github.com/DmytroPalahin}}\par}%
+    \vspace{3pt}
+    {\small \B{Langues :} Français - \B{C1}\dotsep Anglais - \B{C1}\dotsep
+        Ukrainien - \B{natif}\dotsep Russe - \B{bilingue}\par}%
 }
+\pdfbookmark[1]{Contact}{contact}
+\ifshowphoto
+    \noindent
+    \begin{minipage}[c]{\dimexpr\linewidth-2.1cm\relax}\centering\headerblock\end{minipage}%
+    \hfill
+    \begin{minipage}[c]{1.9cm}\raggedleft
+        \IfFileExists{\photofile}{\includegraphics[width=1.8cm,height=2.2cm,keepaspectratio]{\photofile}}{}%
+    \end{minipage}\par
+\else
+    {\centering\headerblock}
+\fi
+
+\vspace{3pt}
+{\centering\footnotesize\itshape De la migration de données à l'outillage des équipes, une même exigence :
+    rigueur de validation, autonomie technique et sens du besoin métier.\par}
+%% ----- Reserve : paragraphes de profil des anciens CV quant (l'accroche reste unique par offre) -----
+%% IT Quant / Front Office (fr-q-2) : Ingénieur en informatique récemment diplômé avec 3 ans d'expérience
+%%   en Data Engineering, Machine Learning et MLOps chez Société Générale Assurances. Solide formation en
+%%   mathématiques appliquées, probabilités, statistiques, optimisation et algorithmique, complétée par une
+%%   expérience en calcul scientifique, développement logiciel et traitement de données à grande échelle.
+%%   Souhaite évoluer en IT Quant / Front Office, avec un intérêt particulier pour le pricing cross-asset,
+%%   les produits dérivés, XVA et les outils quantitatifs de pré-trade.
+%% Recherche quantitative / trading (fr-q-1, fr-tr) : meme 1re phrase ; puis « Solide formation [...]
+%%   complétée par une expérience pratique en calcul scientifique et traitement de données à grande échelle.
+%%   Intéressé par la finance quantitative, le trading systématique et les stratégies fondées sur les données,
+%%   avec un intérêt particulier pour la recherche quantitative, la modélisation statistique et l'analyse des
+%%   données de marché. » (l'original disait « Élève-ingénieur en dernière année » : perime depuis 2026)
+%% Variante courte (fr-q-1, en commentaire) : Ingénieur en informatique spécialisé en Data Engineering, Machine
+%%   Learning et calcul scientifique, avec 3 ans d'expérience en alternance chez Société Générale Assurances.
+%%   Solide formation en mathématiques appliquées, probabilités, statistiques, optimisation et algorithmique,
+%%   avec un intérêt particulier pour le Quantitative Development, Quantitative Research et les marchés financiers.
+
+%% ---------- Experience professionnelle ---------------------------------------
+\cvsection{EXPÉRIENCE PROFESSIONNELLE}
+% Ligne 1 : poste + dates ; ligne 2 : entreprise en gras + lieu a droite
+% (teste : les parseurs separent bien poste / entreprise / dates ; sur une seule ligne, non)
+\cvevent{Data Engineer / MLOps (Alternance)}{09/2023 - 08/2026}
+\cvplace{\href{https://www.assurances.societegenerale.com}{Société Générale Assurances}}{La Défense, France}
+% \cvsubevent{Data Lab de Sogécap : modernisation de la plateforme Data (SAS vers Python et A{}WS S3) et outillage des équipes Data Science}
+\begin{itemize}
+    \item Conception d'un \B{système de migration SAS vers Python par agents IA (GitHub Copilot)}:
+          \B{workflow en 5 étapes}, \B{Skills} spécialisées, contexte persistant (\I{copilot-instructions.md}),
+          module remplaçant les macros SAS et \B{tests à 2 niveaux}
+          \stack{Python \textperiodcentered{} Polars \textperiodcentered{} DuckDB \textperiodcentered{} pytest \textperiodcentered{} GitHub Copilot \textperiodcentered{} Prompt Engineering \textperiodcentered{} SAS \textperiodcentered{} A{}WS S3}
+    \item Automatisation d'un \B{pipeline de migration de 500+ Go de datasets SAS}
+          depuis des partages réseau SMB \B{vers A{}WS\nbrealspace S3}: benchmark de 4 bibliothèques Python,
+          \B{envoi en streaming multipart} au-delà de 5 Go
+          \stack{Python \textperiodcentered{} boto3 \textperiodcentered{} fsspec \textperiodcentered{} s3fs \textperiodcentered{} smbprotocol \textperiodcentered{} A{}WS S3 \textperiodcentered{} Linux \textperiodcentered{} Bash}
+    \item \B{Inventaire automatisé de 500+ programmes SAS} (SAS Enterprise Guide, GitLab) : métadonnées
+          d'exécution, historique des commits, \B{cartographie des dépendances} et
+          \B{score de priorisation de la migration}, restitués aux managers
+          \stack{Python \textperiodcentered{} Pandas \textperiodcentered{} Git \textperiodcentered{} openpyxl \textperiodcentered{} Matplotlib \textperiodcentered{} Seaborn \textperiodcentered{} GitLab}
+    \item Évaluation du \B{Callbot Zaion} sur \B{1 an de données}: appariement
+          sans identifiant commun, \B{matrice de confusion} (environ 80~\% des motifs reconnus),
+          \B{arbre de décision} sur les erreurs et \B{3 recommandations d'amélioration}
+          \stack{Python \textperiodcentered{} Pandas \textperiodcentered{} NumPy \textperiodcentered{} Scikit-Learn \textperiodcentered{} Matplotlib \textperiodcentered{} Seaborn \textperiodcentered{} Plotly \textperiodcentered{} Jupyter Notebook}
+    \item Déploiement d'un \B{dashboard Apache Superset de pilotage du Callbot}:
+          \B{10+ KPI opérationnels} (identification client, durée d'appel, rappels) calculés par
+          \B{requêtes SQL} sur des données JSONB PostgreSQL
+          \stack{Apache Superset \textperiodcentered{} PostgreSQL \textperiodcentered{} SQL}
+    \item Maintenance et \B{montées de version de code-server} et de \B{35+ extensions internes}
+          (\B{40+ utilisateurs}) : tests de compatibilité, \B{scripts d'installation
+              automatisés}, intégration de Ruff et BasedPyright (analyse 10x plus rapide que Flake8)
+          \stack{Linux \textperiodcentered{} Bash \textperiodcentered{} code-server \textperiodcentered{} JupyterHub \textperiodcentered{} VS Code \textperiodcentered{} Ruff \textperiodcentered{} BasedPyright \textperiodcentered{} Git}
+    \item Développement de \B{3 extensions VS Code} pour \B{30+ Data Scientists et
+              Data Analysts}, dont le \B{suivi temps réel CPU/RAM/GPU} et le
+          \B{temps restant avant nettoyage} des sessions JupyterHub, utilisées au quotidien
+          \stack{TypeScript \textperiodcentered{} Python \textperiodcentered{} psutil \textperiodcentered{} JupyterHub API \textperiodcentered{} JSON \textperiodcentered{} Git \textperiodcentered{} VS Code}
+          %% =========================================================================
+          %% ----- Reserve : missions a reactiver selon l'offre (retirer les % ; garder 1 page) -----
+          %% Sources : rapports d'alternance INFOA1 a INFOA3 (2023-2026). Chiffres = ceux des rapports / du CV.
+          %%
+          %% Postes QA / Data Quality / migration de donnees :
+          % \item Contrôle qualité d'une migration : comparaison de \B{deux tables de données (SAS vs DataLake S3)}
+          %       sur plusieurs milliers de lignes (export par macro SAS, \B{matching} des colonnes équivalentes,
+          %       \B{analyse d'écarts}) : \B{0,18~\% de lignes divergentes} identifiées et transmises à l'équipe DataLake
+          %       \stack{SAS \textperiodcentered{} Python \textperiodcentered{} Pandas \textperiodcentered{} A{}WS S3 \textperiodcentered{} Jupyter Notebook \textperiodcentered{} Git}
+          % \item Conception d'une \B{architecture de tests à 2 niveaux} pour le code migré : \B{tests structurels}
+          %       statiques (conventions, aucun chemin S3 codé en dur) et \B{tests logiques pytest} (cas nominal,
+          %       filtres, entrées vides), tolérance numérique de 1e-6 entre SAS et Python
+          %       \stack{Python \textperiodcentered{} pytest \textperiodcentered{} Polars \textperiodcentered{} AST \textperiodcentered{} GitHub Copilot}
+          %%
+          %% Postes Data Analyst / Data Scientist / ML :
+          % \item Analyse comparative des \B{motifs d'appel} prédits par le Callbot et validés par les conseillers
+          %       (vérité terrain) : \B{appariement} par identifiant client et fenêtre de 24 h, \B{matrice de confusion},
+          %       segmentation par périmètre (assurance vie, IARD) et \B{restitution aux équipes métier}
+          %       \stack{Python \textperiodcentered{} Pandas \textperiodcentered{} Scikit-Learn \textperiodcentered{} Matplotlib \textperiodcentered{} Seaborn \textperiodcentered{} Jupyter Notebook}
+          % \item Détection d'\B{identifiants anormaux dans des logs} par \B{clustering et arbre de décision}
+          %       \stack{Python \textperiodcentered{} Pandas \textperiodcentered{} NumPy \textperiodcentered{} Scikit-Learn \textperiodcentered{} Jupyter Notebook}
+          %%
+          %% Postes MLOps / plateforme ML :
+          % \item Conception de bout en bout de l'extension \B{user-resource-monitoring}: backend Python
+          %       (psutil, nvidia-smi) exposant un endpoint HTTP local, affichage \B{temps réel CPU/RAM/GPU/VRAM}
+          %       par utilisateur et par serveur, code couleur et \B{alertes de saturation}
+          %       \stack{TypeScript \textperiodcentered{} Python \textperiodcentered{} psutil \textperiodcentered{} nvidia-smi \textperiodcentered{} VS Code API}
+          % \item Évolution de l'extension \B{session-management} (JupyterHub) : worker actif et \B{temps restant avant
+          %       nettoyage automatique} via l'API JupyterHub avec repli local, \B{notifications} au franchissement d'un seuil
+          %       \stack{TypeScript \textperiodcentered{} JupyterHub API \textperiodcentered{} VS Code API \textperiodcentered{} GitLab}
+          % \item Prototypage de \B{pipelines Kedro} et du \B{suivi d'expériences MLflow}, puis extension VS Code de
+          %       \B{configuration du catalogue Kedro} (fichiers YAML des datasets et modèles ML)
+          %       \stack{Python \textperiodcentered{} Kedro \textperiodcentered{} Kedro-Viz \textperiodcentered{} MLflow \textperiodcentered{} TypeScript \textperiodcentered{} YAML}
+          %%
+          %% Postes Backend / outils internes / securite :
+          % \item Développement d'une \B{interface web sécurisée de gestion des identifiants et clés API}:
+          %       backend Flask, \B{chiffrement AES}, journalisation des accès, sessions à durée limitée ;
+          %       \B{-40~\% de temps de recherche} et \B{-60~\% d'erreurs de saisie}
+          %       \stack{Python \textperiodcentered{} Flask \textperiodcentered{} JavaScript \textperiodcentered{} HTML/CSS \textperiodcentered{} Cryptographie \textperiodcentered{} GitLab}
+          % \item Amélioration d'un \B{outil interne de gestion des accès} afin de simplifier
+          %       l'administration des \B{droits utilisateurs} pour \B{30+ utilisateurs} des équipes Data
+          %       \stack{Python \textperiodcentered{} JavaScript \textperiodcentered{} API \textperiodcentered{} Git}
+          %%
+          %% Postes outillage / Developer Experience / SAS :
+          % \item Intégration de la \B{connexion SAS dans VS Code} (extension officielle SAS et SASPy) : exécution de
+          %       code et accès aux tables SAS depuis l'IDE, paramètres de connexion en JSON, tests de connexion
+          %       \stack{TypeScript \textperiodcentered{} Python \textperiodcentered{} SASPy \textperiodcentered{} JSON \textperiodcentered{} Git}
+          % \item Extension VS Code \B{Create Python Analytics Project}: génération en un clic d'un projet type
+          %       (notebooks, accès SAS, S3 et SQL) pour les \B{data analysts et actuaires}
+          %       \stack{TypeScript \textperiodcentered{} Yeoman \textperiodcentered{} VS Code API \textperiodcentered{} JSON}
+          % \item Intégration de \B{Ruff et BasedPyright} sur la plateforme (remplacement de Flake8 et Pyright) :
+          %       configuration centralisée (\I{pyproject.toml}), guide utilisateur et démonstration à l'équipe,
+          %       \B{analyse environ 10 fois plus rapide}
+          %       \stack{Ruff \textperiodcentered{} BasedPyright \textperiodcentered{} TOML \textperiodcentered{} VS Code \textperiodcentered{} Markdown}
+          %%
+          %% ----- Formulations precedentes (version de base 11/2026), conservees -----
+          % \item Conception d'un \B{système d'automatisation de migration SAS vers Python via
+          %           GitHub Copilot}, intégrant \B{prompt engineering}, \B{Skills} (capacités
+          %       spécialisées réutilisables) et contexte persistant (\I{copilot-instructions.md}),
+          %       avec validation par tests à 2 niveaux
+          % \item Conception et automatisation d'un \B{pipeline de migration de données}
+          %       permettant de transférer \B{500+ Go de datasets SAS vers A{}WS S3}, afin d'améliorer
+          %       la \B{scalabilité, l'accès et le traitement des données} pour les équipes Data
+          % \item Développement et déploiement de \B{3 extensions VS Code} afin de simplifier
+          %       l'utilisation des outils internes de la \B{plateforme Data} et d'améliorer
+          %       l'efficacité des workflows pour \B{30+ utilisateurs (Data Scientists \& Data Analysts)}
+          % \item Analyse de données sur les erreurs de reconnaissance du \B{Callbot Zaion}
+          %       à partir de \B{1 an de données opérationnelles} afin d'évaluer
+          %       \B{l'efficacité du système} et d'identifier les causes principales des erreurs,
+          %       conduisant à \B{3 recommandations d'amélioration}
+          % \item Conception et déploiement d'un \B{dashboard de pilotage du Callbot Zaion}
+          %       afin de suivre \B{10+ KPI opérationnels} et d'analyser la performance du
+          %       système pour les équipes internes
+          % \item Maintenance et mise à jour de \B{35+ extensions internes} ainsi que des
+          %       \B{versions de code-server} afin de garantir la \B{stabilité et la
+          %           compatibilité de l'environnement de développement} utilisé par
+          %       \B{40+ utilisateurs} des équipes Data
+          %%
+          %% ----- Formulations propres aux anciens CV quant / trading (fr-q-1, fr-q-2, fr-tr), conservees -----
+          % \item Application d'analyses statistiques et d'approches fondées sur les données afin d'extraire
+          %       des enseignements de jeux de données à grande échelle et d'améliorer les workflows analytiques
+          %%   (formulation generique sans chiffre : seulement en complement d'une mission chiffree)
+          %% Variante de stack du pipeline S3 : Python · A{}WS S3 · fsspec · smbfs · Linux · Bash
+          %% Variante de stack du Callbot (version IBM precedente) : Python · Pandas · NumPy · Matplotlib ·
+          %%   Seaborn · Plotly · Jupyter Notebook · Conda
+\end{itemize}
+
+%% ----- Reserve : formation en entreprise (postes ML / Data Science) -----
+% \vspace{3pt}
+% \cvevent{F{}ormation à l'entreprise IT SPD Ukraine - Machine Learning / Deep Learning}{2022}
+% \cvsubevent{Tcherkassy, Ukraine}
+% \stack{Scikit-Learn \textperiodcentered{} Pandas \textperiodcentered{} NumPy \textperiodcentered{} Matplotlib \textperiodcentered{} Seaborn \textperiodcentered{} T{}ensorFlow \textperiodcentered{} XGBoost}
+
+%% ---------- Competences (juste apres l'experience : mots-cles visibles tot) ----
+\cvsection{COMPÉTENCES}
+% {} dans A{}WS, EL{}T, T{}raining... : coupe le crenage, sinon pypdf lit "A WS", "EL T", "T raining"
+\begin{itemize}
+    \item \B{Data Engineering :} Python, SQL, Spark/PySpark, Orchestration (Airflow, Kedro), MLflow, dbt, Kafka,
+          Jenkins, ETL/EL{}T, Data Pipelines/Ingestion, Data Migration, Data Modeling, Data Warehousing, SAS, FastAPI, REST APIs
+    \item \B{IA \& ML :} LLMs, RAG, Generative AI, AI Agents, LangChain, LangGraph, MCP,
+          GitHub Copilot, Prompt Engineering, NLP, Deep Learning, Scikit-Learn, XGBoost,
+          LightGBM, T{}ensorFlow/Keras, PyT{}orch, Feature Engineering, Model Evaluation
+    \item \B{Cloud \& Data :} A{}WS S3, BigQuery, PostgreSQL, MySQL, Oracle, Polars, DuckDB, Linux, NoSQL
+    \item \B{Data Quality \& Analytics :} Pandas, NumPy, Data Quality, Validation,
+          Monitoring, Reporting, Apache Superset, Tableau
+    \item \B{DevOps :} Java, C/C++, TS/JS, Git/GitLab, Docker, Kubernetes, CI/CD, GitHub Actions,
+          Bash, Tests automatisés, Jira
+          %% ----- Reserve : autres decoupages de categories (ancienne version) -----
+          % \item \B{AI / Machine Learning :} Python, LLMs, RAG, Architectures agentiques, NLP,
+          %       Scikit-Learn, T{}ensorFlow/Keras, MLflow, LightGBM, XGBoost
+          % \item \B{MLOps / Cloud / DevOps :} Docker, Kubernetes, CI/CD, GitHub Actions, Jenkins,
+          %       A{}WS, Linux, Monitoring, Observabilité
+          % \item \B{Backend / Data Engineering :} FastAPI, SQL, PostgreSQL, Oracle, Spark/PySpark,
+          %       Airflow, Kafka, dbt, Polars, DuckDB
+          % \item \B{Software Engineering :} Python, Java, C/C++, TypeScript/JavaScript, Git,
+          %       Tests automatisés, Validation, Maintenance
+          %% Autres competences vues en formation (programme academique 2021-2026) :
+          %%  Matlab, SWI-Prolog, Julia, Haskell, LaTeX, UML, Design Patterns, Modélisation relationnelle,
+          %%  Administration de bases de données, Administration système, Administration réseau,
+          %%  Cryptographie, Sécurité réseau, Régression, Clustering, Ensemble Learning, Green Coding
+          %%
+          %% ----- Reserve : lignes de competences des anciens CV (une variante a la fois, retirer les %) -----
+          % \item \B{Programmation \& Développement IT :} C/C++, Python, SQL, Java, C\# / .NET Core,
+          %       API REST, Web Services, microservices, Microsoft Excel, Git, Linux, Jupyter
+          % \item \B{Calcul scientifique \& Data :} Julia, Matlab, SAS, NumPy, Pandas, Polars, DuckDB,
+          %       bases de données relationnelles, traitement de données à grande échelle
+          % \item \B{Algorithmique \& Informatique :} Structures de données, complexité algorithmique,
+          %       algorithmique des graphes, programmation parallèle et distribuée
+          % \item \B{Mathématiques appliquées :} Algèbre linéaire, probabilités et statistiques,
+          %       modélisation statistique, méthodes numériques, optimisation,
+          %       simulation de Monte-Carlo, modélisation stochastique
+          % \item \B{Machine Learning \& Analyse de données :} Scikit-Learn, LightGBM, XGBoost, T{}ensorFlow/Keras,
+          %       Data Mining, ingénierie des variables, classification, détection d'anomalies, évaluation de modèles
+          % \item \B{Marchés financiers (notions) :} Forex, taux, actions, futures, crédit, produits dérivés,
+          %       pricing, gestion du risque, XVA (CVA, DVA, FVA), microstructure de marché, carnet d'ordres (L2/L3),
+          %       market data, liquidité, types d'ordres, exécution, VWAP, rapports COT (Commitments of Traders),
+          %       analyse de données de marché, stratégies systématiques, concepts de backtesting
+          % \item \B{Python, VBA \& outils :} Python (Pandas, NumPy, Polars, openpyxl), VBA, Microsoft Excel,
+          %       SQL (MS SQL Server, PostgreSQL, MySQL, Oracle), SAS, Flask, FastAPI, REST APIs,
+          %       Jupyter Notebook, Git/GitLab, Linux, Bash          (version SGCIB Collateral, 11/2026)
+          %%
+          %% ----- Mots-cles supplementaires a piocher selon l'offre (absents du reste du fichier) -----
+          %% Le contenu des cours est detaille dans la section Formation ; ici, les formes a coller.
+          %% Outils deja visibles dans les lignes \stack et Projets (boto3, pytest, Matplotlib, TF-IDF,
+          %% LSTM...) : l'ATS les lit deja, inutile de les repeter dans Compétences.
+          %%  Data / BD : Big Data, Data Lakes, BI (version IBM precedente), SQL avancé (JOIN, GROUP BY,
+          %%    agrégations, sous-requêtes), normalisation, conception de bases de données (clés, contraintes),
+          %%    données semi-structurées, stockage distribué, scalabilité, préparation et nettoyage des données,
+          %%    analyse exploratoire (EDA), visualisation de données
+          %%  Développement : POO (héritage, polymorphisme, interfaces, exceptions), pointeurs et gestion
+          %%    mémoire (C), programmation fonctionnelle et logique, compilation (analyse lexicale et syntaxique),
+          %%    cycle de développement logiciel, analyse des besoins, architecture logicielle, tests logiciels,
+          %%    maintenance logicielle
+          %%  Systèmes / Cloud : shell scripting, gestion des utilisateurs, droits et services Linux, protocoles
+          %%    réseau, adressage, architecture cloud, virtualisation (notions), calcul distribué, concurrence et
+          %%    synchronisation
+          %%  ML / IA : apprentissage supervisé et non supervisé, réseaux de neurones, vectorisation,
+          %%    prétraitement et classification de texte, séparation train / test
+          %%  Sécurité : chiffrement (AES : cf. Reserve Flask), authentification, intégrité, sécurité des données,
+          %%    sécurité de l'information
+          %%  Autres : traitement d'images (filtrage du bruit), web sémantique (données liées),
+          %%    représentation des connaissances
+          %%  A ajouter uniquement apres pratique reelle (anciens CV) : C++17/20, STL, multithreading, SciPy,
+          %%    FIX Protocol, QuantLib, séries temporelles, Interactive Brokers API, Binance API
+\end{itemize}
+
+%% ---------- Formation --------------------------------------------------------
+\cvsection{FORMA{}TION}
+\cvevent{\href{https://www.sup-galilee.univ-paris13.fr}{École d'ingénieurs Sup Galilée} - Diplôme d'ingénieur en Informatique}{2023 - 2026}
+{\small\B{Cours :} Cloud Computing, Bases de données avancées (MySQL) et NoSQL, Data Mining,
+    Machine Learning et Programmation pour\nbrealspace l'IA, NLP, Docker, Génie logiciel (UML, Design Patterns),
+    Systèmes d'exploitation et Administration système (Linux), Probabilités et Statistiques,
+    Optimisation linéaire et combinatoire (MILP), Algorithmes parallèles et distribués,
+    Algorithmique des graphes\par}
+%% ----- Formulations precedentes de la ligne Cours (version de base 11/2026), conservees -----
+% {\small\B{Cours :} Cloud Computing, Data Mining et Programmation pour l'IA, Bases de données
+%     (MySQL) et NoSQL, Docker, Probabilités et Statistiques, Optimisation linéaire et
+%     combinatoire, Algorithmes parallèles et distribués, Algorithmique des graphes, et autres\par}
+%% Version courte sur 2 lignes (si une offre demande de la place ailleurs ; remettre \vspace{5pt} avant la prepa) :
+% {\small\B{Cours :} Cloud Computing, Data Mining, Machine Learning et Programmation pour l'IA, Bases de
+%     données (MySQL) et NoSQL, Docker, Probabilités et Statistiques, Optimisation linéaire et
+%     combinatoire, Algorithmes parallèles et distribués, Algorithmique des graphes\par}
+%% ----- Reserve : lignes « Cours » a substituer selon l'offre -----
+%% Data / Cloud : Cloud Computing, Bases de données avancées et NoSQL, Data Mining, Analyse de données,
+%%   Algorithmes parallèles et distribués, Docker, Génie logiciel
+%% QA / Développement : Génie logiciel (tests logiciels, maintenance, Git), Design Patterns, UML,
+%%   Systèmes d'exploitation, Administration système, Réseaux informatiques, Programmation orientée objet (C++, Java)
+%% ML / IA : Machine Learning, Deep Learning, NLP, Data Mining, Programmation pour l'IA,
+%%   Probabilités et Statistiques, Optimisation
+%% Quant : Probabilités et Statistiques, Méthodes numériques (Monte-Carlo), Optimisation linéaire et
+%%   combinatoire (MILP, CPLEX), Algorithmique et Complexité, C/C++
+%% Sécurité : Cryptographie, Cybersécurité, Sécurité réseau, Administration système et réseau
+%% Systèmes / SRE : Systèmes d'exploitation (UNIX / Linux), Administration système (Bash, shell scripting),
+%%   Réseaux informatiques, Architecture des ordinateurs, Algorithmes parallèles et distribués, Cloud Computing
+%% Backend / Web : Technologies Web et Programmation Web avancée (JavaScript, TypeScript), Bases de données
+%%   relationnelles (SQL), Génie logiciel, Design Patterns, Programmation orientée objet (Java, C++)
+%% C / C++ : Programmation en C (pointeurs, gestion de la mémoire), POO en C++, Structures de données et
+%%   Complexité, Algorithmique des graphes, Compilation, Systèmes d'exploitation
+%% Statistique / Risque : Probabilités et Statistiques, Modélisation statistique, Analyse de données,
+%%   Data Mining, Méthodes numériques (Monte-Carlo), Optimisation
+%% Recherche / R&D : Théorie des langages et Compilation, Logique et représentation des connaissances,
+%%   Programmation fonctionnelle (Haskell) et logique (SWI-Prolog), Web sémantique, Traitement d'images
+%%
+%% Toutes les matieres du cycle ingenieur (detail : programme_academique_detail_2021_2026.md) :
+%%   Algorithmique générale, Structures de données, Complexité algorithmique, Algorithmique des graphes,
+%%   Algorithmes parallèles et distribués, Programmation en C, POO en C++, POO en Java,
+%%   Programmation fonctionnelle (Haskell), Programmation logique (SWI-Prolog), Matlab,
+%%   Théorie des langages, Compilation, Logique et représentation des connaissances,
+%%   Architecture des ordinateurs, Systèmes d'exploitation, UNIX / Linux, Administration système,
+%%   Réseaux informatiques, Administration réseau, Bases de données relationnelles, Bases de données
+%%   avancées, NoSQL, Génie logiciel, UML, Design Patterns, Cloud Computing, Data Mining,
+%%   Analyse de données, Intelligence artificielle, Machine Learning, Deep Learning, NLP,
+%%   Cryptographie, Cybersécurité, Technologies Web, Programmation Web avancée, Web sémantique,
+%%   Traitement d'images, Numérique responsable / Green Coding, Gestion de projet informatique
+%% Environnement professionnel : gestion de projet, projet de création d'entreprise, communication,
+%%   droit du travail, éthique, QSE
+%%   + direction de projet, communication des entreprises, analyse du cycle de vie (ACV), économie, gestion,
+%%   sociologie du travail et des organisations, droits et obligations de l'apprenti, santé et sécurité au
+%%   travail, méthodologie, conférences, restitution-liaison (suivi de l'alternance)
+%%
+%% ----- Detail des cours d'informatique : notions vues par matiere (pour l'entretien et les lignes « Cours ») -----
+%% Source : programme_academique_detail_2021_2026.md. Complete la liste des matieres ci-dessus sans la repeter.
+%% Le programme ne precise pas l'annee de chaque matiere (prepa 2021-2023 ou cycle 2023-2026).
+%% Algorithmique : conception d'algorithmes, itératif et récursif, structures de contrôle et de données,
+%%   correction et analyse des performances, algorithmique avancée
+%% Complexité : temporelle et mémoire, notations O / Ω / Θ, classes de complexité, comparaison d'algorithmes
+%% Graphes : orientés et non orientés, représentation, parcours, recherche de chemins, algorithmes classiques
+%% Parallèle et distribué : parallélisation des calculs, concurrence, synchronisation, communication entre
+%%   processus, modèles distribués, répartition des calculs, performance des systèmes
+%% C : types, pointeurs, gestion de la mémoire, structures, tableaux et chaînes, programmation procédurale,
+%%   compilation de programmes C
+%% C++ / Java (POO) : classes et objets, encapsulation, héritage, polymorphisme, constructeurs et destructeurs,
+%%   gestion mémoire (C++) ; interfaces, exceptions, collections (Java)
+%% Programmation fonctionnelle (Haskell) : fonctions pures, immutabilité, fonctions d'ordre supérieur,
+%%   récursion, composition, modélisation de systèmes (projet hsReact)
+%% Programmation logique (SWI-Prolog) : logique formelle, faits, règles, inférence
+%% Python : programmation scientifique, manipulation et analyse de données, ML, optimisation, NLP
+%% Julia : calcul scientifique, modélisation MILP avec CPLEX (projet centres logistiques)
+%% SQL : SELECT, INSERT, UPDATE, DELETE, JOIN, GROUP BY, agrégations, sous-requêtes
+%% Web : JavaScript, TypeScript, architecture et applications Web
+%% Théorie des langages et compilation : langages formels, grammaires, analyse lexicale et syntaxique,
+%%   représentation d'un programme, étapes de compilation
+%% Logique et représentation des connaissances : logique propositionnelle, modélisation des connaissances,
+%%   raisonnement automatisé
+%% Architecture des ordinateurs : processeur, mémoire, entrées / sorties, représentation de l'information,
+%%   interaction matériel / logiciel
+%% Systèmes d'exploitation (UNIX / Linux) : processus, mémoire, système de fichiers, utilisateurs et
+%%   permissions, commandes UNIX, shell, Bash, systèmes multi-utilisateurs
+%% Administration système : utilisateurs et droits, processus et services, configuration, shell scripting,
+%%   maintenance
+%% Réseaux : réseaux locaux, couches basses, modèles en couches, protocoles, adressage, configuration et
+%%   administration réseau, sécurité réseau (notions)
+%% Bases de données : modèle relationnel, clés primaires et étrangères, contraintes, normalisation,
+%%   conception (MySQL ; PostgreSQL dans les projets) ; avancées : administration, performances, gestion des
+%%   accès, données complexes ; NoSQL : modèles non relationnels, données semi-structurées, stockage
+%%   distribué, scalabilité
+%% Génie logiciel : cycle de développement, analyse des besoins, conception et architecture logicielle,
+%%   diagrammes UML, tests, maintenance, gestion de versions (Git)
+%% Design Patterns : patterns orientés objet, réutilisabilité, maintenabilité, séparation des responsabilités
+%% Cloud Computing : ressources à la demande, infrastructure distribuée, stockage cloud, calcul distribué,
+%%   virtualisation (notions), services et architecture cloud
+%% Data Mining : exploration, préparation et nettoyage des données, analyse exploratoire, extraction de
+%%   caractéristiques, classification, clustering, évaluation des modèles
+%% Analyse de données : NumPy, Pandas, DataFrames, transformation, agrégation, visualisation
+%% Programmation pour l'IA : représentation de problèmes, modélisation, algorithmes pour l'IA
+%% Machine Learning : supervisé (classification, régression) et non supervisé, préparation des données,
+%%   séparation train / test, évaluation, feature engineering ; modèles des projets : Naive Bayes, LightGBM,
+%%   XGBoost, ensemble learning, détection d'anomalies
+%% Deep Learning : réseaux de neurones, TensorFlow, Keras, LSTM, applications au NLP
+%% NLP : prétraitement de texte, vectorisation, TF-IDF, classification de texte (projet phishing)
+%% Cryptographie : confidentialité, intégrité, authentification, chiffrement, cryptographie moderne
+%% Cybersécurité : menaces, vulnérabilités, protection des systèmes, sécurité des données et du réseau
+%% Web sémantique : données liées, modélisation sémantique, représentation des connaissances sur le Web
+%% Traitement d'images : représentation numérique, filtrage, bruit impulsionnel (cf. publication 2021)
+%% Green Coding : impact environnemental des logiciels, efficacité des ressources, bonnes pratiques
+\vspace{3pt}  % 5pt auparavant : 3pt laisse la place a la 3e ligne de Cours (la page reste a 1 page)
+\cvevent{\href{https://www.univ-spn.fr}{Université Sorbonne Paris Nord} - \href{https://www.sup-galilee.univ-paris13.fr/index.php/formation/cp2i/}{Classe préparatoire à Sup Galilée}}{2021 - 2023}
+{\small\B{Cours :} Algèbre linéaire, Analyse, Topologie et Calcul Différentiel, Probabilités,
+    Calcul scientifique, Algorithmique, Systèmes UNIX\par}
+%% Formulation precedente (version de base 11/2026), conservee :
+% {\small\B{Cours :} Algèbre, Analyse, Topologie et Calcul Différentiel, Calcul scientifique,
+%     Algorithmique, Systèmes UNIX\par}
+%% ----- Reserve : prepa, version detaillee (postes quant / R&D) -----
+% {\small\B{Cours :} Algèbre linéaire (espaces vectoriels, matrices, valeurs propres, diagonalisation),
+%     Analyse multivariable (dérivées partielles, Jacobienne, Hessienne, séries de Taylor),
+%     Probabilités (variables aléatoires, probabilités conditionnelles, lois usuelles),
+%     équations différentielles et calcul numérique\par}
+%% Variante d'intitule (ancien CV fr-tr) : « Classe préparatoire intégrée de Sup Galilée »
+%%
+%% ----- Detail des mathematiques : notions vues (prepa et cycle ; reference complete pour l'entretien) -----
+%% Algèbre linéaire : espaces vectoriels, bases et dimension, changement de base, applications linéaires
+%%   (noyau, image, rang), matrices et systèmes linéaires (élimination de Gauss), déterminants, valeurs et
+%%   vecteurs propres, diagonalisation, trigonalisation, formes bilinéaires et quadratiques, espaces
+%%   euclidiens (produit scalaire, orthogonalité, projection orthogonale)
+%% Suites et séries : convergence des suites et des séries, convergence simple et uniforme des suites et
+%%   séries de fonctions, séries entières, séries de Fourier
+%% Calcul différentiel : fonctions de plusieurs variables, dérivées partielles, gradient, Jacobienne,
+%%   Hessienne, règle de chaîne, classes C1 / Cn, développements limités, formules de Taylor, extrema et
+%%   points critiques (conditions du 1er et du 2nd ordre), théorèmes d'inversion
+%% Topologie : espaces vectoriels normés et métriques, ouverts et fermés, adhérence, intérieur, frontière,
+%%   suites de Cauchy, complétude, compacité, connexité (par arcs), continuité uniforme
+%% Calcul intégral : intégrale de Riemann, primitives, intégrales impropres, intégrales doubles et triples,
+%%   théorème de Fubini, changement de variables (Jacobien, coordonnées polaires)
+%% Équations différentielles : EDO du 1er ordre et d'ordre supérieur, équations linéaires, problèmes de
+%%   Cauchy, systèmes différentiels, étude qualitative des solutions
+%% Probabilités : espaces probabilisés, probabilités conditionnelles, formule des probabilités totales,
+%%   indépendance, variables aléatoires discrètes et continues, fonction de répartition et densité,
+%%   espérance, variance, écart-type, lois de Bernoulli, binomiale, uniforme, exponentielle et gaussienne,
+%%   couples de variables aléatoires (lois conjointes et marginales)
+%% Statistiques : statistique descriptive, distribution des données, analyse et modélisation statistiques,
+%%   statistiques appliquées au Data Mining
+%% Méthodes numériques : approximation, résolution numérique de systèmes, Monte-Carlo, erreurs, précision
+%%   et stabilité numériques (Matlab)
+%% Optimisation : programmation linéaire (fonction objectif, contraintes, domaine admissible), optimisation
+%%   combinatoire, MILP (variables continues, entières, binaires), solveur CPLEX, heuristiques et
+%%   métaheuristiques, placement et localisation, TSP, optimisation par colonies de fourmis
+%% ----- Reserve : lycee -----
+% \vspace{5pt}
+% \cvevent{Lycée Phymly - Spécialité Mathématiques, Physique et Informatique}{2016 - 2021}
+% \cvsubevent{Tcherkassy, Ukraine}
+
+%% ---------- Projets ----------------------------------------------------------
+\cvsection{PROJETS IA \& ENGINEERING}
+\begin{itemize}[itemsep=1.6pt]
+    \project{Système de détection de phishing par email}{https://github.com/DmytroPalahin/phishing-email-detection}
+    {Python, Machine Learning, NLP}{2026}
+    {Classification de \B{76~677 emails} (5 datasets réels) : NLP (TF-IDF, extraction d'URLs),
+        ensemble LightGBM + Naive Bayes + LSTM}
+    \project{Placement de centres logistiques}{https://github.com/DmytroPalahin/logistics-center-placement}
+    {Python, Julia, CPLEX, Optimisation}{2025}
+    {Projet d'optimisation combinatoire pour le placement de centres logistiques via
+        modèles MILP résolus avec CPLEX et heuristiques}
+    \project{Système de réactions}{https://github.com/DmytroPalahin/hsReact}
+    {Haskell}{2024}
+    {Représentation de systèmes et processus de réactions en programmation fonctionnelle}
+    \project{Problème du voyageur de commerce}{https://github.com/DmytroPalahin/Probleme_du_Voyageur_de_Commerce}
+    {C, Apprentissage par renforcement}{2023}
+    {Implémentation de l'algorithme d'optimisation par colonies de fourmis}
+    \project{Publication d'un article}{https://www.researchsquare.com/article/rs-2203260/v1}
+    {Algorithmes mathématiques}{2021}
+    {Filtration du bruit impulsionnel dans les images vidéo ---
+        \I{Informatics and Mathematical Methods in Simulation}, vol. 11, n° 4}
+    \project{Détection d'anomalies}{https://github.com/DmytroPalahin/Anomaly_Detection}
+    {Python, Machine Learning}{2021}
+    {Méthodes pour l'étiquetage partiel de données}
+    %% ----- Reserve : projets -----
+    % \project{Filtrage d'images}{https://github.com/DmytroPalahin/Filtering_Images}
+    % {HTML, CSS, JS, Algorithmes}{2019}
+    % {Implémentation de méthodes mathématiques de filtrage du bruit dans les images numériques
+    %     sous forme de service web}
+    %% Stack detaillee du projet phishing (postes ML) :
+    %%   Python · LightGBM · TensorFlow/Keras · Scikit-Learn · Pandas · NumPy · Jupyter
+    %% ----- Reserve : projets de prepa cites sur LinkedIn (ajouter le lien GitHub et l'annee s'ils existent) -----
+    % \project{Bataille navale}{URL}{C, GTK}{20xx}
+    % {Jeu de bataille navale en C avec interface graphique GTK}
+    % \project{Reconnaissance de langue}{URL}{C++, Perceptron}{20xx}
+    % {Reconnaissance de la langue par un perceptron implémenté en C++}
+    %% ----- Reserve : projets quant a venir (garder en commentaire tant qu'ils ne sont pas réalisés) -----
+    % \project{Option Pricing \& Monte Carlo}{URL}{Python/C++, NumPy, Black--Scholes, Monte Carlo}{20xx}{...}
+    % \project{Quantitative Strategy Research \& Backtesting}{URL}{Python, Time Series, Risk Metrics, Walk-Forward Analysis}{20xx}{...}
+    %% ----- Variantes de titre / description / stack (anciens CV quant) -----
+    %% Centres logistiques : titre « Optimisation combinatoire de centres logistiques », stack « Python, Julia,
+    %%   CPLEX, MILP », description « Modélisation et résolution d'un problème de localisation de sites par
+    %%   programmation linéaire en nombres entiers mixtes, CPLEX et méthodes heuristiques »
+    %% Publication : « Développement d'une méthode mathématique de filtrage du bruit impulsionnel dans les
+    %%   images vidéo, publiée dans Informatics and Mathematical Methods in Simulation, Vol. 11, No. 4 »
+    %% Détection d'anomalies : « Étude de méthodes de détection d'anomalies et d'étiquetage partiel de données »
+    %% Voyageur de commerce : stack « C, Optimisation combinatoire, Métaheuristiques » (offres quant / optimisation)
+    %% Phishing : titre « Détection de phishing par Machine Learning »
+\end{itemize}
+
+%% ---------- Certifications ---------------------------------------------------
+\cvsection{CER{}TIFICA{}TIONS}
+\begin{itemize}
+    \item \B{Udemy - Jose Portilla / Pierian T{}raining :}
+          \I{\href{https://www.udemy.com/certificate/UC-51319000-ccb8-4c9c-9320-6cd9860e601c/}{Python for Data Science and Machine Learning Bootcamp}}
+    \item \B{Huawei AI Certifications :}
+          \I{\href{https://github.com/DmytroPalahin/cv-latex-simple-en/blob/main/docs/huawei_artificial_intelligence_and_applications.pdf}{Artificial Intelligence and Applications}}\dotsep
+          \I{\href{https://github.com/DmytroPalahin/cv-latex-simple-en/blob/main/docs/huawei_artificial_intelligence_technology_and_applications.pdf}{Artificial Intelligence Technology and Applications}}
+          %% ----- Reserve -----
+          % \item \B{SPD Ukraine :} F{}ormation en Machine Learning en entreprise IT
+          % \item \B{Stepik :} F{}ormation en Machine Learning
+          % \item \B{Société Générale Assurances :} F{}ormation \I{SAS} (langage macro SAS)
+\end{itemize}
+
+%% ---------- Prix & participations --------------------------------------------
+\cvsection{PRIX \& P{}AR{}TICIP{}A{}TIONS}
+\begin{itemize}
+    \item \B{\href{https://www.fondationbesse.com/}{Lauréat de la F{}ondation Georges Besse}}
+    \item \B{Eco-T{}echno Ukraine ISEF} - 1re place en Informatique
+    \item \B{Service Internet Intelligence Collective} - 1re place en Ukraine
+\end{itemize}
+
+%% ---------- Centres d'interet ------------------------------------------------
+\cvsection{CENTRES D'INTÉRÊT}
+Invest\dotsep Échecs\dotsep Ski\dotsep Tennis\dotsep Natation\dotsep Karting | Formule 1\par
+%% Reserve : Crypto, Randonnée ; version quant : « Marchés financiers / Trading » a la place de « Invest »
 
 \end{document}
+
 
 /*
 latexmk -pdf cv-dmytro-palahin-fr-d.tex
 latexmk -pdf -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-fr-d.tex
-pdftoppm -png -r 600 cv-dmytro-palahin-fr-d.pdf ./img/cv-dmytro-palahin-fr-d
+
+/Library/TeX/texbin/latexmk -pdf -g -interaction=nonstopmode -file-line-error -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-fr-d.tex
+
+pdftoppm -png -r 600 -singlefile cv-dmytro-palahin-fr-d.pdf ../../resources/img/cv-dmytro-palahin-fr-d
 */
