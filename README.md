@@ -139,14 +139,20 @@ The same commands work for French from `src/fr` with `fr-d` file names. More det
 
 ## 🚀 CI/CD
 
-GitHub Actions ([`latex.yml`](.github/workflows/latex.yml)) compiles the CV on every push and pull request to `main`, and publishes a release for every version tag.
+GitHub Actions ([`latex.yml`](.github/workflows/latex.yml)) compiles the English and French CVs in parallel whenever their sources or the workflow change, and publishes a release for every version tag. It can also be started by hand from the **Actions** tab.
 
 ```text
-push / PR to main  ->  build the PDFs  ->  upload as workflow artifacts
-git tag v*.*.*     ->  build the PDFs  ->  GitHub Release with the PDFs attached
+push / PR to main  ->  build EN + FR  ->  checks  ->  artifacts: PDF + PNG preview (30 days)
+git tag v*.*.*     ->  build EN + FR  ->  checks  ->  GitHub Release: PDFs + previews, notes from CHANGELOG.md
 ```
 
-Create a release:
+| Check | Tool | Result |
+| --- | --- | :---: |
+| The CV fits on one page | `pdfinfo` | ❌ fails the build |
+| Text is extractable: name, title, Python, SQL, GitHub link | `pdftotext` | ❌ fails the build |
+| The committed PDF matches its `.tex` source | `pdftotext` | ⚠️ warning |
+
+Create a release: add a `## [v2.0.0] - YYYY-MM-DD` section to [CHANGELOG.md](CHANGELOG.md), then
 
 ```sh
 git tag v2.0.0

@@ -20,10 +20,15 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/): `[vMAJ
 - `academic/` renamed to `academic_profil/`
 - `resources/img/`: previews regenerated for `en-d` and `fr-d`
 - `CONTRIBUTING.md`: naming conventions, build and preview commands, editing rules for the new template
+- `latex.yml`: builds only `en-d` and `fr-d`, and runs only when the CV sources or the workflow change (plus manual runs)
+- `latex.yml`: checks that each CV fits on one page and that its text is extractable (ATS); warns when the committed PDF is out of date
+- `latex.yml`: PNG previews in the artifacts and the release; release notes taken from `CHANGELOG.md`
+- `latex.yml`: read-only permissions by default (`contents: write` only for the release job), job timeouts, no shell escape
+- `latex.yml`: actions updated to their Node 24 majors: `checkout@v7`, `upload-artifact@v7`, `download-artifact@v8`, `latex-action@v4`, `action-gh-release@v3`
 
 ### Removed
 
-- `en-q`, `en-tr`, `fr-q`, `fr-tr` and `fr-simple` variants and their previews
+- Other CV variants and their previews (kept locally)
 - Personal photo `resources/img/photo.png` (no longer tracked)
 
 ---
@@ -32,7 +37,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/): `[vMAJ
 
 ### Added
 
-- `-tr` (Trading) versions
+- New CV variants (EN / FR)
 
 ---
 
@@ -67,7 +72,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/): `[vMAJ
 ### Added
 
 - Initial CI/CD workflow (`latex.yml`) - basic compile + artifact upload
-- `en-tr` (Trading) variant
+- Additional English CV variant
 
 ---
 

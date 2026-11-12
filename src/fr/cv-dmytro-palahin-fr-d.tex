@@ -2,7 +2,7 @@
 %%  CV - Dmytro PALAHIN - version de base (francais)
 %%  Style LaTeX classique : Latin Modern, noir et blanc, gras et italique.
 %% -----------------------------------------------------------------------------
-%%  Fichier source : cv-dmytro-palahin-fr-d.tex  (fr = langue, d = Data ; ancienne version a icones : fr-d-c)
+%%  Fichier source : cv-dmytro-palahin-fr-d.tex  (fr = langue, d = Data ; version anglaise : en-d)
 %%  Compilation    : latexmk -pdf -jobname=CV_Dmytro_Palahin_Data_Engineer cv-dmytro-palahin-fr-d.tex
 %%                   -> produit directement le PDF a envoyer : CV_Dmytro_Palahin_Data_Engineer.pdf
 %%
@@ -84,10 +84,9 @@
 %%  PARAMETRES
 %% =============================================================================
 \newcommand{\cvtitle}{Data Engineer}          % intitule du poste vise
-%% Reserve intitules : Quant Developer / Quantitative Engineer (ancien CV fr-q-2) ;
-%%   Quantitative Researcher / Quantitative Engineer (fr-q-1) ; Quantitative Trading Analyst /
-%%   Quantitative Researcher (fr-tr) ; deja utilises par offre : Data & AI Engineer (IBM),
-%%   Collateral Trader Assistant (SGCIB). Mettre le meme intitule dans pdftitle / pdfsubject.
+%% Reserve intitules : Quant Developer / Quantitative Engineer ; Quantitative Researcher /
+%%   Quantitative Engineer ; Quantitative Trading Analyst / Quantitative Researcher ;
+%%   Data & AI Engineer ; Collateral Trader Assistant. Mettre le meme intitule dans pdftitle / pdfsubject.
 \newif\ifshowphoto
 \showphotofalse                               % \showphototrue pour afficher la photo
 \newcommand{\photofile}{../../resources/img/photo.png}
@@ -183,19 +182,19 @@
 \vspace{3pt}
 {\centering\footnotesize\itshape De la migration de données à l'outillage des équipes, une même exigence :
     rigueur de validation, autonomie technique et sens du besoin métier.\par}
-%% ----- Reserve : paragraphes de profil des anciens CV quant (l'accroche reste unique par offre) -----
-%% IT Quant / Front Office (fr-q-2) : Ingénieur en informatique récemment diplômé avec 3 ans d'expérience
+%% ----- Reserve : paragraphes de profil pour les postes quant / trading (l'accroche reste unique par offre) -----
+%% IT Quant / Front Office : Ingénieur en informatique récemment diplômé avec 3 ans d'expérience
 %%   en Data Engineering, Machine Learning et MLOps chez Société Générale Assurances. Solide formation en
 %%   mathématiques appliquées, probabilités, statistiques, optimisation et algorithmique, complétée par une
 %%   expérience en calcul scientifique, développement logiciel et traitement de données à grande échelle.
 %%   Souhaite évoluer en IT Quant / Front Office, avec un intérêt particulier pour le pricing cross-asset,
 %%   les produits dérivés, XVA et les outils quantitatifs de pré-trade.
-%% Recherche quantitative / trading (fr-q-1, fr-tr) : meme 1re phrase ; puis « Solide formation [...]
+%% Recherche quantitative / trading : meme 1re phrase ; puis « Solide formation [...]
 %%   complétée par une expérience pratique en calcul scientifique et traitement de données à grande échelle.
 %%   Intéressé par la finance quantitative, le trading systématique et les stratégies fondées sur les données,
 %%   avec un intérêt particulier pour la recherche quantitative, la modélisation statistique et l'analyse des
 %%   données de marché. » (l'original disait « Élève-ingénieur en dernière année » : perime depuis 2026)
-%% Variante courte (fr-q-1, en commentaire) : Ingénieur en informatique spécialisé en Data Engineering, Machine
+%% Variante courte : Ingénieur en informatique spécialisé en Data Engineering, Machine
 %%   Learning et calcul scientifique, avec 3 ans d'expérience en alternance chez Société Générale Assurances.
 %%   Solide formation en mathématiques appliquées, probabilités, statistiques, optimisation et algorithmique,
 %%   avec un intérêt particulier pour le Quantitative Development, Quantitative Research et les marchés financiers.
@@ -314,12 +313,12 @@
           %           compatibilité de l'environnement de développement} utilisé par
           %       \B{40+ utilisateurs} des équipes Data
           %%
-          %% ----- Formulations propres aux anciens CV quant / trading (fr-q-1, fr-q-2, fr-tr), conservees -----
+          %% ----- Formulations pour les postes quant / trading, conservees -----
           % \item Application d'analyses statistiques et d'approches fondées sur les données afin d'extraire
           %       des enseignements de jeux de données à grande échelle et d'améliorer les workflows analytiques
           %%   (formulation generique sans chiffre : seulement en complement d'une mission chiffree)
           %% Variante de stack du pipeline S3 : Python · A{}WS S3 · fsspec · smbfs · Linux · Bash
-          %% Variante de stack du Callbot (version IBM precedente) : Python · Pandas · NumPy · Matplotlib ·
+          %% Variante de stack du Callbot (version precedente) : Python · Pandas · NumPy · Matplotlib ·
           %%   Seaborn · Plotly · Jupyter Notebook · Conda
 \end{itemize}
 
@@ -357,7 +356,7 @@
           %%  Administration de bases de données, Administration système, Administration réseau,
           %%  Cryptographie, Sécurité réseau, Régression, Clustering, Ensemble Learning, Green Coding
           %%
-          %% ----- Reserve : lignes de competences des anciens CV (une variante a la fois, retirer les %) -----
+          %% ----- Reserve : lignes de competences des versions precedentes (une variante a la fois, retirer les %) -----
           % \item \B{Programmation \& Développement IT :} C/C++, Python, SQL, Java, C\# / .NET Core,
           %       API REST, Web Services, microservices, Microsoft Excel, Git, Linux, Jupyter
           % \item \B{Calcul scientifique \& Data :} Julia, Matlab, SAS, NumPy, Pandas, Polars, DuckDB,
@@ -375,13 +374,13 @@
           %       analyse de données de marché, stratégies systématiques, concepts de backtesting
           % \item \B{Python, VBA \& outils :} Python (Pandas, NumPy, Polars, openpyxl), VBA, Microsoft Excel,
           %       SQL (MS SQL Server, PostgreSQL, MySQL, Oracle), SAS, Flask, FastAPI, REST APIs,
-          %       Jupyter Notebook, Git/GitLab, Linux, Bash          (version SGCIB Collateral, 11/2026)
+          %       Jupyter Notebook, Git/GitLab, Linux, Bash   %% version offre finance, 11/2026
           %%
           %% ----- Mots-cles supplementaires a piocher selon l'offre (absents du reste du fichier) -----
           %% Le contenu des cours est detaille dans la section Formation ; ici, les formes a coller.
           %% Outils deja visibles dans les lignes \stack et Projets (boto3, pytest, Matplotlib, TF-IDF,
           %% LSTM...) : l'ATS les lit deja, inutile de les repeter dans Compétences.
-          %%  Data / BD : Big Data, Data Lakes, BI (version IBM precedente), SQL avancé (JOIN, GROUP BY,
+          %%  Data / BD : Big Data, Data Lakes, BI (version precedente), SQL avancé (JOIN, GROUP BY,
           %%    agrégations, sous-requêtes), normalisation, conception de bases de données (clés, contraintes),
           %%    données semi-structurées, stockage distribué, scalabilité, préparation et nettoyage des données,
           %%    analyse exploratoire (EDA), visualisation de données
@@ -398,7 +397,7 @@
           %%    sécurité de l'information
           %%  Autres : traitement d'images (filtrage du bruit), web sémantique (données liées),
           %%    représentation des connaissances
-          %%  A ajouter uniquement apres pratique reelle (anciens CV) : C++17/20, STL, multithreading, SciPy,
+          %%  A ajouter uniquement apres pratique reelle (versions precedentes) : C++17/20, STL, multithreading, SciPy,
           %%    FIX Protocol, QuantLib, séries temporelles, Interactive Brokers API, Binance API
 \end{itemize}
 
@@ -523,7 +522,7 @@
 %     Analyse multivariable (dérivées partielles, Jacobienne, Hessienne, séries de Taylor),
 %     Probabilités (variables aléatoires, probabilités conditionnelles, lois usuelles),
 %     équations différentielles et calcul numérique\par}
-%% Variante d'intitule (ancien CV fr-tr) : « Classe préparatoire intégrée de Sup Galilée »
+%% Variante d'intitule : « Classe préparatoire intégrée de Sup Galilée »
 %%
 %% ----- Detail des mathematiques : notions vues (prepa et cycle ; reference complete pour l'entretien) -----
 %% Algèbre linéaire : espaces vectoriels, bases et dimension, changement de base, applications linéaires
@@ -596,7 +595,7 @@
     %% ----- Reserve : projets quant a venir (garder en commentaire tant qu'ils ne sont pas réalisés) -----
     % \project{Option Pricing \& Monte Carlo}{URL}{Python/C++, NumPy, Black--Scholes, Monte Carlo}{20xx}{...}
     % \project{Quantitative Strategy Research \& Backtesting}{URL}{Python, Time Series, Risk Metrics, Walk-Forward Analysis}{20xx}{...}
-    %% ----- Variantes de titre / description / stack (anciens CV quant) -----
+    %% ----- Variantes de titre / description / stack (postes quant / optimisation) -----
     %% Centres logistiques : titre « Optimisation combinatoire de centres logistiques », stack « Python, Julia,
     %%   CPLEX, MILP », description « Modélisation et résolution d'un problème de localisation de sites par
     %%   programmation linéaire en nombres entiers mixtes, CPLEX et méthodes heuristiques »
@@ -632,7 +631,7 @@
 %% ---------- Centres d'interet ------------------------------------------------
 \cvsection{CENTRES D'INTÉRÊT}
 Invest\dotsep Échecs\dotsep Ski\dotsep Tennis\dotsep Natation\dotsep Karting | Formule 1\par
-%% Reserve : Crypto, Randonnée ; version quant : « Marchés financiers / Trading » a la place de « Invest »
+%% Reserve : Crypto, Randonnée ; postes quant : « Marchés financiers / Trading » a la place de « Invest »
 
 \end{document}
 

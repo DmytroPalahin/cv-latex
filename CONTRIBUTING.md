@@ -8,16 +8,14 @@ If you want to reuse the template for your own CV, feel free to **fork** the rep
 
 ## 📐 Naming conventions
 
-Files are named `cv-dmytro-palahin-<lang>-<variant>.tex`, where `<lang>` is `en` or `fr`.
+Published CVs are named `cv-dmytro-palahin-<lang>-d.tex` (and `.pdf`):
 
-| Suffix | Meaning | In this repository |
-| :---: | --- | :---: |
-| `-d` | Data Engineer / MLOps (base CV) | ✅ |
-| `-q` | Quantitative Researcher / Developer | ❌ local only |
-| `-tr` | Trading | ❌ local only |
-| `-c` | Previous version of `-d`, with icons and photo | ❌ local only |
+| Part | Meaning |
+| :---: | --- |
+| `<lang>` | `en` English · `fr` French |
+| `-d` | Data Engineer / MLOps focus (base CV) |
 
-Offer-specific CVs (`src/other/`), older versions (`src/old/`), the personal photo and private application texts stay local: they are listed in `.gitignore`.
+Offer-specific CVs (`src/other/`), older versions (`src/old/`), other variants, the personal photo and private application texts stay local: they are listed in `.gitignore`.
 
 ---
 
@@ -73,7 +71,7 @@ For French, run the same commands from `src/fr` with `fr-d` file names.
 
 ```sh
 # 1. Edit the .tex, rebuild the PDF, regenerate the preview
-# 2. Add an entry to CHANGELOG.md
+# 2. Add a "## [v2.0.1] - YYYY-MM-DD" section to CHANGELOG.md
 # 3. Commit and push
 git add .
 git commit -m "feat: <description>"
@@ -84,5 +82,9 @@ git tag v2.0.1
 git push origin v2.0.1
 # -> GitHub Actions builds the PDFs and creates the release
 ```
+
+- On every push or pull request that touches `src/en`, `src/fr` or the workflow, CI checks that each CV fits on **one page**, that its **text is extractable** (name, title, Python, SQL, GitHub link) and warns if the **committed PDF is older** than its `.tex` source
+- The release notes are the `CHANGELOG.md` section whose version matches the tag exactly (`## [v2.0.1] - ...`): add it before tagging
+- The release keeps the file names `cv-dmytro-palahin-en-d.pdf` / `cv-dmytro-palahin-fr-d.pdf`, so the README download links always point to the latest version
 
 Versioning: `MAJOR` for a new template or repository structure, `MINOR` for new content or sections, `PATCH` for wording and small fixes.
