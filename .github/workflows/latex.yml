@@ -3,9 +3,21 @@ name: Build & Release CV
 on:
   push:
     branches: [main]
-    tags:     ['v*.*.*']
+    tags:     ['v*.*.*']          # path filters below are not applied to tag pushes
+    paths:
+      - 'src/en/**'
+      - 'src/fr/**'
+      - '.github/workflows/latex.yml'
   pull_request:
     branches: [main]
+    paths:
+      - 'src/en/**'
+      - 'src/fr/**'
+      - '.github/workflows/latex.yml'
+  workflow_dispatch:              # manual run from the Actions tab
+
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -14,97 +26,152 @@ concurrency:
 jobs:
 
   # ─────────────────────────────────────────────────────────────────────────────
-  # JOB 1 — Compile all CV variants in parallel via matrix
+  # JOB 1 — Compile, check and preview each CV (EN / FR in parallel)
   # ─────────────────────────────────────────────────────────────────────────────
   build:
     name: "Build ${{ matrix.label }}"
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     strategy:
       fail-fast: false
       matrix:
         include:
-          - file:  cv-dmytro-palahin-en-d
-            path:  src/en
+          - lang:  en
             label: "🇬🇧 EN · Data Engineer"
-          - file:  cv-dmytro-palahin-en-q
-            path:  src/en
-            label: "🇬🇧 EN · Quant"
-          - file:  cv-dmytro-palahin-en-tr
-            path:  src/en
-            label: "🇬🇧 EN · Trading"
-          - file:  cv-dmytro-palahin-fr-d
-            path:  src/fr
+          - lang:  fr
             label: "🇫🇷 FR · Data Engineer"
-          - file:  cv-dmytro-palahin-fr-q
-            path:  src/fr
-            label: "🇫🇷 FR · Quant"
-          - file:  cv-dmytro-palahin-fr-tr
-            path:  src/fr
-            label: "🇫🇷 FR · Trading"
-          - file:  cv-dmytro-palahin-fr-simple
-            path:  src/fr
-            label: "🇫🇷 FR · Simple"
+
+    env:
+      DIR:  src/${{ matrix.lang }}
+      FILE: cv-dmytro-palahin-${{ matrix.lang }}-d
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+
+      - name: Keep the committed PDF for comparison
+        run: cp "$DIR/$FILE.pdf" "$RUNNER_TEMP/committed.pdf" 2>/dev/null || true
 
       - name: Compile LaTeX → PDF
-        uses: xu-cheng/latex-action@v3
+        uses: xu-cheng/latex-action@v4
         with:
-          root_file: ${{ matrix.file }}.tex
-          working_directory: ${{ matrix.path }}
-          latexmk_shell_escape: true
-          extra_system_packages: "font-liberation"
+          root_file: ${{ env.FILE }}.tex
+          working_directory: ${{ env.DIR }}
 
-      - name: Upload PDF artifact
-        uses: actions/upload-artifact@v4
+      - name: Install Poppler (pdfinfo, pdftotext, pdftoppm)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+
+      - name: Check the CV fits on one page
+        working-directory: ${{ env.DIR }}
+        run: |
+          pages=$(pdfinfo "$FILE.pdf" | awk '/^Pages:/ {print $2}')
+          echo "Pages: $pages"
+          if [ "$pages" -ne 1 ]; then
+            echo "::error file=$DIR/$FILE.tex::The CV must fit on one page (got $pages)"
+            exit 1
+          fi
+
+      - name: Check text extraction (ATS)
+        working-directory: ${{ env.DIR }}
+        run: |
+          pdftotext "$FILE.pdf" "$RUNNER_TEMP/cv.txt"
+          missing=0
+          for kw in "Dmytro Palahin" "Data Engineer" "Python" "SQL" "github.com/DmytroPalahin"; do
+            if grep -qF "$kw" "$RUNNER_TEMP/cv.txt"; then
+              echo "found: $kw"
+            else
+              echo "::error file=$DIR/$FILE.tex::'$kw' not found in the text extracted from the PDF"
+              missing=1
+            fi
+          done
+          exit $missing
+
+      - name: Check the committed PDF is up to date
+        working-directory: ${{ env.DIR }}
+        run: |
+          if [ ! -f "$RUNNER_TEMP/committed.pdf" ]; then
+            echo "::warning file=$DIR/$FILE.pdf::No committed PDF to compare with"
+            exit 0
+          fi
+          norm() { pdftotext "$1" - | tr -s '[:space:]' ' '; }
+          if [ "$(norm "$RUNNER_TEMP/committed.pdf")" = "$(norm "$FILE.pdf")" ]; then
+            echo "The committed PDF matches the .tex source"
+          else
+            echo "::warning file=$DIR/$FILE.pdf::The committed PDF does not match the .tex source: rebuild it locally and commit it"
+          fi
+
+      - name: Render PNG preview
+        working-directory: ${{ env.DIR }}
+        run: pdftoppm -png -r 200 -singlefile "$FILE.pdf" "$FILE"
+
+      - name: Upload PDF and preview
+        uses: actions/upload-artifact@v7
         with:
-          name: ${{ matrix.file }}
-          path: ${{ matrix.path }}/${{ matrix.file }}.pdf
+          name: ${{ env.FILE }}
+          path: |
+            ${{ env.DIR }}/${{ env.FILE }}.pdf
+            ${{ env.DIR }}/${{ env.FILE }}.png
           retention-days: 30
+          if-no-files-found: error
 
   # ─────────────────────────────────────────────────────────────────────────────
-  # JOB 2 — Create GitHub Release (only on git tag push: v*.*.*)
+  # JOB 2 — Create the GitHub Release (only on git tag push: v*.*.*)
   # ─────────────────────────────────────────────────────────────────────────────
   release:
     name: "🚀 Release ${{ github.ref_name }}"
     needs: build
-    runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     permissions:
       contents: write
 
     steps:
-      - name: Download all compiled PDFs
-        uses: actions/download-artifact@v4
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Download compiled CVs
+        uses: actions/download-artifact@v8
         with:
-          path: pdfs/
+          path: dist/
           merge-multiple: true
 
+      - name: Release notes from CHANGELOG.md
+        run: |
+          # section "## [<tag>] - <date>" of CHANGELOG.md, up to the next "## [" heading
+          awk -v tag="$GITHUB_REF_NAME" '
+            index($0, "## [" tag "]") == 1 { on = 1; next }
+            on && /^## \[/                 { exit }
+            on && !/^---$/                 { print }
+          ' CHANGELOG.md > changes.md
+          if ! grep -q '[^[:space:]]' changes.md; then
+            echo "See [CHANGELOG.md]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/$GITHUB_REF_NAME/CHANGELOG.md)." > changes.md
+          fi
+          {
+            echo "## 📄 Dmytro Palahin — CV \`$GITHUB_REF_NAME\`"
+            echo
+            cat changes.md
+            echo
+            echo "### 📥 Downloads"
+            echo
+            echo "| File | Language |"
+            echo "| --- | --- |"
+            echo "| \`cv-dmytro-palahin-en-d.pdf\` | 🇬🇧 English |"
+            echo "| \`cv-dmytro-palahin-fr-d.pdf\` | 🇫🇷 Français |"
+            echo
+            echo "Compiled from commit [\`${GITHUB_SHA::7}\`]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$GITHUB_SHA)."
+          } > notes.md
+          cat notes.md
+
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           name: "CV ${{ github.ref_name }}"
-          body: |
-            ## 📄 Dmytro Palahin — CV `${{ github.ref_name }}`
-
-            Compiled automatically from commit [`${{ github.sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
-
-            ---
-
-            ### 📥 Downloads
-
-            | File | Language | Target role |
-            |------|----------|-------------|
-            | `cv-dmytro-palahin-en-d.pdf` | 🇬🇧 English | Data Engineer / MLOps |
-            | `cv-dmytro-palahin-en-q.pdf` | 🇬🇧 English | Quantitative Researcher |
-            # | `cv-dmytro-palahin-en-tr.pdf` | 🇬🇧 English | Trading |
-            | `cv-dmytro-palahin-fr-d.pdf` | 🇫🇷 French  | Data Engineer / MLOps |
-            | `cv-dmytro-palahin-fr-q.pdf` | 🇫🇷 French  | Quantitative Researcher |
-            | `cv-dmytro-palahin-fr-simple.pdf` | 🇫🇷 French | Simple |
-          files: pdfs/*.pdf
+          body_path: notes.md
+          files: |
+            dist/*.pdf
+            dist/*.png
           draft: false
           prerelease: false
