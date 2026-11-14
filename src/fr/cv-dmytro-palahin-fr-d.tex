@@ -567,6 +567,9 @@
     {Python, Machine Learning, NLP}{2026}
     {Classification de 76,7k emails (5 datasets réels) : NLP (TF-IDF, extraction d'URLs),
         ensemble LightGBM + Naive Bayes + LSTM}
+    \project{Ant Colony Optimization (ACO) for the TSP}{https://github.com/DmytroPalahin/aco-tsp}
+    {C11, Métaheuristiques, Programmation dynamique}{2023}
+    {Bibliothèque C11 : modèle probabiliste + 2-opt, validé par Held-Karp exact (optimum sur 500/500 instances) ; 117 tests, fuzzing, CI}
     \project{Placement de centres logistiques}{https://github.com/DmytroPalahin/logistics-center-placement}
     {Python, Julia, CPLEX, Optimisation}{2025}
     {Projet d'optimisation combinatoire pour le placement de centres logistiques via
@@ -574,9 +577,6 @@
     \project{Système de réactions}{https://github.com/DmytroPalahin/hsReact}
     {Haskell}{2024}
     {Représentation de systèmes et processus de réactions en programmation fonctionnelle}
-    \project{Problème du voyageur de commerce}{https://github.com/DmytroPalahin/Probleme_du_Voyageur_de_Commerce}
-    {C, Apprentissage par renforcement}{2023}
-    {Implémentation de l'algorithme d'optimisation par colonies de fourmis}
     \project{Publication d'un article}{https://www.researchsquare.com/article/rs-2203260/v1}
     {Algorithmes mathématiques}{2021}
     {Filtration du bruit impulsionnel dans les images vidéo ---
@@ -594,6 +594,25 @@
     % %   validées par XML Schema, interface Swing avec un thread de simulation dédié, CLI ; explorateur de règles bonus
     % %   parmi les 2^32 règles de rayon 2 (motifs fractals et chaotiques) ; 97 % de couverture de lignes hors classes
     % %   Swing ; CI sous Linux, macOS et Windows
+    %% aco-tsp : projet de cours 2023 (en binome) reecrit seul en 2026 (v2.0.0) ; variante d'annee « 2023 - 2026 »
+    %%   Description longue (2 lignes) : Ant System avec options élitiste, gloutonne (q0) et 2-opt ; références plus
+    %%   proche voisin, 2-opt et Held-Karp exact ; lecteur TSPLIB ; 73 tests unitaires et 44 tests de bout en bout,
+    %%   libFuzzer, ASan/UBSan, Valgrind, clang-tidy, CodeQL ; CI GCC, Clang et MSVC sous Linux, macOS et Windows ;
+    %%   tournée moyenne 14 % plus courte que le plus proche voisin sur 100 villes aléatoires
+    %%   Variante ingenierie (postes Data / Software) : stack « C11, CMake, Métaheuristiques, CI/CD », description
+    %%   « Bibliothèque C11 et CLI : Ant System + 2-opt (optimum trouvé sur 500/500 petites instances), 117 tests, fuzzing, CI sur 3 OS »
+    %%   Variante maths (postes quant / R&D) : « Modèle probabiliste (phéromones, évaporation) + 2-opt, vérifié par Held-Karp
+    %%   exact : optimum sur 500/500 instances »
+    %%   Titre en anglais pour correspondre au depot aco-tsp (ACO + TSP). Titre francais (offre 100 % francophone,
+    %%   tient sur une ligne) : « Colonies de fourmis pour le voyageur de commerce ». Titres complets (ne tiennent pas
+    %%   sur une ligne avec la stack actuelle) : « Ant Colony Optimization for the Traveling Salesman Problem » (= CV EN),
+    %%   « Colonies de fourmis pour le problème du voyageur de commerce »
+    %%   Maths pour l'entretien : transition p_ij ~ tau^alpha * eta^beta (roulette) ; mise a jour tau <- (1-rho) tau + somme Q/L_k ;
+    %%   Held-Karp (prog. dynamique) en O(n^2 2^n) (exact jusqu'a 20 villes) ; Ant System en O(n^3) par iteration avec m = n fourmis
+    %%   Formulation precedente (version 2023, avant la reecriture ; stack inexacte : ACO n'est pas du RL) :
+    % \project{Problème du voyageur de commerce}{https://github.com/DmytroPalahin/Probleme_du_Voyageur_de_Commerce}
+    % {C, Apprentissage par renforcement}{2023}
+    % {Implémentation de l'algorithme d'optimisation par colonies de fourmis}
     % \project{Filtrage d'images}{https://github.com/DmytroPalahin/Filtering_Images}
     % {HTML, CSS, JS, Algorithmes}{2019}
     % {Implémentation de méthodes mathématiques de filtrage du bruit dans les images numériques
@@ -615,7 +634,7 @@
     %% Publication : « Développement d'une méthode mathématique de filtrage du bruit impulsionnel dans les
     %%   images vidéo, publiée dans Informatics and Mathematical Methods in Simulation, Vol. 11, No. 4 »
     %% Détection d'anomalies : « Étude de méthodes de détection d'anomalies et d'étiquetage partiel de données »
-    %% Voyageur de commerce : stack « C, Optimisation combinatoire, Métaheuristiques » (offres quant / optimisation)
+    %% Colonies de fourmis / TSP : stack « C11, Optimisation combinatoire, Métaheuristiques » (offres quant / optimisation)
     %% Phishing : titre « Détection de phishing par Machine Learning »
 \end{itemize}
 

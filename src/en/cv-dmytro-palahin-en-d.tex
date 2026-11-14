@@ -566,6 +566,9 @@
     {Python, Machine Learning, NLP}{2026}
     {Classification of 76.7k emails (5 real datasets): NLP (TF-IDF, URL extraction),
         LightGBM + Naive Bayes + LSTM ensemble}
+    \project{Ant Colony Optimization for the Traveling Salesman Problem}{https://github.com/DmytroPalahin/aco-tsp}
+    {C11, Metaheuristics, Dynamic Programming}{2023}
+    {C11 library: probabilistic model + 2-opt, validated by exact Held-Karp (optimum on 500/500 instances); 117 tests, fuzzing, CI}
     \project{Logistics Center Placement}{https://github.com/DmytroPalahin/logistics-center-placement}
     {Python, Julia, CPLEX, Optimization}{2025}
     {Combinatorial optimization project for placing logistics centers with
@@ -573,9 +576,6 @@
     \project{Reaction Systems}{https://github.com/DmytroPalahin/hsReact}
     {Haskell}{2024}
     {Representation of reaction systems and processes in functional programming}
-    \project{Traveling Salesman Problem}{https://github.com/DmytroPalahin/Probleme_du_Voyageur_de_Commerce}
-    {C, Reinforcement Learning}{2023}
-    {Implementation of the ant colony optimization algorithm}
     \project{Published Research Paper}{https://www.researchsquare.com/article/rs-2203260/v1}
     {Mathematical Algorithms}{2021}
     {Impulse noise filtering in video images ---
@@ -593,6 +593,21 @@
     % %   by XML Schema, Swing viewer with a dedicated simulation thread, CLI; bonus rule explorer searching the 2^32
     % %   radius-2 rules for fractal and chaotic patterns; 97% line coverage outside the Swing classes; CI on Linux,
     % %   macOS and Windows
+    %% aco-tsp: 2023 coursework (with a classmate) rewritten alone in 2026 as v2.0.0; year variant "2023 - 2026"
+    %%   Longer description (2 lines): Ant System with elitist, greedy (q0) and 2-opt options; nearest-neighbour,
+    %%   2-opt and exact Held-Karp baselines; TSPLIB parser; 73 unit tests and 44 end-to-end checks, libFuzzer,
+    %%   ASan/UBSan, Valgrind, clang-tidy, CodeQL; CI with GCC, Clang and MSVC on Linux, macOS and Windows;
+    %%   mean tour 14% shorter than nearest neighbour on 100 random cities
+    %%   Engineering variant (Data / Software roles): stack "C11, CMake, Metaheuristics, CI/CD", description
+    %%   "C11 library and CLI: Ant System + 2-opt (optimum found on 500/500 small instances), 117 tests, fuzzing, CI on 3 OSes"
+    %%   Math variant (quant / R&D roles): "Probabilistic model (pheromone trails, evaporation) + 2-opt, checked against
+    %%   exact Held-Karp: optimum on 500/500 instances"
+    %%   Math for interviews: transition p_ij ~ tau^alpha * eta^beta (roulette wheel); update tau <- (1-rho) tau + sum Q/L_k;
+    %%   Held-Karp DP in O(n^2 2^n) time (exact up to 20 cities); Ant System in O(n^3) per iteration with m = n ants
+    %%   Previous wording (2023 version, before the rewrite; inaccurate stack: ACO is not reinforcement learning):
+    % \project{Traveling Salesman Problem}{https://github.com/DmytroPalahin/Probleme_du_Voyageur_de_Commerce}
+    % {C, Reinforcement Learning}{2023}
+    % {Implementation of the ant colony optimization algorithm}
     % \project{Image Filtering}{https://github.com/DmytroPalahin/Filtering_Images}
     % {HTML, CSS, JS, Algorithms}{2019}
     % {Implementation of mathematical noise-filtering methods for digital images
@@ -614,7 +629,7 @@
     %% Publication: "Developed a mathematical method for filtering impulse noise in video
     %%   images, published in Informatics and Mathematical Methods in Simulation, Vol. 11, No. 4"
     %% Anomaly detection: "Study of anomaly detection and partial data labeling methods"
-    %% Traveling salesman: stack "C, Combinatorial Optimization, Metaheuristics" (quant / optimization offers)
+    %% Ant colony / TSP: stack "C11, Combinatorial Optimization, Metaheuristics" (quant / optimization offers)
     %% Phishing: title "Phishing Detection with Machine Learning"
 \end{itemize}
 
