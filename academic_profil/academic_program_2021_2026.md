@@ -308,7 +308,7 @@
 - PostgreSQL
 - Relational databases
 - Advanced databases
-- NoSQL
+- NoSQL (Cassandra, MongoDB, Redis, Elasticsearch, CouchDB)
 - Relational modeling
 - Database administration
 

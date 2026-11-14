@@ -703,6 +703,11 @@
 - Stockage distribué
 - Scalabilité
 - Gestion de données semi-structurées
+- Cassandra
+- MongoDB
+- Redis
+- Elasticsearch
+- CouchDB
 
 ---
 

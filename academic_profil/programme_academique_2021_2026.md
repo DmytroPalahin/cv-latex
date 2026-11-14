@@ -311,7 +311,7 @@
 - PostgreSQL
 - Bases de données relationnelles
 - Bases de données avancées
-- NoSQL
+- NoSQL (Cassandra, MongoDB, Redis, Elasticsearch, CouchDB)
 - Modélisation relationnelle
 - Administration de bases de données
 
