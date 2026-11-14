@@ -204,10 +204,14 @@ notebooks/**
 
 # vscode
 .vscode
+.vscode/
 .vscode-test
 *.code-workspace
 .vscode/extensions.json
 .vscode/settings.json
+.classpath
+.project
+.settings/
 
 # extensions
 out
@@ -242,6 +246,22 @@ pull_request_template.md
 *.toc          
 *.gz           
 *.synctex.gz
+report/build/
+*.bcf
+*.lof
+*.lot
+*.run.xml
+*.listing
+# (report/report.pdf itself is committed, for readers)
+/report/*.aux
+/report/*.bbl
+/report/*.blg
+/report/*.fdb_latexmk
+/report/*.fls
+/report/*.log
+/report/*.out
+/report/*.synctex.gz
+/report/*.toc
 
 # temp
 *.tmp       
@@ -281,6 +301,25 @@ predictions
 logs/
 airflow.cfg
 airflow.db
+
+# java
+*.class
+
+# build trees (the CMake presets build into build/<preset>)
+/build/
+/build-*/
+/install/
+/dist/
+CMakeUserPresets.json
+compile_commands.json
+
+# coverage and fuzzing by-products
+*.profraw
+*.profdata
+crash-*
+leak-*
+oom-*
+timeout-*
 
 # cv-latex
 /src/other/
