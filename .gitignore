@@ -117,6 +117,9 @@ nosetests.xml
 coverage.xml
 *.cover
 .hypothesis/
+*.gcda
+*.gcno
+*.gcov
 
 # translations
 *.mo
@@ -237,7 +240,8 @@ pull_request_template.md
 
 # latex
 *.aux          
-*.bbl          
+*.bbl
+*.bcf          
 *.blg          
 *.fdb_latexmk  
 *.fls          
@@ -247,12 +251,12 @@ pull_request_template.md
 *.gz           
 *.synctex.gz
 report/build/
-*.bcf
 *.lof
 *.lot
 *.run.xml
 *.listing
 # (report/report.pdf itself is committed, for readers)
+/docs/report/build/
 /report/*.aux
 /report/*.bbl
 /report/*.blg
@@ -310,6 +314,7 @@ airflow.db
 /build-*/
 /install/
 /dist/
+/cmake-build-*/
 CMakeUserPresets.json
 compile_commands.json
 
@@ -320,6 +325,9 @@ crash-*
 leak-*
 oom-*
 timeout-*
+
+# generated documentation
+/docs/api/
 
 # cv-latex
 /src/other/
