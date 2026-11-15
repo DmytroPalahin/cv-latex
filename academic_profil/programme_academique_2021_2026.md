@@ -247,6 +247,7 @@
 - UML
 - Design Patterns
 - Cloud Computing
+- Internet des objets (IoT)
 - Data Mining
 - Analyse de données
 - Intelligence artificielle
@@ -340,6 +341,7 @@
 - Algorithmes distribués
 - Scalabilité
 - Stockage distribué
+- Internet des objets (IoT)
 
 ## 3.6 Optimisation / Calcul scientifique
 

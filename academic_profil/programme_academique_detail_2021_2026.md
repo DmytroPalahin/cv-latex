@@ -896,7 +896,13 @@
 
 ---
 
-## 21. Outils / Technologies utilisés au cours de la formation et des projets
+## 21. Internet des objets (IoT)
+
+- Internet des objets (IoT)
+
+---
+
+## 22. Outils / Technologies utilisés au cours de la formation et des projets
 
 - Python
 - C
@@ -930,9 +936,9 @@
 
 ---
 
-## 22. Projets académiques et application des connaissances
+## 23. Projets académiques et application des connaissances
 
-## 22.1 Optimisation - Placement de centres logistiques
+## 23.1 Optimisation - Placement de centres logistiques
 
 - Python
 - Julia
@@ -942,7 +948,7 @@
 - Heuristiques
 - Modélisation mathématique
 
-## 22.2 Détection de phishing
+## 23.2 Détection de phishing
 
 - Python
 - Machine Learning
@@ -956,14 +962,14 @@
 - 76 677 emails
 - 5 datasets réels
 
-## 22.3 Système de réactions
+## 23.3 Système de réactions
 
 - Haskell
 - Programmation fonctionnelle
 - Modélisation de systèmes
 - Processus de réactions
 
-## 22.4 Problème du voyageur de commerce
+## 23.4 Problème du voyageur de commerce
 
 - C
 - Optimisation
@@ -971,14 +977,14 @@
 - Algorithme par colonies de fourmis
 - Heuristiques / métaheuristiques
 
-## 22.5 Détection d'anomalies
+## 23.5 Détection d'anomalies
 
 - Python
 - Machine Learning
 - Détection d'anomalies
 - Étiquetage partiel de données
 
-## 22.6 Traitement d'images / Recherche
+## 23.6 Traitement d'images / Recherche
 
 - Algorithmes mathématiques
 - Traitement d'images
@@ -988,7 +994,7 @@
 
 ---
 
-## 23. Gestion de projet et environnement professionnel
+## 24. Gestion de projet et environnement professionnel
 
 - Direction de projet
 - Gestion de projet
@@ -1011,7 +1017,7 @@
 
 ---
 
-## 24. Anglais et communication
+## 25. Anglais et communication
 
 - Anglais professionnel
 - Anglais scientifique et technique
@@ -1023,7 +1029,7 @@
 
 ---
 
-## 25. Synthèse des domaines principaux
+## 26. Synthèse des domaines principaux
 
 ## Mathématiques appliquées
 
@@ -1115,6 +1121,10 @@
 ## Informatique responsable
 
 - Green Coding
+
+## Internet des objets
+
+- Internet des objets (IoT)
 
 ## Traitement d'images
 

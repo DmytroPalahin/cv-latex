@@ -896,7 +896,13 @@
 
 ---
 
-## 21. Tools / Technologies Used During Coursework and Projects
+## 21. Internet of Things (IoT)
+
+- Internet of Things (IoT)
+
+---
+
+## 22. Tools / Technologies Used During Coursework and Projects
 
 - Python
 - C
@@ -930,9 +936,9 @@
 
 ---
 
-## 22. Academic Projects and Application of Knowledge
+## 23. Academic Projects and Application of Knowledge
 
-## 22.1 Optimization - Logistics Facility Location
+## 23.1 Optimization - Logistics Facility Location
 
 - Python
 - Julia
@@ -942,7 +948,7 @@
 - Heuristics
 - Mathematical Modeling
 
-## 22.2 Phishing Detection
+## 23.2 Phishing Detection
 
 - Python
 - Machine Learning
@@ -956,14 +962,14 @@
 - 76 677 emails
 - 5 real-world datasets
 
-## 22.3 Reaction System
+## 23.3 Reaction System
 
 - Haskell
 - Functional Programming
 - System Modeling
 - Reaction Processes
 
-## 22.4 Traveling Salesman Problem
+## 23.4 Traveling Salesman Problem
 
 - C
 - Optimization
@@ -971,14 +977,14 @@
 - Ant Colony Optimization Algorithm
 - Heuristics / Metaheuristics
 
-## 22.5 Anomaly Detection
+## 23.5 Anomaly Detection
 
 - Python
 - Machine Learning
 - Anomaly Detection
 - Partial Data Labeling
 
-## 22.6 Image Processing / Research
+## 23.6 Image Processing / Research
 
 - Mathematical Algorithms
 - Image Processing
@@ -988,7 +994,7 @@
 
 ---
 
-## 23. Project Management and Professional Environment
+## 24. Project Management and Professional Environment
 
 - Project Leadership
 - Project Management
@@ -1011,7 +1017,7 @@
 
 ---
 
-## 24. English and Communication
+## 25. English and Communication
 
 - Professional English
 - Scientific and Technical English
@@ -1023,7 +1029,7 @@
 
 ---
 
-## 25. Summary of Core Areas
+## 26. Summary of Core Areas
 
 ## Applied Mathematics
 
@@ -1115,6 +1121,10 @@
 ## Sustainable Computing
 
 - Green Coding
+
+## Internet of Things
+
+- Internet of Things (IoT)
 
 ## Image Processing
 
