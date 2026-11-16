@@ -5,6 +5,28 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/): `[vMAJ
 
 ---
 
+## [v2.1.0] - 2026-11-16
+
+### Added
+
+- `Makefile`: local shortcuts around `latexmk`. `make` builds both CVs, `make try` runs a test build outside the repository (page count and changed lines), `make check` repeats the CI checks (one page, extractable text, PDF up to date), plus `make preview`, `make watch` and `make clean`
+- **Reserve** blocks in the `.tex` sources: Cellula (Java cellular automaton engine) and Battleship (C11, GTK 3) projects, Agile (Scrum), IoT coursework, title and description variants for the ACO-TSP project
+- `academic_profil/`: NoSQL databases (Cassandra, MongoDB, Redis, Elasticsearch, CouchDB) and Internet of Things (IoT)
+- `.gitattributes`: LF line endings, LaTeX-aware diff, PDF and PNG files marked as binary
+
+### Changed
+
+- **Projects**: the Traveling Salesman project becomes **Ant Colony Optimization for the Traveling Salesman Problem** (C11 library checked against exact Held-Karp, 117 tests, fuzzing, CI), links to the rewritten [aco-tsp](https://github.com/DmytroPalahin/aco-tsp) repository and moves up to second place
+- **Coursework**: NoSQL databases named (MongoDB, Cassandra, Redis, Elasticsearch), shorter wording to stay on one page
+- **Skills**: Azure and Azure OpenAI added to Cloud & Data; `Git/GitLab` becomes `Git (GitHub)`
+- Phishing project: `76,677 emails` written as `76.7k emails`
+- `README.md`: `make` commands in the build section, tech stack in line with the CV
+- `CONTRIBUTING.md`: `make` commands for building, trying and checking a change, previews at 600 dpi
+- `resources/img/`: previews regenerated from the current PDFs
+- `latex.yml`: neutral heading in the release notes
+
+---
+
 ## [v2.0.0] - 2026-11-12
 
 ### Added

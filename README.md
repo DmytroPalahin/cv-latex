@@ -82,9 +82,9 @@ Sup Galilée engineer (2026) · 3-year apprenticeship at Société Générale As
 | 🏢&nbsp;**In production** <br><sub>Société Générale Assurances</sub> | Python · Polars · DuckDB · Pandas · NumPy · pytest · boto3 · fsspec · s3fs · AWS S3 · SAS · SQL · PostgreSQL · Apache Superset · Scikit-Learn · GitHub Copilot · Prompt Engineering · TypeScript (VS Code extensions) · JupyterHub · code-server · Ruff · BasedPyright · Linux · Bash · Git / GitLab |
 | 🔧&nbsp;**Data Engineering** | Python · SQL · Spark / PySpark · Airflow · Kedro · MLflow · dbt · Kafka · Jenkins · ETL / ELT · Data Pipelines & Ingestion · Data Migration · Data Modeling · Data Warehousing · SAS · FastAPI · REST APIs |
 | 🤖&nbsp;**AI & ML** | LLMs · RAG · Generative AI · AI Agents · LangChain · LangGraph · MCP · GitHub Copilot · Prompt Engineering · NLP · Deep Learning · Scikit-Learn · XGBoost · LightGBM · TensorFlow / Keras · PyTorch · Feature Engineering · Model Evaluation |
-| ☁️&nbsp;**Cloud & Data** | AWS S3 · BigQuery · PostgreSQL · MySQL · Oracle · Polars · DuckDB · Linux · NoSQL |
+| ☁️&nbsp;**Cloud & Data** | AWS S3 · Azure · Azure OpenAI · BigQuery · PostgreSQL · MySQL · Oracle · Polars · DuckDB · Linux · NoSQL |
 | 📊&nbsp;**Data Quality & Analytics** | Pandas · NumPy · Data Quality · Validation · Monitoring · Reporting · Apache Superset · Tableau |
-| ⚙️&nbsp;**DevOps & Languages** | Java · C / C++ · TypeScript / JavaScript · Git / GitLab · Docker · Kubernetes · CI/CD · GitHub Actions · Bash · Automated Testing · Jira |
+| ⚙️&nbsp;**DevOps & Languages** | Java · C / C++ · TypeScript / JavaScript · Git (GitHub) · Docker · Kubernetes · CI/CD · GitHub Actions · Bash · Automated Testing · Jira |
 
 ---
 
@@ -142,6 +142,7 @@ cv-latex/
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
 ├── LICENSE
+├── Makefile                             # local shortcuts: build, try, check, preview
 └── README.md
 ```
 
@@ -149,7 +150,16 @@ cv-latex/
 
 ## ⚙️ Build locally
 
-Requirements: **pdfLaTeX** with `latexmk`, from [TeX Live](https://www.tug.org/texlive/) / [MacTeX](https://www.tug.org/mactex/) 2021 or newer, or [MiKTeX](https://miktex.org/).
+Requirements: **pdfLaTeX** with `latexmk`, from [TeX Live](https://www.tug.org/texlive/) / [MacTeX](https://www.tug.org/mactex/) 2021 or newer, or [MiKTeX](https://miktex.org/). The `make` shortcuts also use [Poppler](https://poppler.freedesktop.org/) for the checks and the previews (`brew install poppler`).
+
+```sh
+make            # build both CVs (make en, make fr: one of them)
+make try        # test build outside the repository: page count and changed lines
+make check      # the CI checks: one page, extractable text, PDF up to date
+make preview    # regenerate the README previews
+```
+
+`make help` lists every command and option. `make` only wraps `latexmk`; the explicit form is:
 
 ```sh
 cd src/en
@@ -162,13 +172,7 @@ PDF to send, with a recruiter-friendly file name:
 latexmk -pdf -jobname=CV_Dmytro_Palahin_Data_Engineer -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-en-d.tex
 ```
 
-Regenerate the README preview (needs `pdftoppm` from Poppler: `brew install poppler`):
-
-```sh
-pdftoppm -png -r 200 -singlefile cv-dmytro-palahin-en-d.pdf ../../resources/img/cv-dmytro-palahin-en-d
-```
-
-The same commands work for French from `src/fr` with `fr-d` file names. More details in [CONTRIBUTING.md](CONTRIBUTING.md).
+The `latexmk` commands work the same way for French, from `src/fr` with `fr-d` file names. More details in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
@@ -186,6 +190,8 @@ git tag v*.*.*     ->  build EN + FR  ->  checks  ->  GitHub Release: PDFs + pre
 | The CV fits on one page | `pdfinfo` | ❌ fails the build |
 | Text is extractable: name, title, Python, SQL, GitHub link | `pdftotext` | ❌ fails the build |
 | The committed PDF matches its `.tex` source | `pdftotext` | ⚠️ warning |
+
+`make check` runs the same three checks locally, before the commit; there, an out-of-date PDF is an error.
 
 Create a release: add a `## [v2.0.0] - YYYY-MM-DD` section to [CHANGELOG.md](CHANGELOG.md), then
 

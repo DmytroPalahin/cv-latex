@@ -25,9 +25,16 @@ Offer-specific CVs (`src/other/`), older versions (`src/old/`), other variants, 
 
 - **pdfLaTeX** with `latexmk`: [TeX Live](https://www.tug.org/texlive/) / [MacTeX](https://www.tug.org/mactex/) 2021 or newer, or [MiKTeX](https://miktex.org/)
 - Packages: `lmodern`, `microtype`, `enumitem`, `geometry`, `hyperref`, `bookmark`, `babel` (english, french)
-- Optional, for previews: `pdftoppm` from [Poppler](https://poppler.freedesktop.org/) (`brew install poppler`)
+- Optional, for the `make` shortcuts: GNU Make (preinstalled on macOS) and [Poppler](https://poppler.freedesktop.org/) for `pdfinfo`, `pdftotext` and `pdftoppm` (`brew install poppler`)
 
 ### Build
+
+```sh
+make       # both CVs, next to their sources
+make en    # one language (make fr)
+```
+
+The build stops with an error when a CV does not fit on one page. Without `make`:
 
 ```sh
 cd src/en
@@ -40,24 +47,42 @@ PDF to send, with a recruiter-friendly file name:
 latexmk -pdf -jobname=CV_Dmytro_Palahin_Data_Engineer -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-en-d.tex
 ```
 
+### Try and check a change
+
+```sh
+make try      # test build in /tmp/latex-build/try: nothing in the repository changes
+make check    # the CI checks: one page, extractable text, PDF up to date
+```
+
+- `make try` prints the page count and the lines of text that change compared with the current PDF, so a line that wraps or a section pushed to a second page shows at once
+- `make check` is the gate before a commit: run `make` first, otherwise the PDF is reported as out of date
+- `L=fr` limits a command to one language; `CVS=src/fr/other/<file>.tex` runs `build`, `try`, `check` or `watch` on another `.tex`
+- `make watch` repeats the test build on every save; `make help` lists the other commands and options
+
 ### README previews
 
 ```sh
+make preview    # both previews, from the PDFs next to the sources
+```
+
+Without `make`:
+
+```sh
 cd src/en
-pdftoppm -png -r 200 -singlefile cv-dmytro-palahin-en-d.pdf ../../resources/img/cv-dmytro-palahin-en-d
+pdftoppm -png -r 600 -singlefile cv-dmytro-palahin-en-d.pdf ../../resources/img/cv-dmytro-palahin-en-d
 ```
 
 - `-singlefile` writes `cv-dmytro-palahin-en-d.png`, without the `-1` page suffix
 - the target folder must exist: `pdftoppm` does not create it
-- `-r 200` is enough for the README; `-r 600` gives files of about 2 MB
+- `-r 600` is what `make preview` uses: sharp when zoomed, files of about 2 MB; `-r 200` gives files of about 1 MB (`make preview PREVIEW_DPI=200`)
 
-For French, run the same commands from `src/fr` with `fr-d` file names.
+For French, run the same `latexmk` and `pdftoppm` commands from `src/fr` with `fr-d` file names.
 
 ---
 
 ## ✍️ Editing rules (ATS)
 
-- Keep the CV on **one page**: check after every change with `pdfinfo <file>.pdf | grep Pages`
+- Keep the CV on **one page**: check after every change with `make try` (or `pdfinfo <file>.pdf | grep Pages`)
 - In running text, use `\B{...}` and `\I{...}` instead of `\textbf` / `\textit`: they insert real spaces, so PDF parsers do not glue words together
 - Write `A{}WS`, `EL{}T`, `T{}raining`...: the empty group breaks kerning, otherwise some extractors read "A WS"
 - Use `\nbrealspace` for a space that must not break (`A{}WS\nbrealspace S3`)
@@ -70,7 +95,8 @@ For French, run the same commands from `src/fr` with `fr-d` file names.
 ## 🚀 Release workflow
 
 ```sh
-# 1. Edit the .tex, rebuild the PDF, regenerate the preview
+# 1. Edit the .tex, rebuild the PDF, regenerate the preview, run the checks
+make && make preview && make check
 # 2. Add a "## [v2.0.1] - YYYY-MM-DD" section to CHANGELOG.md
 # 3. Commit and push
 git add .

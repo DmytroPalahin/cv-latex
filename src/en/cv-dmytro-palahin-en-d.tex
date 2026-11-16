@@ -586,6 +586,30 @@
     % %   by XML Schema, Swing viewer with a dedicated simulation thread, CLI; bonus rule explorer searching the 2^32
     % %   radius-2 rules for fractal and chaotic patterns; 97% line coverage outside the Swing classes; CI on Linux,
     % %   macOS and Windows
+    %% Battleship (C / systems / software engineering roles): 2023 preparatory-program coursework (with a classmate, one
+    %%   2,666-line C file) rewritten alone in 2026 (v2.0.0 to v2.2.1); year variant "2023 - 2026". Put it after
+    %%   aco-tsp (2023); the page is full, so move another two-line project (Anomaly Detection or Reaction Systems)
+    %%   to this Reserve to keep one page (tested 11/2026)
+    % \project{Battleship}{https://github.com/DmytroPalahin/battleship}
+    % {C11, GTK 3, MVC, CMake, CI/CD}{2023}
+    % {MVC game: dependency-free C11 engine, GTK 3 and terminal UIs, 3 AI levels benchmarked on 10k games; 98\% engine coverage, CI}
+    % % Battleship, longer description (2 lines): MVC rewrite of a single-file game: dependency-free C11 engine (no malloc,
+    % %   no global state), GTK 3 and terminal UIs; 3 AI levels benchmarked on 10k seeded games (96 / 66 / 55 shots per
+    % %   fleet); 54 unit tests, 2,250 property-tested games, sanitizers, CI
+    %%   Other one-line descriptions (each fits on one line with the same stack):
+    %%   "MVC game: dependency-free C11 engine, GTK 3 and terminal UIs, probability-map AI benchmarked on 10k games; 54 tests, CI"
+    %%   "MVC game: dependency-free C11 engine, GTK 3 and terminal UIs, 3 benchmarked AI levels (probability map); 54 tests, CI"
+    %%   Short wording (LinkedIn): stack "C, GTK", description "Battleship game in C with a GTK graphical interface"
+    %%   Figures (checked 11/2026): 98.7% line coverage of the engine (CI fails below 95%); 54 unit cases; 2,250 games
+    %%   = 250 for each of the 9 level pairings, every invariant re-checked after each shot; end-to-end GUI test under
+    %%   Xvfb; ASan/UBSan, clang-tidy, cppcheck, CodeQL; CI with GCC and Clang on Ubuntu, Apple Clang on macOS; releases
+    %%   with .tar.gz and .deb packages, checksums and build provenance; project report in LaTeX (French and English)
+    %%   For interviews: the AI is a pure function of public knowledge only (it never receives the ship positions, so it
+    %%   cannot cheat); hard level = probability map (counts every placement of the ships still afloat consistent with
+    %%   the shots, fires where most overlap) and beats medium in 87.5% of matches; mean shots to sink a fleet over
+    %%   10,000 seeded games: 96.2 (easy), 65.8 (medium), 55.3 (hard); seeded RNG inside the engine ("--seed N" replays
+    %%   a match bit for bit on Linux and macOS); a whole match is one 800-byte structure; the view holds no game state;
+    %%   v1 defects removed by the rewrite: out-of-bounds read, nested gtk_main loops, window frozen during the AI turn
     %% aco-tsp: 2023 coursework (with a classmate) rewritten alone in 2026 as v2.0.0; year variant "2023 - 2026"
     %%   Longer description (2 lines): Ant System with elitist, greedy (q0) and 2-opt options; nearest-neighbour,
     %%   2-opt and exact Held-Karp baselines; TSPLIB parser; 73 unit tests and 44 end-to-end checks, libFuzzer,
@@ -608,8 +632,7 @@
     %% Detailed stack of the phishing project (ML roles):
     %%   Python · LightGBM · TensorFlow/Keras · Scikit-Learn · Pandas · NumPy · Jupyter
     %% ----- Reserve: preparatory-program projects mentioned on LinkedIn (add the GitHub link and the year if they exist) -----
-    % \project{Battleship}{URL}{C, GTK}{20xx}
-    % {Battleship game in C with a GTK graphical interface}
+    %% Battleship: now in "Reserve: projects" above (repository and year known)
     % \project{Language Recognition}{URL}{C++, Perceptron}{20xx}
     % {Language recognition with a perceptron implemented in C++}
     %% ----- Reserve: upcoming quant projects (keep commented out until they are actually completed) -----

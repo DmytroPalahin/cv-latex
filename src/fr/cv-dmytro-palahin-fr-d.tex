@@ -598,6 +598,34 @@
     % %   validées par XML Schema, interface Swing avec un thread de simulation dédié, CLI ; explorateur de règles bonus
     % %   parmi les 2^32 règles de rayon 2 (motifs fractals et chaotiques) ; 97 % de couverture de lignes hors classes
     % %   Swing ; CI sous Linux, macOS et Windows
+    %% Bataille navale (postes C / systèmes / génie logiciel) : projet de prepa 2023 (en binome, un seul fichier C de
+    %%   2 666 lignes) reecrit seul en 2026 (v2.0.0 a v2.2.1) ; variante d'annee « 2023 - 2026 ». A placer apres
+    %%   aco-tsp (2023) ; la page est pleine : deplacer un autre projet de deux lignes (Détection d'anomalies ou
+    %%   Système de réactions) dans cette Reserve pour garder une page (teste 11/2026)
+    % \project{Bataille navale (Battleship)}{https://github.com/DmytroPalahin/battleship}
+    % {C11, GTK 3, MVC, CMake, CI/CD}{2023}
+    % {Jeu MVC : moteur C11 sans dépendance (couvert à 98 \%), interfaces GTK 3 et terminal, 3 niveaux d'IA mesurés sur 10k parties, CI}
+    % % Bataille navale, description longue (2 lignes) : réécriture MVC d'un jeu en un seul fichier : moteur C11 sans
+    % %   dépendance (ni malloc, ni état global), interfaces GTK 3 et terminal ; 3 niveaux d'IA mesurés sur 10k parties
+    % %   (96 / 66 / 55 tirs par flotte) ; 54 tests unitaires, 2 250 parties de test, sanitizers, CI
+    %%   Autres descriptions sur une ligne (chacune tient sur une ligne avec la meme stack) :
+    %%   « Jeu MVC : moteur C11 sans dépendance, interfaces GTK 3 et terminal, 3 niveaux d'IA mesurés (carte de probabilités) ; 54 tests, CI »
+    %%   « Jeu MVC : moteur C11 sans dépendance, interfaces GTK 3 et terminal, 3 niveaux d'IA mesurés sur 10k parties ; 54 tests, CI »
+    %%   Titre : « Bataille navale (Battleship) » reprend le nom du depot battleship ; « Bataille navale » seul convient aussi
+    %%   Formulation courte (LinkedIn) : stack « C, GTK », description « Jeu de bataille navale en C avec interface graphique GTK »
+    %%   Chiffres (verifies 11/2026) : 98,7 % de couverture de lignes du moteur (la CI echoue sous 95 %) ; 54 cas unitaires ;
+    %%   2 250 parties = 250 pour chacune des 9 paires de niveaux, tous les invariants reverifies apres chaque tir ; test de
+    %%   bout en bout de l'interface sous Xvfb ; ASan/UBSan, clang-tidy, cppcheck, CodeQL ; CI GCC et Clang sous Ubuntu,
+    %%   Apple Clang sous macOS ; releases avec paquets .tar.gz et .deb, sommes de controle et provenance de build ;
+    %%   rapport de projet en LaTeX (francais et anglais)
+    %%   Pour l'entretien : l'IA est une fonction pure de l'information publique (elle ne recoit jamais la position des
+    %%   navires : elle ne peut pas tricher) ; niveau difficile = carte de probabilites (compte tous les placements des
+    %%   navires restants compatibles avec les tirs, tire la ou ils se recouvrent le plus), il bat le niveau moyen dans
+    %%   87,5 % des parties ; tirs moyens pour couler une flotte sur 10 000 parties : 96,2 (facile), 65,8 (moyen),
+    %%   55,3 (difficile) ; generateur aleatoire a graine dans le moteur (« --seed N » rejoue une partie a l'identique
+    %%   sous Linux et macOS) ; une partie entiere tient dans une structure de 800 octets ; la vue ne garde aucun etat
+    %%   du jeu ; defauts de la v1 supprimes par la reecriture : lecture hors limites, boucles gtk_main imbriquees,
+    %%   fenetre figee pendant le tour de l'ordinateur
     %% aco-tsp : projet de cours 2023 (en binome) reecrit seul en 2026 (v2.0.0) ; variante d'annee « 2023 - 2026 »
     %%   Description longue (2 lignes) : Ant System avec options élitiste, gloutonne (q0) et 2-opt ; références plus
     %%   proche voisin, 2-opt et Held-Karp exact ; lecteur TSPLIB ; 73 tests unitaires et 44 tests de bout en bout,
@@ -624,8 +652,7 @@
     %% Stack detaillee du projet phishing (postes ML) :
     %%   Python · LightGBM · TensorFlow/Keras · Scikit-Learn · Pandas · NumPy · Jupyter
     %% ----- Reserve : projets de prepa cites sur LinkedIn (ajouter le lien GitHub et l'annee s'ils existent) -----
-    % \project{Bataille navale}{URL}{C, GTK}{20xx}
-    % {Jeu de bataille navale en C avec interface graphique GTK}
+    %% Bataille navale : desormais dans « Reserve : projets » ci-dessus (depot et annee connus)
     % \project{Reconnaissance de langue}{URL}{C++, Perceptron}{20xx}
     % {Reconnaissance de la langue par un perceptron implémenté en C++}
     %% ----- Reserve : projets quant a venir (garder en commentaire tant qu'ils ne sont pas réalisés) -----
