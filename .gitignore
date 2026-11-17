@@ -66,6 +66,7 @@ $RECYCLE.BIN/
 # c extensions
 *.so
 *.dylib
+*.o
 
 # python / uv
 __pycache__/
@@ -282,7 +283,12 @@ predictions
 # next.js
 /.next/
 /out/
+
+# vercel
 /.vercel/
+.vercel
+vendor/
+composer.lock
 
 # dependencies and build cache
 /node_modules/
@@ -328,6 +334,30 @@ timeout-*
 
 # generated documentation
 /docs/api/
+
+# julia
+Manifest.toml
+Project.toml
+
+# flex
+lex.yy.c
+lex.yy.h
+lex.yy.o
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+.turbo
+package-lock.json
+pnpm-lock.yaml
+
+# compiled files
+*.zip
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # cv-latex
 /src/other/
