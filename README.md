@@ -81,10 +81,10 @@ Sup Galilée engineer (2026) · 3-year apprenticeship at Société Générale As
 | --- | --- |
 | 🏢&nbsp;**In production** <br><sub>Société Générale Assurances</sub> | Python · Polars · DuckDB · Pandas · NumPy · pytest · boto3 · fsspec · s3fs · AWS S3 · SAS · SQL · PostgreSQL · Apache Superset · Scikit-Learn · GitHub Copilot · Prompt Engineering · TypeScript (VS Code extensions) · JupyterHub · code-server · Ruff · BasedPyright · Linux · Bash · Git / GitLab |
 | 🔧&nbsp;**Data Engineering** | Python · SQL · Spark / PySpark · Airflow · Kedro · MLflow · dbt · Kafka · Jenkins · ETL / ELT · Data Pipelines & Ingestion · Data Migration · Data Modeling · Data Warehousing · SAS · FastAPI · REST APIs |
-| 🤖&nbsp;**AI & ML** | LLMs · RAG · Generative AI · AI Agents · LangChain · LangGraph · MCP · GitHub Copilot · Prompt Engineering · NLP · Deep Learning · Scikit-Learn · XGBoost · LightGBM · TensorFlow / Keras · PyTorch · Feature Engineering · Model Evaluation |
+| 🤖&nbsp;**AI & ML** | LLMs · RAG · Generative AI · AI Agents · LangChain · LangGraph · MCP · OpenAI API · Prompt Engineering · LLM-as-a-Judge · LLM Security (Prompt Injection, Jailbreaks) · GitHub Copilot · Claude Code · Cursor · NLP · Deep Learning · Scikit-Learn · XGBoost · LightGBM · TensorFlow / Keras · PyTorch · Feature Engineering · Model Evaluation |
 | ☁️&nbsp;**Cloud & Data** | AWS S3 · Azure · Azure OpenAI · BigQuery · PostgreSQL · MySQL · Oracle · Polars · DuckDB · Linux · NoSQL |
-| 📊&nbsp;**Data Quality & Analytics** | Pandas · NumPy · Data Quality · Validation · Monitoring · Reporting · Apache Superset · Tableau |
-| ⚙️&nbsp;**DevOps & Languages** | Java · C / C++ · TypeScript / JavaScript · Git (GitHub) · Docker · Kubernetes · CI/CD · GitHub Actions · Bash · Automated Testing · Jira |
+| 📊&nbsp;**Data Quality & Analytics** | Pandas · NumPy · Data Quality · Validation · Monitoring · Reporting · A/B Testing · Apache Superset · Tableau |
+| ⚙️&nbsp;**DevOps & Languages** | Java · C / C++ · TypeScript / JavaScript · Git (GitHub) · Docker · Kubernetes · CI/CD · GitHub Actions · Bash · Automated Testing (Selenium) · Jira |
 
 ---
 
