@@ -555,6 +555,9 @@
 %% ---------- Projects ---------------------------------------------------------
 \cvsection{AI \& ENGINEERING PROJECTS}
 \begin{itemize}[itemsep=1.6pt]
+    \project{FX Rates ELT Pipeline (ECB, NBU)}{https://github.com/DmytroPalahin/fx-rates-airflow}
+    {Apache Airflow 3, Python, SQL, PostgreSQL, S3, Docker}{2026}
+    {3 DAGs over 3 layers (S3 raw, Postgres core, marts): idempotent backfills, data-aware scheduling, 5 data quality checks; 37 tests, CI}
     \project{PhishGuard: Explainable Phishing Email Detection}{https://github.com/DmytroPalahin/phishing-email-detection-system}
     {Python, NLP, FastAPI, Docker, Kubernetes}{2026}
     {TF-IDF + LightGBM ensemble on 75.8k emails (5 corpora): 99.1\% recall at 0.5\% false positives, 15 ms/email; 124 tests, CI/CD}
@@ -572,12 +575,43 @@
     {Mathematical Algorithms}{2021}
     {Impulse noise filtering in video images ---
         \I{Informatics and Mathematical Methods in Simulation}, vol. 11, no. 4}
-    \project{Anomaly Detection}{https://github.com/DmytroPalahin/Anomaly_Detection}
-    {Python, Machine Learning}{2021}
-    {Methods for partial data labeling}
     %% ----- Reserve: projects -----
+    %% FX pipeline (fx-rates-airflow, v1.0.0, 2026): personal project built to practise Airflow 3 on a small, real data
+    %%   flow (official rates of the European Central Bank and the National Bank of Ukraine). First in the list for
+    %%   Data Engineering roles; for AI / ML roles put PhishGuard first
+    %%   Other one-line descriptions (each fits on one line with the current title and stack, tested 11/2026):
+    %%   Airflow patterns: "TaskFlow DAGs: reschedule-mode sensor, retries, asset-based scheduling, dynamic task mapping, branching, pools; 37 tests, CI"
+    %%   Data quality: "Idempotent loads (delete + insert per day), 5 mapped data quality checks, anomaly alerts on day-over-day moves; 37 tests, CI"
+    %%   Warehouse / SQL: "Raw JSON in S3, validated rates in Postgres, SQL marts (day-over-day changes, ECB vs NBU cross-check); 37 tests, CI"
+    %%   Longer description (2 lines; this English version still fits on one page with it, tested 11/2026):
+    %%   "Daily ECB and National Bank of Ukraine rates in 3 layers (raw JSON in S3, validated core and SQL marts in
+    %%   Postgres): idempotent backfills, reschedule-mode sensor for late data, data-aware scheduling, 5 data quality
+    %%   checks, anomaly alerts; 37 tests, CI"
+    %%   Title variants: "FX Rates Data Pipeline (ECB, NBU)"; "Central Bank FX Rates Pipeline"
+    %%   Detailed stack: Apache Airflow 3.4 (LocalExecutor) · Python 3.12 · PostgreSQL 16 · RustFS (S3-compatible) ·
+    %%   Docker Compose · uv · Ruff · pytest · GitHub Actions
+    %%   "S3" is S3-compatible object storage here (RustFS), reached through Airflow's S3Hook: only the connection changes
+    %%   to use AWS S3. Do not write "AWS S3" for this project
+    %%   Figures (checked 11/2026 in the repository): 3 DAGs (2 ingestion DAGs + 1 marts DAG), 2 sources (about 30 and 45
+    %%   currencies), 3 layers (raw / core / marts), 2 marts, 5 data quality checks, 37 tests (unit + DAG integrity),
+    %%   7 containers in the local stack; CI: Ruff, pytest, build of the Airflow image
+    %%   For interviews: idempotent load = deterministic raw key + delete and insert of the whole day in one transaction,
+    %%   so retries, clears and backfills never create duplicates; late data handled per source: a reschedule-mode sensor
+    %%   for the ECB (it also recognises holidays and skips the run), retries for the NBU (6 times, every 15 min); the
+    %%   marts DAG is triggered by assets (schedule = ECB & NBU) and each event carries its date, so one run rebuilds only
+    %%   the days that changed; the 5 quality checks run as dynamically mapped tasks, anomalies above a threshold go down
+    %%   an alert branch; business logic in a plain Python package without Airflow imports (unit-tested), the DAG files
+    %%   only orchestrate; problems solved: the API silently returns the previous business day on holidays (the sensor
+    %%   compares the requested and the returned dates), fake day-over-day changes after a partial backfill (window over
+    %%   the full history, long gaps ignored); production next steps: managed Airflow or Kubernetes, secrets backend,
+    %%   remote logging, notifications, dbt for the marts
+    %% Anomaly Detection: moved here in 11/2026 to make room for the FX pipeline (the page is full). To restore it, put
+    %%   it back at the end of the list and move another two-line project to this Reserve
+    % \project{Anomaly Detection}{https://github.com/DmytroPalahin/Anomaly_Detection}
+    % {Python, Machine Learning}{2021}
+    % {Methods for partial data labeling}
     %% Cellula (Java / OOP / software engineering roles): put it after "Logistics Center Placement" (2024);
-    %%   the page is full, so move a 2021 project to this Reserve to keep one page
+    %%   the page is full, so move another two-line project to this Reserve to keep one page
     % \project{Cellular Automaton Engine (Cellula)}{https://github.com/DmytroPalahin/cellular-automata}
     % {Java 21, OOP, Swing, JUnit}{2024}
     % {Engine for grids of any dimension: own rule language and parser, XML Schema validation, Swing viewer, CLI; 409 JUnit tests}
@@ -587,7 +621,7 @@
     % %   macOS and Windows
     %% Battleship (C / systems / software engineering roles): 2023 preparatory-program coursework (with a classmate, one
     %%   2,666-line C file) rewritten alone in 2026 (v2.0.0 to v2.2.1); year variant "2023 - 2026". Put it after
-    %%   aco-tsp (2023); the page is full, so move another two-line project (Anomaly Detection or Reaction Systems)
+    %%   aco-tsp (2023); the page is full, so move another two-line project (Reaction Systems or the 2021 paper)
     %%   to this Reserve to keep one page (tested 11/2026)
     % \project{Battleship}{https://github.com/DmytroPalahin/battleship}
     % {C11, GTK 3, MVC, CMake, CI/CD}{2023}

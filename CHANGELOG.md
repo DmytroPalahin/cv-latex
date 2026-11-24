@@ -5,6 +5,22 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/): `[vMAJ
 
 ---
 
+## [v2.2.0] - 2026-11-24
+
+### Added
+
+- **Projects**: **FX Rates ELT Pipeline (ECB, NBU)**, first in the list: an Apache Airflow 3 pipeline with an S3 raw layer, a Postgres warehouse, idempotent backfills, data-aware scheduling and data quality checks ([fx-rates-airflow](https://github.com/DmytroPalahin/fx-rates-airflow))
+- **Reserve** blocks in the `.tex` sources: description variants, checked figures and interview notes for the FX pipeline and for PhishGuard
+
+### Changed
+
+- **Projects**: the phishing project becomes **PhishGuard: Explainable Phishing Email Detection**, in line with its rewrite: TF-IDF + LightGBM ensemble on 75.8k deduplicated emails, served with FastAPI, Docker and Kubernetes; new repository link
+- **Projects**: Anomaly Detection moves to the Reserve to keep the CV on one page
+- Layout: bottom margin reduced from 0.5 cm to 0.25 cm
+- `resources/img/`: previews regenerated from the current PDFs
+
+---
+
 ## [v2.1.0] - 2026-11-16
 
 ### Added

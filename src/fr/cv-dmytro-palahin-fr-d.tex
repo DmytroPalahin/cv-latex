@@ -567,6 +567,9 @@
 %% ---------- Projets ----------------------------------------------------------
 \cvsection{PROJETS IA \& ENGINEERING}
 \begin{itemize}[itemsep=1.6pt]
+    \project{Pipeline ELT de taux de change (BCE, NBU)}{https://github.com/DmytroPalahin/fx-rates-airflow}
+    {Apache Airflow 3, Python, SQL, PostgreSQL, S3, Docker}{2026}
+    {3 DAG sur 3 couches (S3 brut, Postgres core, marts) : backfills idempotents, déclenchement par assets, 5 contrôles qualité ; 37 tests, CI}
     \project{PhishGuard : détection explicable de phishing par email}{https://github.com/DmytroPalahin/phishing-email-detection-system}
     {Python, NLP, FastAPI, Docker, Kubernetes}{2026}
     {Ensemble TF-IDF + LightGBM sur 75,8k emails (5 corpus) : rappel 99,1~\% à 0,5~\% de faux positifs, 15 ms/email ; 124 tests, CI/CD}
@@ -584,12 +587,45 @@
     {Algorithmes mathématiques}{2021}
     {Filtration du bruit impulsionnel dans les images vidéo ---
         \I{Informatics and Mathematical Methods in Simulation}, vol. 11, n° 4}
-    \project{Détection d'anomalies}{https://github.com/DmytroPalahin/Anomaly_Detection}
-    {Python, Machine Learning}{2021}
-    {Méthodes pour l'étiquetage partiel de données}
     %% ----- Reserve : projets -----
+    %% Pipeline FX (fx-rates-airflow, v1.0.0, 2026) : projet personnel pour pratiquer Airflow 3 sur un flux de donnees
+    %%   reel et simple (taux officiels de la Banque centrale europeenne et de la Banque nationale d'Ukraine). En tete
+    %%   de liste pour les postes Data Engineering ; pour les postes IA / ML, mettre PhishGuard en premier
+    %%   « NBU » = sigle officiel de la Banque nationale d'Ukraine (on rencontre aussi « BNU » en francais)
+    %%   Autres descriptions sur une ligne (chacune tient sur une ligne avec le titre et la stack actuels, teste 11/2026) :
+    %%   patterns Airflow : « DAG TaskFlow : sensor en mode reschedule, retries, déclenchement par assets, dynamic task mapping, branching, pools ; 37 tests, CI »
+    %%   qualite des donnees : « Chargements idempotents (delete + insert du jour), 5 contrôles qualité mappés, alertes sur les variations journalières ; 37 tests, CI »
+    %%   entrepot / SQL : « JSON brut dans S3, taux validés dans Postgres, marts SQL (variations journalières, recoupement BCE / NBU) ; 37 tests, CI »
+    %%   Description longue (2 lignes ; le CV passe alors a 2 pages : liberer une ligne ailleurs, teste 11/2026) :
+    %%   « Taux quotidiens de la BCE et de la Banque nationale d'Ukraine en 3 couches (JSON brut S3, core validé et marts
+    %%   SQL Postgres) : backfills idempotents, sensor en mode reschedule, déclenchement par assets, 5 contrôles qualité,
+    %%   alertes d'anomalies ; 37 tests, CI »
+    %%   Variantes de titre : « Pipeline de taux de change (BCE, NBU) » ; « Pipeline de données de taux de change »
+    %%   Stack detaillee : Apache Airflow 3.4 (LocalExecutor) · Python 3.12 · PostgreSQL 16 · RustFS (compatible S3) ·
+    %%   Docker Compose · uv · Ruff · pytest · GitHub Actions
+    %%   « S3 » designe ici un stockage objet compatible S3 (RustFS), utilise via le S3Hook d'Airflow : seule la connexion
+    %%   change pour passer a AWS S3. Ne pas ecrire « AWS S3 » pour ce projet
+    %%   Chiffres (verifies 11/2026 dans le depot) : 3 DAG (2 DAG d'ingestion + 1 DAG de marts), 2 sources (environ 30 et 45
+    %%   devises), 3 couches (raw / core / marts), 2 marts, 5 controles qualite, 37 tests (unitaires + integrite des DAG),
+    %%   7 conteneurs dans la stack locale ; CI : Ruff, pytest, build de l'image Airflow
+    %%   Pour l'entretien : chargement idempotent = cle brute deterministe + delete et insert du jour entier dans une seule
+    %%   transaction : retries, clears et backfills ne creent jamais de doublons ; donnees tardives traitees par source : un
+    %%   sensor en mode reschedule pour la BCE (il reconnait aussi les jours feries et saute le run), des retries pour la
+    %%   NBU (6 fois, toutes les 15 min) ; le DAG de marts est declenche par des assets (schedule = BCE & NBU) et chaque
+    %%   evenement porte sa date : un run ne reconstruit que les jours modifies ; les 5 controles qualite tournent en taches
+    %%   mappees dynamiquement, les anomalies au-dessus d'un seuil partent sur une branche d'alerte ; logique metier dans un
+    %%   package Python sans import Airflow (teste unitairement), les fichiers de DAG ne font qu'orchestrer ; problemes
+    %%   resolus : l'API renvoie sans prevenir le jour ouvre precedent les jours feries (le sensor compare la date demandee
+    %%   et la date renvoyee), fausses variations journalieres apres un backfill partiel (fenetre sur tout l'historique,
+    %%   longs trous ignores) ; suite en production : Airflow manage ou Kubernetes, backend de secrets, logs distants,
+    %%   notifications, dbt pour les marts
+    %% Détection d'anomalies : deplace ici en 11/2026 pour faire de la place au pipeline FX (la page est pleine). Pour le
+    %%   remettre : le replacer en fin de liste et deplacer un autre projet de deux lignes dans cette Reserve
+    % \project{Détection d'anomalies}{https://github.com/DmytroPalahin/Anomaly_Detection}
+    % {Python, Machine Learning}{2021}
+    % {Méthodes pour l'étiquetage partiel de données}
     %% Cellula (postes Java / POO / génie logiciel) : a placer apres « Placement de centres logistiques » (2024) ;
-    %%   la page est pleine : deplacer un projet de 2021 dans cette Reserve pour garder une page
+    %%   la page est pleine : deplacer un autre projet de deux lignes dans cette Reserve pour garder une page
     % \project{Moteur d'automates cellulaires (Cellula)}{https://github.com/DmytroPalahin/cellular-automata}
     % {Java 21, POO, Swing, JUnit}{2024}
     % {Grilles de dimension quelconque : langage de règles et parseur, validation XML Schema, interface Swing, CLI ; 409 tests JUnit}
@@ -599,8 +635,8 @@
     % %   Swing ; CI sous Linux, macOS et Windows
     %% Bataille navale (postes C / systèmes / génie logiciel) : projet de prepa 2023 (en binome, un seul fichier C de
     %%   2 666 lignes) reecrit seul en 2026 (v2.0.0 a v2.2.1) ; variante d'annee « 2023 - 2026 ». A placer apres
-    %%   aco-tsp (2023) ; la page est pleine : deplacer un autre projet de deux lignes (Détection d'anomalies ou
-    %%   Système de réactions) dans cette Reserve pour garder une page (teste 11/2026)
+    %%   aco-tsp (2023) ; la page est pleine : deplacer un autre projet de deux lignes (Système de réactions ou
+    %%   la publication de 2021) dans cette Reserve pour garder une page (teste 11/2026)
     % \project{Bataille navale (Battleship)}{https://github.com/DmytroPalahin/battleship}
     % {C11, GTK 3, MVC, CMake, CI/CD}{2023}
     % {Jeu MVC : moteur C11 sans dépendance (couvert à 98 \%), interfaces GTK 3 et terminal, 3 niveaux d'IA mesurés sur 10k parties, CI}
