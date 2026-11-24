@@ -381,8 +381,8 @@
           %%
           %% ----- Additional keywords to pick depending on the offer (absent from the rest of the file) -----
           %% Course content is detailed in the Education section; here, the forms ready to paste.
-          %% Tools already visible in the \stack lines and Projects (boto3, pytest, Matplotlib, TF-IDF,
-          %% LSTM...): the ATS already reads them, no need to repeat them in Skills.
+          %% Tools already visible in the \stack lines and Projects (boto3, pytest, Matplotlib,
+          %% TF-IDF...): the ATS already reads them, no need to repeat them in Skills.
           %%  Data / DB: Big Data, Data Lakes, BI (previous version), advanced SQL (JOIN, GROUP BY,
           %%    aggregations, subqueries), normalization, database design (keys, constraints),
           %%    semi-structured data, distributed storage, scalability, data preparation and cleaning,
@@ -555,10 +555,9 @@
 %% ---------- Projects ---------------------------------------------------------
 \cvsection{AI \& ENGINEERING PROJECTS}
 \begin{itemize}[itemsep=1.6pt]
-    \project{Email Phishing Detection System}{https://github.com/DmytroPalahin/phishing-email-detection}
-    {Python, Machine Learning, NLP}{2026}
-    {Classification of 76.7k emails (5 real datasets): NLP (TF-IDF, URL extraction),
-        LightGBM + Naive Bayes + LSTM ensemble}
+    \project{PhishGuard: Explainable Phishing Email Detection}{https://github.com/DmytroPalahin/phishing-email-detection-system}
+    {Python, NLP, FastAPI, Docker, Kubernetes}{2026}
+    {TF-IDF + LightGBM ensemble on 75.8k emails (5 corpora): 99.1\% recall at 0.5\% false positives, 15 ms/email; 124 tests, CI/CD}
     \project{Ant Colony Optimization for the Traveling Salesman Problem}{https://github.com/DmytroPalahin/aco-tsp}
     {C11, Metaheuristics, Dynamic Programming}{2023}
     {C11 library: probabilistic model + 2-opt, validated by exact Held-Karp (optimum on 500/500 instances); 117 tests, fuzzing, CI}
@@ -626,8 +625,39 @@
     % {HTML, CSS, JS, Algorithms}{2019}
     % {Implementation of mathematical noise-filtering methods for digital images
     %     as a web service}
-    %% Detailed stack of the phishing project (ML roles):
-    %%   Python · LightGBM · TensorFlow/Keras · Scikit-Learn · Pandas · NumPy · Jupyter
+    %% PhishGuard (phishing project): 2024 notebook prototype (TF-IDF + LightGBM, Naive Bayes, LSTM) rewritten in 2026 as a
+    %%   production-grade system (v1.0.0); year variant "2024 - 2026". The LSTM was dropped in the rewrite: do not cite it
+    %%   for this project any more
+    %%   Other one-line descriptions (each fits on one line with the current title and stack, tested 11/2026):
+    %%   MLOps / platform roles: "FastAPI service with Prometheus metrics, non-root Docker image, Kubernetes manifests (HPA); 124 tests, 95% coverage, CI/CD"
+    %%   Data / evaluation roles: "75.8k deduplicated emails (5 corpora), thresholds from a false-positive budget, leave-one-corpus-out evaluation"
+    %%   AI / NLP roles: "Word + character TF-IDF, 30 engineered signals, exact attributions (TreeSHAP), semantic search, Whisper speech-to-text"
+    %%   Longer description (2 lines; this English version still fits on one page with it, tested 11/2026):
+    %%   "Explainable detector for raw MIME emails and voicemail: TF-IDF + LightGBM ensemble on 75.8k deduplicated emails
+    %%   (5 corpora), 99.1% recall at 0.5% false positives, rule engine + exact attributions; 15 ms/email; 124 tests,
+    %%   95% coverage, CI/CD"
+    %%   Title / stack variants (each fits on one line): title "Email Phishing Detection System (PhishGuard)" with stack
+    %%   "Python, Machine Learning, NLP, FastAPI, Docker, Kubernetes"; stack "Python, NLP, LightGBM, FastAPI, Docker, Kubernetes"
+    %%   Detailed stack: Python · Scikit-Learn · LightGBM · Polars · Pandas · NumPy · FastAPI · Pydantic · Prometheus · Docker ·
+    %%   Kubernetes (Kustomize) · GitHub Actions · uv · Ruff · basedpyright · pytest · Hypothesis; optional extras:
+    %%   sentence-transformers (SBERT), faster-whisper, MLflow, Streamlit
+    %%   Figures (checked 11/2026 against reports/metrics.json): 76,677 raw emails, 75,808 after removing 869 duplicates;
+    %%   stratified split 53,065 / 7,581 / 15,162 (train / validation / test); on the test split: ROC-AUC 0.9997, recall
+    %%   99.13% and precision 99.53% at the quarantine threshold (FPR 0.54% for a 0.5% budget), recall 99.85% at the
+    %%   warning threshold (FPR 2.72% for a 3% budget), Brier score 0.0057; latency 14.5 ms (p50) and 28.5 ms (p95) per
+    %%   email on one CPU core; 124 tests, 95% branch coverage (CI gate at 85%); CI: Ruff, basedpyright, pytest on
+    %%   Python 3.11 to 3.13, wheel smoke test, Docker end-to-end test
+    %%   For interviews: ensemble = soft voting of logistic regression (word 1-2-gram and character 3-5-gram TF-IDF + 30
+    %%   signals), LightGBM and Complement Naive Bayes (weights 0.5 / 0.4 / 0.1); duplicates removed before the split (no
+    %%   train / test leakage); thresholds fitted on validation from a false-positive budget, not on accuracy; every
+    %%   verdict comes with rule indicators (spoofed sender, SPF / DKIM / DMARC failure, link-text mismatch...) and exact
+    %%   per-prediction attributions (linear terms, TreeSHAP); honest limit: leave-one-corpus-out ROC-AUC falls to
+    %%   0.77 - 0.98, so in-distribution scores do not transfer to a new mail source, hence the rule layer, the semantic
+    %%   kNN second opinion and per-deployment thresholds; the LSTM of the prototype was dropped (TensorFlow dependency,
+    %%   trained on one corpus, no explanations)
+    %%   Previous wording (2024 prototype; inaccurate since the rewrite: no LSTM, 76.7k is the count before deduplication):
+    %%   title "Email Phishing Detection System", stack "Python, Machine Learning, NLP", description "Classification of
+    %%   76.7k emails (5 real datasets): NLP (TF-IDF, URL extraction), LightGBM + Naive Bayes + LSTM ensemble"
     %% ----- Reserve: preparatory-program projects mentioned on LinkedIn (add the GitHub link and the year if they exist) -----
     %% Battleship: now in "Reserve: projects" above (repository and year known)
     % \project{Language Recognition}{URL}{C++, Perceptron}{20xx}

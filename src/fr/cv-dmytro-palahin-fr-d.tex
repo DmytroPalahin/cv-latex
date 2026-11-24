@@ -382,8 +382,8 @@
           %%
           %% ----- Mots-cles supplementaires a piocher selon l'offre (absents du reste du fichier) -----
           %% Le contenu des cours est detaille dans la section Formation ; ici, les formes a coller.
-          %% Outils deja visibles dans les lignes \stack et Projets (boto3, pytest, Matplotlib, TF-IDF,
-          %% LSTM...) : l'ATS les lit deja, inutile de les repeter dans Compétences.
+          %% Outils deja visibles dans les lignes \stack et Projets (boto3, pytest, Matplotlib,
+          %% TF-IDF...) : l'ATS les lit deja, inutile de les repeter dans Compétences.
           %%  Data / BD : Big Data, Data Lakes, BI (version precedente), SQL avancé (JOIN, GROUP BY,
           %%    agrégations, sous-requêtes), normalisation, conception de bases de données (clés, contraintes),
           %%    données semi-structurées, stockage distribué, scalabilité, préparation et nettoyage des données,
@@ -567,10 +567,9 @@
 %% ---------- Projets ----------------------------------------------------------
 \cvsection{PROJETS IA \& ENGINEERING}
 \begin{itemize}[itemsep=1.6pt]
-    \project{Système de détection de phishing par email}{https://github.com/DmytroPalahin/phishing-email-detection}
-    {Python, Machine Learning, NLP}{2026}
-    {Classification de 76,7k emails (5 datasets réels) : NLP (TF-IDF, extraction d'URLs),
-        ensemble LightGBM + Naive Bayes + LSTM}
+    \project{PhishGuard : détection explicable de phishing par email}{https://github.com/DmytroPalahin/phishing-email-detection-system}
+    {Python, NLP, FastAPI, Docker, Kubernetes}{2026}
+    {Ensemble TF-IDF + LightGBM sur 75,8k emails (5 corpus) : rappel 99,1~\% à 0,5~\% de faux positifs, 15 ms/email ; 124 tests, CI/CD}
     \project{Ant Colony Optimization (ACO) for the TSP}{https://github.com/DmytroPalahin/aco-tsp}
     {C11, Métaheuristiques, Programmation dynamique}{2023}
     {Bibliothèque C11 : modèle probabiliste + 2-opt, validé par Held-Karp exact (optimum sur 500/500 instances) ; 117 tests, fuzzing, CI}
@@ -646,8 +645,42 @@
     % {HTML, CSS, JS, Algorithmes}{2019}
     % {Implémentation de méthodes mathématiques de filtrage du bruit dans les images numériques
     %     sous forme de service web}
-    %% Stack detaillee du projet phishing (postes ML) :
-    %%   Python · LightGBM · TensorFlow/Keras · Scikit-Learn · Pandas · NumPy · Jupyter
+    %% PhishGuard (projet phishing) : prototype notebook de 2024 (TF-IDF + LightGBM, Naive Bayes, LSTM) reecrit en 2026 en
+    %%   systeme de niveau production (v1.0.0) ; variante d'annee « 2024 - 2026 ». Le LSTM a ete retire a la reecriture :
+    %%   ne plus le citer pour ce projet
+    %%   Autres descriptions sur une ligne (chacune tient sur une ligne avec le titre et la stack actuels, teste 11/2026) :
+    %%   postes MLOps / plateforme : « API FastAPI, métriques Prometheus, image Docker non-root, manifestes Kubernetes (HPA) ; 124 tests, couverture 95 %, CI/CD »
+    %%   postes Data / evaluation : « 75,8k emails dédupliqués (5 corpus), seuils par budget de faux positifs, évaluation leave-one-corpus-out »
+    %%   postes IA / NLP : « TF-IDF mots + caractères, 30 signaux, attributions exactes (TreeSHAP), recherche sémantique, speech-to-text Whisper »
+    %%   Description longue (2 lignes ; le CV passe alors a 2 pages : liberer une ligne ailleurs, teste 11/2026) :
+    %%   « Détecteur explicable (emails MIME bruts, messages vocaux) : ensemble TF-IDF + LightGBM sur 75,8k emails
+    %%   dédupliqués (5 corpus), rappel 99,1 % à 0,5 % de faux positifs, règles + attributions exactes ; 15 ms/email ;
+    %%   124 tests, couverture 95 %, CI/CD »
+    %%   Variantes de titre / stack (chacune tient sur une ligne) : titre « Détection de phishing par email (PhishGuard) »
+    %%   avec la stack « Python, Machine Learning, NLP, FastAPI, Docker, Kubernetes » ; titre « Système de détection de
+    %%   phishing par email (PhishGuard) » avec la stack actuelle ; stack « Python, NLP, LightGBM, FastAPI, Docker, Kubernetes »
+    %%   Stack detaillee : Python · Scikit-Learn · LightGBM · Polars · Pandas · NumPy · FastAPI · Pydantic · Prometheus · Docker ·
+    %%   Kubernetes (Kustomize) · GitHub Actions · uv · Ruff · basedpyright · pytest · Hypothesis ; extras optionnels :
+    %%   sentence-transformers (SBERT), faster-whisper, MLflow, Streamlit
+    %%   Chiffres (verifies 11/2026 dans reports/metrics.json) : 76 677 emails bruts, 75 808 apres suppression de 869 doublons ;
+    %%   decoupage stratifie 53 065 / 7 581 / 15 162 (train / validation / test) ; sur le jeu de test : ROC-AUC 0,9997, rappel
+    %%   99,13 % et precision 99,53 % au seuil de quarantaine (FPR 0,54 % pour un budget de 0,5 %), rappel 99,85 % au seuil
+    %%   d'avertissement (FPR 2,72 % pour un budget de 3 %), score de Brier 0,0057 ; latence 14,5 ms (p50) et 28,5 ms (p95)
+    %%   par email sur un coeur CPU ; 124 tests, 95 % de couverture de branches (seuil CI a 85 %) ; CI : Ruff, basedpyright,
+    %%   pytest sous Python 3.11 a 3.13, test du wheel, test Docker de bout en bout
+    %%   Pour l'entretien : ensemble = vote pondere (soft voting) d'une regression logistique (TF-IDF mots 1-2-grammes et
+    %%   caracteres 3-5-grammes + 30 signaux), de LightGBM et de Complement Naive Bayes (poids 0,5 / 0,4 / 0,1) ; doublons
+    %%   supprimes avant le decoupage (pas de fuite train / test) ; seuils ajustes sur la validation a partir d'un budget de
+    %%   faux positifs, pas sur l'accuracy ; chaque verdict est accompagne d'indicateurs de regles (expediteur usurpe, echec
+    %%   SPF / DKIM / DMARC, lien different du texte affiche...) et d'attributions exactes par prediction (termes lineaires,
+    %%   TreeSHAP) ; limite assumee : en leave-one-corpus-out le ROC-AUC tombe a 0,77 - 0,98, les scores intra-distribution ne
+    %%   se transferent donc pas a une nouvelle source de mails, d'ou la couche de regles, le second avis kNN semantique et
+    %%   des seuils reajustes par deploiement ; le LSTM du prototype a ete retire (dependance TensorFlow, entraine sur un seul
+    %%   corpus, pas d'explications)
+    %%   Formulation precedente (prototype 2024 ; inexacte depuis la reecriture : plus de LSTM, 76,7k = nombre avant
+    %%   deduplication) : titre « Système de détection de phishing par email », stack « Python, Machine Learning, NLP »,
+    %%   description « Classification de 76,7k emails (5 datasets réels) : NLP (TF-IDF, extraction d'URLs), ensemble
+    %%   LightGBM + Naive Bayes + LSTM »
     %% ----- Reserve : projets de prepa cites sur LinkedIn (ajouter le lien GitHub et l'annee s'ils existent) -----
     %% Bataille navale : desormais dans « Reserve : projets » ci-dessus (depot et annee connus)
     % \project{Reconnaissance de langue}{URL}{C++, Perceptron}{20xx}
