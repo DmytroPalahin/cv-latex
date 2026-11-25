@@ -34,17 +34,18 @@ make       # both CVs, next to their sources
 make en    # one language (make fr)
 ```
 
-The build stops with an error when a CV does not fit on one page. Without `make`:
+The build stops with an error when a CV does not fit on one page. Without `make`, from the repository root:
 
 ```sh
-cd src/en
-latexmk -pdf -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-en-d.tex
+latexmk -pdf -cd -auxdir=/tmp/latex-build -outdir=. src/en/cv-dmytro-palahin-en-d.tex
 ```
+
+`-cd` makes `latexmk` change to the folder of the source first: `-outdir=.` then means that folder, and the PDF lands next to the `.tex`.
 
 PDF to send, with a recruiter-friendly file name:
 
 ```sh
-latexmk -pdf -jobname=CV_Dmytro_Palahin_Data_Engineer -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-en-d.tex
+latexmk -pdf -cd -jobname=CV_Dmytro_Palahin_Data_Engineer -auxdir=/tmp/latex-build -outdir=. src/en/cv-dmytro-palahin-en-d.tex
 ```
 
 ### Try and check a change
@@ -68,15 +69,14 @@ make preview    # both previews, from the PDFs next to the sources
 Without `make`:
 
 ```sh
-cd src/en
-pdftoppm -png -r 600 -singlefile cv-dmytro-palahin-en-d.pdf ../../resources/img/cv-dmytro-palahin-en-d
+pdftoppm -png -r 600 -singlefile src/en/cv-dmytro-palahin-en-d.pdf resources/img/cv-dmytro-palahin-en-d
 ```
 
 - `-singlefile` writes `cv-dmytro-palahin-en-d.png`, without the `-1` page suffix
 - the target folder must exist: `pdftoppm` does not create it
 - `-r 600` is what `make preview` uses: sharp when zoomed, files of about 2 MB; `-r 200` gives files of about 1 MB (`make preview PREVIEW_DPI=200`)
 
-For French, run the same `latexmk` and `pdftoppm` commands from `src/fr` with `fr-d` file names.
+For French, run the same `latexmk` and `pdftoppm` commands with `src/fr` and the `fr-d` file names.
 
 ### LinkedIn banner
 
@@ -85,10 +85,11 @@ make banner                    # French and English, light and dark
 make banner L=fr THEME=dark    # one variant
 ```
 
-- One source, `linkedin-banner/linkedin-banner.tex` (pdfLaTeX + TikZ, Inter font): the texts and colours are at the top of the file, the skills at the end
+- One source, `linkedin-banner/linkedin-banner.tex` (pdfLaTeX + TikZ, Inter font): the texts and colours are at the top of the file, the skills in the two `\matrix` blocks, the build commands at the end
+- Built on its own (from an editor, for example), the source gives the default variant: English, dark theme
 - Output: `linkedin-banner/png/` (3168 × 792 px, twice the 1584 × 396 px LinkedIn expects, so that text stays sharp) and `linkedin-banner/pdf/` (vector)
 - LinkedIn covers the bottom left corner with the profile photo: `GUIDES=1 sh linkedin-banner/build.sh fr light` draws that zone on a preview
-- `STATUS=0 sh linkedin-banner/build.sh` builds the banner without the status label (`-plain` files)
+- `STATUS=0 sh linkedin-banner/build.sh` builds the banner without the status label (`-plain` files), `EMAIL=0` without the email address (`-noemail` files)
 
 ---
 

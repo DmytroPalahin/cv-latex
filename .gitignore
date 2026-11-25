@@ -381,3 +381,8 @@ yarn-error.log*
 
 # previous LinkedIn banner (Canva template): kept locally
 /linkedin-banner/old/
+
+# banner built straight from the editor (default variant): the published files are in pdf/ and png/
+/linkedin-banner/linkedin-banner.pdf
+# banner previews with the profile-photo zone (GUIDES=1)
+/linkedin-banner/png/*-guides.png

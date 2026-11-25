@@ -5,6 +5,19 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/): `[vMAJ
 
 ---
 
+## [v2.3.1] - 2026-11-25
+
+### Changed
+
+- LinkedIn banner: English with the dark theme is the default variant
+- LinkedIn banner: the roles read `Data Engineer · AI Engineer · Analytics`; the skills are Python, SQL, AWS S3, Azure, Airflow, dbt, Git, Docker, Kubernetes, MLOps, LLMs, RAG and AI Agents
+- LinkedIn banner: the email address is shown under the skills (`EMAIL=0` builds the banner without it); the line about the school and the apprenticeship is left out
+- Build commands in the comments of the `.tex` sources, in `README.md` and in `CONTRIBUTING.md` run from the repository root (`latexmk -cd`); the banner source lists its commands at the end
+- `README.md`: dark banner preview first
+- `.gitignore`: the banner built from the editor and the banner previews with guides stay local
+
+---
+
 ## [v2.3.0] - 2026-11-25
 
 ### Added

@@ -3,7 +3,7 @@
 %%  Classic LaTeX style: Latin Modern, black and white, bold and italic.
 %% -----------------------------------------------------------------------------
 %%  Source file : cv-dmytro-palahin-en-d.tex  (en = language, d = Data; French version: fr-d)
-%%  Compilation : /Library/TeX/texbin/latexmk -pdf -g -interaction=nonstopmode -file-line-error -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-en-d.tex
+%%  Compilation : /Library/TeX/texbin/latexmk -pdf -cd -g -interaction=nonstopmode -file-line-error -auxdir=/tmp/latex-build -outdir=. src/en/cv-dmytro-palahin-en-d.tex
 %%
 %%  RESERVE: commented blocks (%) marked "Reserve" contain missions, projects,
 %%  courses and skills to re-enable depending on the job offer. A commented line
@@ -760,11 +760,14 @@ Investing\dotsep Chess\dotsep Skiing\dotsep Tennis\dotsep Swimming\dotsep Kartin
 \end{document}
 
 
-/*
-latexmk -pdf cv-dmytro-palahin-en-d.tex
-latexmk -pdf -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-en-d.tex
 
-/Library/TeX/texbin/latexmk -pdf -g -interaction=nonstopmode -file-line-error -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-en-d.tex
+/*
+# all commands run from the repository root
+
+latexmk -pdf -cd src/en/cv-dmytro-palahin-en-d.tex
+latexmk -pdf -cd -auxdir=/tmp/latex-build -outdir=. src/en/cv-dmytro-palahin-en-d.tex
+
+/Library/TeX/texbin/latexmk -pdf -cd -g -interaction=nonstopmode -file-line-error -auxdir=/tmp/latex-build -outdir=. src/en/cv-dmytro-palahin-en-d.tex
 
 pdftoppm -png -r 600 -singlefile src/en/cv-dmytro-palahin-en-d.pdf resources/img/cv-dmytro-palahin-en-d
 */

@@ -26,7 +26,7 @@ PREVIEW_DIR   ?= resources/img
 PREVIEW_DPI   ?= 600
 
 # LinkedIn banner (linkedin-banner/): themes to build, for the languages of L.
-THEME         ?= light dark
+THEME         ?= dark light
 
 ifneq ($(filter /%,$(BUILD_DIR)),$(BUILD_DIR))
 $(error BUILD_DIR must be one absolute path without spaces, got '$(BUILD_DIR)')
@@ -196,6 +196,6 @@ help:
 	@echo "          CVS=path/to/cv.tex  another .tex (build, try, check, watch)"
 	@echo "          PAGES=2             expected number of pages"
 	@echo "          PREVIEW_DPI=200     resolution of the previews (default 600)"
-	@echo "          THEME=dark          one theme of the banner instead of both"
+	@echo "          THEME=light         one theme of the banner instead of both"
 	@echo "          BUILD_DIR=/path     where auxiliary files and test builds go"
 	@echo "          V=1                 show the output of latexmk"

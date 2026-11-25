@@ -1,20 +1,17 @@
 % LinkedIn profile banner, 1584 x 396 px (4:1), built with pdfLaTeX + TikZ.
 %
-% Build every variant (fr / en, light / dark) into png/ and pdf/:
-%   sh build.sh
-% One variant by hand:
-%   latexmk -pdf -jobname=linkedin-banner-fr-light \
-%           -usepretex='\def\BannerLang{fr}\def\BannerTheme{light}' linkedin-banner.tex
-%   pdftoppm -png -r 144 -singlefile linkedin-banner-fr-light.pdf linkedin-banner-fr-light
+% Default variant: English, dark theme. The commands that build every language and theme,
+% as PDF and PNG, are at the end of this file.
 %
-% 1 unit of the drawing = 1 px of the 1584 x 396 banner; -r 144 renders it at 2x (3168 x 792).
+% 1 unit of the drawing = 1 px of the 1584 x 396 banner; the PNG is rendered at 2x (3168 x 792).
 % Text: section "Text" below. Colours: section "Colours". Skills: the two matrices at the end.
 % LinkedIn puts the profile photo over the bottom left corner: keep text out of x < 520 below
 % y = 230 (build with GUIDES=1 to see the zone).
 
-\providecommand{\BannerLang}{fr}      % fr | en  (status label and background line)
-\providecommand{\BannerTheme}{light}  % light | dark
+\providecommand{\BannerLang}{en}      % en | fr  (status label; background line when it is shown)
+\providecommand{\BannerTheme}{dark}   % dark | light
 \providecommand{\BannerStatus}{1}     % 0 = no status label in the top left corner
+\providecommand{\BannerEmail}{1}      % 0 = no email address under the skills
 \providecommand{\BannerGuides}{0}     % 1 = show where LinkedIn puts the profile photo (preview only)
 
 \documentclass{standalone}
@@ -31,29 +28,22 @@
 % ---------- Text ----------
 \newcommand{\TxtRoleA}{Data Engineer}
 \newcommand{\TxtRoleB}{AI Engineer}
-\newcommand{\TxtRoleC}{MLOps}
+\newcommand{\TxtRoleC}{Analytics}
+\newcommand{\TxtEmail}{dmytro.palahin@gmail.com}
 % skills: one capsule each, see the two matrices at the end of the file
-\ifdefstring{\BannerLang}{en}{%
-  \newcommand{\TxtStatus}{Open to opportunities}
-  \newcommand{\TxtSchool}{Sup Galilée engineer}
-  \newcommand{\TxtWork}{3-year apprenticeship at Société Générale Assurances}
-}{%
+\ifdefstring{\BannerLang}{fr}{%
   \newcommand{\TxtStatus}{Ouvert aux opportunités}
   \newcommand{\TxtSchool}{Ingénieur Sup Galilée}
   \newcommand{\TxtWork}{3 ans d'alternance à Société Générale Assurances}
+}{%
+  \newcommand{\TxtStatus}{Open to opportunities}
+  \newcommand{\TxtSchool}{Sup Galilée engineer}
+  \newcommand{\TxtWork}{3-year apprenticeship at Société Générale Assurances}
 }
 \newcommand{\TxtPlace}{Paris}
 
 % ---------- Colours ----------
-\ifdefstring{\BannerTheme}{dark}{%
-  \definecolor{bg}{HTML}{000000}
-  \definecolor{ink}{HTML}{F5F5F7}      \definecolor{sub}{HTML}{98989D}
-  \definecolor{hair}{HTML}{3A3A3C}     \definecolor{capsule}{HTML}{1C1C1E}
-  \definecolor{glowA}{HTML}{2457D6}    \definecolor{glowB}{HTML}{6D3FD9}
-  \definecolor{live}{HTML}{30D158}
-  \newcommand{\GlowOpacity}{0.42}
-  \newcommand{\CapsuleOpacity}{0.70}
-}{%
+\ifdefstring{\BannerTheme}{light}{%
   \definecolor{bg}{HTML}{F5F5F7}
   \definecolor{ink}{HTML}{1D1D1F}      \definecolor{sub}{HTML}{6E6E73}
   \definecolor{hair}{HTML}{D2D2D7}     \definecolor{capsule}{HTML}{FFFFFF}
@@ -61,13 +51,21 @@
   \definecolor{live}{HTML}{34C759}
   \newcommand{\GlowOpacity}{0.55}
   \newcommand{\CapsuleOpacity}{0.65}
+}{%
+  \definecolor{bg}{HTML}{000000}
+  \definecolor{ink}{HTML}{F5F5F7}      \definecolor{sub}{HTML}{98989D}
+  \definecolor{hair}{HTML}{3A3A3C}     \definecolor{capsule}{HTML}{1C1C1E}
+  \definecolor{glowA}{HTML}{2457D6}    \definecolor{glowB}{HTML}{6D3FD9}
+  \definecolor{live}{HTML}{30D158}
+  \newcommand{\GlowOpacity}{0.42}
+  \newcommand{\CapsuleOpacity}{0.70}
 }
 
 % ---------- Font: Inter, sizes in px; #3 = tracking in 1/1000 em ----------
 \newcommand{\Sans}[2]{\fontencoding{T1}\fontfamily{Inter-LF}\fontseries{#1}\fontshape{n}%
   \fontsize{#2bp}{#2bp}\selectfont}
 \newcommand{\Text}[4]{{\Sans{#1}{#2}\textls[#3]{#4}}}
-\newcommand{\RoleSep}{\hspace{20bp}{\color{sub}\Text{medium}{50}{0}{·}}\hspace{20bp}}
+\newcommand{\RoleSep}{\hspace{19bp}{\color{sub}\Text{medium}{48}{0}{·}}\hspace{19bp}}
 
 \tikzfading[name=soft glow, inner color=transparent!0, outer color=transparent!100]
 \tikzset{
@@ -77,50 +75,108 @@
 
 \begin{document}
 \begin{tikzpicture}[x=1bp, y=1bp]
-  \path[use as bounding box] (0,0) rectangle (1584,396);
-  \clip (0,0) rectangle (1584,396);
+    \path[use as bounding box] (0,0) rectangle (1584,396);
+    \clip (0,0) rectangle (1584,396);
 
-  % ---------- Background: flat, with one quiet glow in the bottom right corner ----------
-  \fill[bg] (0,0) rectangle (1584,396);
-  \fill[glowA, opacity=\GlowOpacity, path fading=soft glow] (1560,-90) circle (430);
-  \fill[glowB, opacity=0.8*\GlowOpacity, path fading=soft glow] (1230,-190) circle (380);
+    % ---------- Background: flat, with one quiet glow in the bottom right corner ----------
+    \fill[bg] (0,0) rectangle (1584,396);
+    \fill[glowA, opacity=\GlowOpacity, path fading=soft glow] (1560,-90) circle (430);
+    \fill[glowB, opacity=0.8*\GlowOpacity, path fading=soft glow] (1230,-190) circle (380);
 
-  % ---------- Status (top left, above the profile photo) ----------
-  \ifnum\BannerStatus=1
-    \node[capsule, anchor=west, inner xsep=18bp, rounded corners=20bp,
-          text height=26bp, text depth=14bp] (status) at (52,348)
-         {\hspace{22bp}\Text{medium}{22}{4}{\TxtStatus}%
-          \hspace{9bp}{\color{sub}\Text{medium}{22}{4}{·}}\hspace{9bp}%
-          {\color{sub}\Text{medium}{22}{4}{\TxtPlace}}};
-    \fill[live, opacity=0.22] ([xshift=25bp]status.west) circle (10.5);
-    \fill[live] ([xshift=25bp]status.west) circle (6);
-  \fi
+    % ---------- Status (top left, above the profile photo) ----------
+    \ifnum\BannerStatus=1
+        \node[capsule, anchor=west, inner xsep=18bp, rounded corners=20bp,
+            text height=26bp, text depth=14bp] (status) at (52,348)
+        {\hspace{22bp}\Text{medium}{22}{4}{\TxtStatus}%
+            \hspace{9bp}{\color{sub}\Text{medium}{22}{4}{·}}\hspace{9bp}%
+            {\color{sub}\Text{medium}{22}{4}{\TxtPlace}}};
+        \fill[live, opacity=0.22] ([xshift=25bp]status.west) circle (10.5);
+        \fill[live] ([xshift=25bp]status.west) circle (6);
+    \fi
 
-  % ---------- Roles (same weight for the three), background, skills: clear of the profile photo ----------
-  \node[anchor=base, inner sep=0pt, text=ink] at (1000,264)
-       {\Text{sb}{50}{-22}{\TxtRoleA}\RoleSep\Text{sb}{50}{-22}{\TxtRoleB}\RoleSep%
-        \Text{sb}{50}{-22}{\TxtRoleC}};
+    % ---------- Roles (same weight for the three) and skills: clear of the profile photo ----------
+    % With the email line under the skills, the block moves up a little to stay centred.
+    \ifnum\BannerEmail=1 \def\BlockShift{20bp} \else \def\BlockShift{0bp} \fi
+    \begin{scope}[yshift=\BlockShift]
+        \node[anchor=base, inner sep=0pt, text=ink] at (1000,242)
+        {\Text{sb}{48}{-22}{\TxtRoleA}\RoleSep\Text{sb}{48}{-22}{\TxtRoleB}\RoleSep%
+            \Text{sb}{48}{-22}{\TxtRoleC}};
 
-  \node[anchor=base, inner sep=0pt, text=sub] at (1000,214)
-       {\Text{medium}{24}{2}{\TxtSchool}\hspace{11bp}\Text{medium}{24}{0}{·}\hspace{11bp}%
-        \Text{medium}{24}{2}{\TxtWork}};
+        % Background line (school, apprenticeship): left out to keep the banner light.
+        % To show it again, uncomment the node and move the roles to y=264, the skills to y=150 and y=97.
+        % \node[anchor=base, inner sep=0pt, text=sub] at (1000,214)
+        % {\Text{medium}{24}{2}{\TxtSchool}\hspace{11bp}\Text{medium}{24}{0}{·}\hspace{11bp}%
+        %     \Text{medium}{24}{2}{\TxtWork}};
 
-  \matrix[anchor=center, column sep=12bp, inner sep=0pt,
-          nodes={capsule, font=\Sans{medium}{24}}] at (1000,150) {
-    \node {Python}; & \node {SQL}; & \node {Spark}; & \node {Airflow}; &
-    \node {AWS S3}; & \node {PostgreSQL}; \\
-  };
-  \matrix[anchor=center, column sep=12bp, inner sep=0pt,
-          nodes={capsule, font=\Sans{medium}{24}}] at (1000,97) {
-    \node {Docker}; & \node {Kubernetes}; & \node {CI/CD}; & \node {LLMs}; &
-    \node {RAG}; & \node {AI Agents}; \\
-  };
+        \matrix[anchor=center, column sep=12bp, inner sep=0pt,
+            nodes={capsule, font=\Sans{medium}{24}}] at (1000,175) {
+            \node {Python};  & \node {SQL}; & \node {AWS S3}; & \node {Azure}; &
+            \node {Airflow}; & \node {dbt}; & \node {Git};                       \\
+        };
+        \matrix[anchor=center, column sep=12bp, inner sep=0pt,
+            nodes={capsule, font=\Sans{medium}{24}}] at (1000,122) {
+            \node {Docker}; & \node {Kubernetes}; & \node {MLOps}; & \node {LLMs}; &
+            \node {RAG};    & \node {AI Agents};                                     \\
+        };
+        \ifnum\BannerEmail=1
+            % email: a small grey envelope, the address in the text colour
+            \node[anchor=base, inner sep=0pt, text=ink] (email) at (1019,44)
+            {\Text{medium}{24}{3}{\TxtEmail}};
+            \draw[sub, line width=1.5bp, rounded corners=3bp]
+            ([xshift=-38bp, yshift=-1bp]email.base west) rectangle ([xshift=-12bp, yshift=17bp]email.base west);
+            \draw[sub, line width=1.5bp, line join=round, line cap=round]
+            ([xshift=-36.5bp, yshift=14bp]email.base west) -- ([xshift=-25bp, yshift=6.5bp]email.base west)
+                -- ([xshift=-13.5bp, yshift=14bp]email.base west);
+        \fi
+    \end{scope}
 
-  % ---------- Preview guides ----------
-  \ifnum\BannerGuides=1
-    \fill[red, opacity=0.25] (247,36) circle (195);                                 % photo, desktop
-    \draw[red, line width=2bp, dash pattern=on 8bp off 6bp] (282,-3) circle (218);  % photo, mobile (estimate)
-    \fill[red, opacity=0.25] (1499,319) circle (40);                                % edit button (owner only)
-  \fi
+    % ---------- Preview guides ----------
+    \ifnum\BannerGuides=1
+        \fill[red, opacity=0.25] (247,36) circle (195);                                 % photo, desktop
+        \draw[red, line width=2bp, dash pattern=on 8bp off 6bp] (282,-3) circle (218);  % photo, mobile (estimate)
+        \fill[red, opacity=0.25] (1499,319) circle (40);                                % edit button (owner only)
+    \fi
 \end{tikzpicture}
 \end{document}
+
+
+
+/*
+# all commands run from the repository root
+
+# every language and theme: PDF in linkedin-banner/pdf, PNG in linkedin-banner/png
+make banner
+make banner L=en THEME=dark
+make banner L=en THEME=light
+make banner L=fr THEME=dark
+make banner L=fr THEME=light
+
+# the same without make (arguments: languages, themes)
+sh linkedin-banner/build.sh
+sh linkedin-banner/build.sh en dark
+sh linkedin-banner/build.sh "en fr" dark
+
+# options: no status label (-plain), no email (-noemail), profile-photo zone drawn (-guides, preview only), PNG at 1584 x 396 px
+STATUS=0 sh linkedin-banner/build.sh en dark
+EMAIL=0 sh linkedin-banner/build.sh en dark
+GUIDES=1 sh linkedin-banner/build.sh en dark
+DPI=72 sh linkedin-banner/build.sh en dark
+
+# by hand: the default variant (english, dark) as linkedin-banner/linkedin-banner.pdf
+latexmk -pdf -cd linkedin-banner/linkedin-banner.tex
+latexmk -pdf -cd -auxdir=/tmp/latex-build/linkedin-banner -outdir=. linkedin-banner/linkedin-banner.tex
+
+/Library/TeX/texbin/latexmk -pdf -cd -g -interaction=nonstopmode -file-line-error -auxdir=/tmp/latex-build/linkedin-banner -outdir=. linkedin-banner/linkedin-banner.tex
+
+# by hand: one PDF per language and theme, in linkedin-banner/pdf
+latexmk -pdf -cd -jobname=linkedin-banner-en-dark  -usepretex='\def\BannerLang{en}\def\BannerTheme{dark}'  -auxdir=/tmp/latex-build/linkedin-banner -outdir=pdf linkedin-banner/linkedin-banner.tex
+latexmk -pdf -cd -jobname=linkedin-banner-en-light -usepretex='\def\BannerLang{en}\def\BannerTheme{light}' -auxdir=/tmp/latex-build/linkedin-banner -outdir=pdf linkedin-banner/linkedin-banner.tex
+latexmk -pdf -cd -jobname=linkedin-banner-fr-dark  -usepretex='\def\BannerLang{fr}\def\BannerTheme{dark}'  -auxdir=/tmp/latex-build/linkedin-banner -outdir=pdf linkedin-banner/linkedin-banner.tex
+latexmk -pdf -cd -jobname=linkedin-banner-fr-light -usepretex='\def\BannerLang{fr}\def\BannerTheme{light}' -auxdir=/tmp/latex-build/linkedin-banner -outdir=pdf linkedin-banner/linkedin-banner.tex
+
+# by hand: PDF to PNG, 3168 x 792 px (-r 72 gives 1584 x 396 px)
+pdftoppm -png -r 144 -singlefile linkedin-banner/pdf/linkedin-banner-en-dark.pdf  linkedin-banner/png/linkedin-banner-en-dark
+pdftoppm -png -r 144 -singlefile linkedin-banner/pdf/linkedin-banner-en-light.pdf linkedin-banner/png/linkedin-banner-en-light
+pdftoppm -png -r 144 -singlefile linkedin-banner/pdf/linkedin-banner-fr-dark.pdf  linkedin-banner/png/linkedin-banner-fr-dark
+pdftoppm -png -r 144 -singlefile linkedin-banner/pdf/linkedin-banner-fr-light.pdf linkedin-banner/png/linkedin-banner-fr-light
+*/

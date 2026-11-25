@@ -123,11 +123,11 @@ The template is built so that applicant tracking systems read the CV the way a r
 
 ## 🎨 LinkedIn banner
 
-The profile banner is code too: one TikZ source, [`linkedin-banner.tex`](linkedin-banner/linkedin-banner.tex), builds the French and English versions in a light and a dark theme, as PNG (3168 × 792 px) and vector PDF.
-
-<img src="linkedin-banner/png/linkedin-banner-en-light.png" alt="LinkedIn banner, light theme" width="100%">
+The profile banner is code too: one TikZ source, [`linkedin-banner.tex`](linkedin-banner/linkedin-banner.tex), builds the French and English versions in a dark and a light theme, as PNG (3168 × 792 px) and vector PDF.
 
 <img src="linkedin-banner/png/linkedin-banner-en-dark.png" alt="LinkedIn banner, dark theme" width="100%">
+
+<img src="linkedin-banner/png/linkedin-banner-en-light.png" alt="LinkedIn banner, light theme" width="100%">
 
 ---
 
@@ -175,20 +175,19 @@ make preview    # regenerate the README previews
 make banner     # LinkedIn banner: PNG and PDF, French and English, light and dark
 ```
 
-`make help` lists every command and option. `make` only wraps `latexmk`; the explicit form is:
+`make help` lists every command and option. `make` only wraps `latexmk`; the explicit form, from the repository root, is:
 
 ```sh
-cd src/en
-latexmk -pdf -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-en-d.tex
+latexmk -pdf -cd -auxdir=/tmp/latex-build -outdir=. src/en/cv-dmytro-palahin-en-d.tex
 ```
 
 PDF to send, with a recruiter-friendly file name:
 
 ```sh
-latexmk -pdf -jobname=CV_Dmytro_Palahin_Data_Engineer -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-en-d.tex
+latexmk -pdf -cd -jobname=CV_Dmytro_Palahin_Data_Engineer -auxdir=/tmp/latex-build -outdir=. src/en/cv-dmytro-palahin-en-d.tex
 ```
 
-The `latexmk` commands work the same way for French, from `src/fr` with `fr-d` file names. More details in [CONTRIBUTING.md](CONTRIBUTING.md).
+`-cd` makes `latexmk` work from the folder of the source, so the PDF lands next to it. For French, use `src/fr` and the `fr-d` file names. More details in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 

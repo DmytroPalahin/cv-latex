@@ -3,7 +3,7 @@
 %%  Style LaTeX classique : Latin Modern, noir et blanc, gras et italique.
 %% -----------------------------------------------------------------------------
 %%  Fichier source : cv-dmytro-palahin-fr-d.tex  (fr = langue, d = Data ; version anglaise : en-d)
-%%  Compilation    : /Library/TeX/texbin/latexmk -pdf -g -interaction=nonstopmode -file-line-error -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-fr-d.tex
+%%  Compilation    : /Library/TeX/texbin/latexmk -pdf -cd -g -interaction=nonstopmode -file-line-error -auxdir=/tmp/latex-build -outdir=. src/fr/cv-dmytro-palahin-fr-d.tex
 %%
 %%  RESERVE : les blocs commentes (%) marques « Reserve » contiennent des missions,
 %%  projets, cours et competences a reactiver selon l'offre. Une ligne commentee
@@ -785,11 +785,14 @@ Invest\dotsep Échecs\dotsep Ski\dotsep Tennis\dotsep Natation\dotsep Karting | 
 \end{document}
 
 
-/*
-latexmk -pdf cv-dmytro-palahin-fr-d.tex
-latexmk -pdf -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-fr-d.tex
 
-/Library/TeX/texbin/latexmk -pdf -g -interaction=nonstopmode -file-line-error -auxdir=/tmp/latex-build -outdir=. cv-dmytro-palahin-fr-d.tex
+/*
+# all commands run from the repository root
+
+latexmk -pdf -cd src/fr/cv-dmytro-palahin-fr-d.tex
+latexmk -pdf -cd -auxdir=/tmp/latex-build -outdir=. src/fr/cv-dmytro-palahin-fr-d.tex
+
+/Library/TeX/texbin/latexmk -pdf -cd -g -interaction=nonstopmode -file-line-error -auxdir=/tmp/latex-build -outdir=. src/fr/cv-dmytro-palahin-fr-d.tex
 
 pdftoppm -png -r 600 -singlefile src/fr/cv-dmytro-palahin-fr-d.pdf resources/img/cv-dmytro-palahin-fr-d
 */
