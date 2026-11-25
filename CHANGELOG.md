@@ -5,6 +5,21 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/): `[vMAJ
 
 ---
 
+## [v2.3.0] - 2026-11-25
+
+### Added
+
+- `linkedin-banner/`: LinkedIn profile banner built with pdfLaTeX + TikZ from one source, in French and English, with a light and a dark theme, as PNG (3168 × 792 px) and vector PDF
+- `Makefile`: `make banner` builds the banner (`L=fr`, `THEME=dark` for one variant)
+
+### Changed
+
+- `README.md`: banner section, `make banner` in the build section, project structure
+- `CONTRIBUTING.md`: how to build and edit the banner
+- `.gitignore`: the previous banner stays local
+
+---
+
 ## [v2.2.0] - 2026-11-25
 
 ### Added

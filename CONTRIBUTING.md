@@ -15,7 +15,7 @@ Published CVs are named `cv-dmytro-palahin-<lang>-d.tex` (and `.pdf`):
 | `<lang>` | `en` English · `fr` French |
 | `-d` | Data Engineer / MLOps focus (base CV) |
 
-Offer-specific CVs (`src/other/`), older versions (`src/old/`), other variants, the personal photo and private application texts stay local: they are listed in `.gitignore`.
+Offer-specific CVs (`src/other/`), older versions (`src/old/`), other variants, the personal photo, private application texts and the previous LinkedIn banner (`linkedin-banner/old/`) stay local: they are listed in `.gitignore`.
 
 ---
 
@@ -24,7 +24,7 @@ Offer-specific CVs (`src/other/`), older versions (`src/old/`), other variants, 
 ### Prerequisites
 
 - **pdfLaTeX** with `latexmk`: [TeX Live](https://www.tug.org/texlive/) / [MacTeX](https://www.tug.org/mactex/) 2021 or newer, or [MiKTeX](https://miktex.org/)
-- Packages: `lmodern`, `microtype`, `enumitem`, `geometry`, `hyperref`, `bookmark`, `babel` (english, french)
+- Packages: `lmodern`, `microtype`, `enumitem`, `geometry`, `hyperref`, `bookmark`, `babel` (english, french); for the LinkedIn banner: `standalone`, `tikz`, `inter`, `etoolbox`
 - Optional, for the `make` shortcuts: GNU Make (preinstalled on macOS) and [Poppler](https://poppler.freedesktop.org/) for `pdfinfo`, `pdftotext` and `pdftoppm` (`brew install poppler`)
 
 ### Build
@@ -77,6 +77,18 @@ pdftoppm -png -r 600 -singlefile cv-dmytro-palahin-en-d.pdf ../../resources/img/
 - `-r 600` is what `make preview` uses: sharp when zoomed, files of about 2 MB; `-r 200` gives files of about 1 MB (`make preview PREVIEW_DPI=200`)
 
 For French, run the same `latexmk` and `pdftoppm` commands from `src/fr` with `fr-d` file names.
+
+### LinkedIn banner
+
+```sh
+make banner                    # French and English, light and dark
+make banner L=fr THEME=dark    # one variant
+```
+
+- One source, `linkedin-banner/linkedin-banner.tex` (pdfLaTeX + TikZ, Inter font): the texts and colours are at the top of the file, the skills at the end
+- Output: `linkedin-banner/png/` (3168 × 792 px, twice the 1584 × 396 px LinkedIn expects, so that text stays sharp) and `linkedin-banner/pdf/` (vector)
+- LinkedIn covers the bottom left corner with the profile photo: `GUIDES=1 sh linkedin-banner/build.sh fr light` draws that zone on a preview
+- `STATUS=0 sh linkedin-banner/build.sh` builds the banner without the status label (`-plain` files)
 
 ---
 

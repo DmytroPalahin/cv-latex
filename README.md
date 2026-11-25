@@ -121,6 +121,16 @@ The template is built so that applicant tracking systems read the CV the way a r
 
 ---
 
+## 🎨 LinkedIn banner
+
+The profile banner is code too: one TikZ source, [`linkedin-banner.tex`](linkedin-banner/linkedin-banner.tex), builds the French and English versions in a light and a dark theme, as PNG (3168 × 792 px) and vector PDF.
+
+<img src="linkedin-banner/png/linkedin-banner-en-light.png" alt="LinkedIn banner, light theme" width="100%">
+
+<img src="linkedin-banner/png/linkedin-banner-en-dark.png" alt="LinkedIn banner, dark theme" width="100%">
+
+---
+
 ## 📁 Project structure
 
 ```text
@@ -138,11 +148,16 @@ cv-latex/
 ├── resources/
 │   ├── img/                             # README previews
 │   └── docs/                            # certificates (PDF)
+├── linkedin-banner/
+│   ├── linkedin-banner.tex              # banner source (TikZ)
+│   ├── build.sh                         # builds every language and theme
+│   ├── png/                             # banners, 3168 x 792 px
+│   └── pdf/                             # the same banners as vector PDF
 ├── academic_profil/                     # academic programme 2021-2026 (EN / FR)
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
 ├── LICENSE
-├── Makefile                             # local shortcuts: build, try, check, preview
+├── Makefile                             # local shortcuts: build, try, check, preview, banner
 └── README.md
 ```
 
@@ -157,6 +172,7 @@ make            # build both CVs (make en, make fr: one of them)
 make try        # test build outside the repository: page count and changed lines
 make check      # the CI checks: one page, extractable text, PDF up to date
 make preview    # regenerate the README previews
+make banner     # LinkedIn banner: PNG and PDF, French and English, light and dark
 ```
 
 `make help` lists every command and option. `make` only wraps `latexmk`; the explicit form is:

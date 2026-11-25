@@ -25,12 +25,15 @@ V             ?=
 PREVIEW_DIR   ?= resources/img
 PREVIEW_DPI   ?= 600
 
+# LinkedIn banner (linkedin-banner/): themes to build, for the languages of L.
+THEME         ?= light dark
+
 ifneq ($(filter /%,$(BUILD_DIR)),$(BUILD_DIR))
 $(error BUILD_DIR must be one absolute path without spaces, got '$(BUILD_DIR)')
 endif
 
 .DEFAULT_GOAL := all
-.PHONY: all build en fr try check preview watch clean help
+.PHONY: all build en fr try check preview banner watch clean help
 
 # Shell functions shared by the recipes. Every recipe below is one shell script
 # that starts with $(SH); no comment may appear inside this block.
@@ -162,6 +165,11 @@ preview:
 	  echo "    $(PREVIEW_DIR)/$$name.png"; \
 	done
 
+# LinkedIn banner: one PNG and one PDF per language (L) and theme (THEME).
+banner:
+	@BUILD_DIR="$(BUILD_DIR)/linkedin-banner" LATEXMK="$(LATEXMK)" \
+	  sh linkedin-banner/build.sh "$(L)" "$(THEME)"
+
 # Rebuild the first CV of the list on every save, as a test build (stop with Ctrl-C).
 watch:
 	@$(SH); need "$(LATEXMK)" "install TeX Live or MacTeX"; \
@@ -180,6 +188,7 @@ help:
 	@echo "make try        test build outside the repository: page count, text changes"
 	@echo "make check      the CI checks on a fresh build: $(PAGES) page, ATS text, PDF up to date"
 	@echo "make preview    regenerate the README previews in $(PREVIEW_DIR)/"
+	@echo "make banner     build the LinkedIn banner (PNG and PDF) in linkedin-banner/"
 	@echo "make watch      test build on every save (first CV of the list; L=fr for French)"
 	@echo "make clean      delete the build files in $(BUILD_DIR)"
 	@echo
@@ -187,5 +196,6 @@ help:
 	@echo "          CVS=path/to/cv.tex  another .tex (build, try, check, watch)"
 	@echo "          PAGES=2             expected number of pages"
 	@echo "          PREVIEW_DPI=200     resolution of the previews (default 600)"
+	@echo "          THEME=dark          one theme of the banner instead of both"
 	@echo "          BUILD_DIR=/path     where auxiliary files and test builds go"
 	@echo "          V=1                 show the output of latexmk"
