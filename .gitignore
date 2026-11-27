@@ -157,8 +157,8 @@ ipython_config.py
 .ipython/profile_default/history.sqlite
 .ipython/profile_default/startup/
 
-# pyenv
-.python-version
+# # pyenv
+# .python-version
 
 # pipenv
 Pipfile.lock
@@ -240,16 +240,16 @@ pull_request_template.md
 # .vscodeignore
 
 # latex
-*.aux          
+*.aux
 *.bbl
-*.bcf          
-*.blg          
-*.fdb_latexmk  
-*.fls          
-*.log          
-*.out          
-*.toc          
-*.gz           
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.gz
 *.synctex.gz
 report/build/
 *.lof
@@ -269,10 +269,10 @@ report/build/
 /report/*.toc
 
 # temp
-*.tmp       
-*.bak       
+*.tmp
+*.bak
 *.swp
-*.tgz    
+*.tgz
 
 # other
 screenlog*
@@ -301,11 +301,6 @@ composer.lock
 
 # private documents
 /references/
-
-# private claude session settings and review memory
-/.claude/settings.local.json
-/.claude/agent-memory/
-/.claude/agent-memory-local/
 
 # airflow (logs normally live in a Docker volume)
 logs/
@@ -386,3 +381,6 @@ yarn-error.log*
 /linkedin-banner/linkedin-banner.pdf
 # banner previews with the profile-photo zone (GUIDES=1)
 /linkedin-banner/png/*-guides.png
+
+# social preview built straight from the editor (default variant): the published files are the PNGs
+/social-preview/social-preview.pdf
