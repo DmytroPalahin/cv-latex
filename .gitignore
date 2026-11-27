@@ -372,7 +372,7 @@ yarn-error.log*
 /prompt/*
 /recommendation-letter/*
 # private job-application texts (contacts of references)
-/academic_profil/profil-dmytro-palahin.md
+/academic-profil/profil-dmytro-palahin.md
 
 # previous LinkedIn banner (Canva template): kept locally
 /linkedin-banner/old/
