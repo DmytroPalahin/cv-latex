@@ -10,7 +10,7 @@
 L         ?= en fr
 PUBLISHED  = $(foreach l,$(L),src/$(l)/cv-dmytro-palahin-$(l)-d.tex)
 CVS       ?= $(PUBLISHED)
-# The PDFs next to these sources: what ats works on.
+# The PDFs next to these sources: what links and ats work on.
 PDFS       = $(CVS:.tex=.pdf)
 
 # Auxiliary files and test builds are kept outside the repository.
@@ -39,7 +39,7 @@ $(error BUILD_DIR must be one absolute path without spaces, got '$(BUILD_DIR)')
 endif
 
 .DEFAULT_GOAL := all
-.PHONY: all build en fr try check ats preview banner watch clean help
+.PHONY: all build en fr try check ats links preview banner watch clean help
 
 # Shell functions shared by the recipes. Every recipe below is one shell script
 # that starts with $(SH); no comment may appear inside this block.
@@ -168,6 +168,11 @@ ats:
 	@$(SH); need pdftotext "$$poppler"; need "$(UV)" "$$uv"; \
 	$(UV) run --quiet scripts/check_ats.py --pages $(PAGES) $(PDFS)
 
+# Every web link of the PDFs next to the sources still opens (needs the network).
+links:
+	@$(SH); need pdfinfo "$$poppler"; need "$(UV)" "$$uv"; \
+	$(UV) run --quiet scripts/check_links.py $(PDFS)
+
 # README previews of the published CVs, from the PDFs next to the sources.
 preview:
 	@$(SH); need pdftoppm "$$poppler"; \
@@ -201,13 +206,14 @@ help:
 	@echo "make try        test build outside the repository: page count, text changes"
 	@echo "make check      the CI checks on a fresh build: $(PAGES) page, ATS text, PDF up to date"
 	@echo "make ats        read the PDFs with six text extractors, as an ATS does, and compare"
+	@echo "make links      check that every web link of the PDFs still opens"
 	@echo "make preview    regenerate the README previews in $(PREVIEW_DIR)/"
 	@echo "make banner     build the LinkedIn banner (PNG and PDF) in linkedin-banner/"
 	@echo "make watch      test build on every save (first CV of the list; L=fr for French)"
 	@echo "make clean      delete the build files in $(BUILD_DIR)"
 	@echo
 	@echo "Options:  L=fr                one language instead of both"
-	@echo "          CVS=path/to/cv.tex  another .tex (build, try, check, ats, watch)"
+	@echo "          CVS=path/to/cv.tex  another .tex (build, try, check, ats, links, watch)"
 	@echo "          PAGES=2             expected number of pages"
 	@echo "          PREVIEW_DPI=200     resolution of the previews (default 600)"
 	@echo "          THEME=light         one theme of the banner instead of both"
