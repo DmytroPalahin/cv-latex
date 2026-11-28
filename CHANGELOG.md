@@ -57,7 +57,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/): `[vMAJ
 
 - `Makefile`: local shortcuts around `latexmk`. `make` builds both CVs, `make try` runs a test build outside the repository (page count and changed lines), `make check` repeats the CI checks (one page, extractable text, PDF up to date), plus `make preview`, `make watch` and `make clean`
 - **Reserve** blocks in the `.tex` sources: Cellula (Java cellular automaton engine) and Battleship (C11, GTK 3) projects, Agile (Scrum), IoT coursework, title and description variants for the ACO-TSP project
-- `academic_profil/`: NoSQL databases (Cassandra, MongoDB, Redis, Elasticsearch, CouchDB) and Internet of Things (IoT)
+- `academic-profil/`: NoSQL databases (Cassandra, MongoDB, Redis, Elasticsearch, CouchDB) and Internet of Things (IoT)
 - `.gitattributes`: LF line endings, LaTeX-aware diff, PDF and PNG files marked as binary
 
 ### Changed
@@ -86,7 +86,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/): `[vMAJ
 ### Changed
 
 - The repository now publishes **only the base Data Engineer CV** (`en-d`, `fr-d`); the other variants are kept locally through `.gitignore`
-- `academic/` renamed to `academic_profil/`
+- `academic/` renamed to `academic-profil/`
 - `resources/img/`: previews regenerated for `en-d` and `fr-d`
 - `CONTRIBUTING.md`: naming conventions, build and preview commands, editing rules for the new template
 - `latex.yml`: builds only `en-d` and `fr-d`, and runs only when the CV sources or the workflow change (plus manual runs)
