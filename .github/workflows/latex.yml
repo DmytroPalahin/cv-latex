@@ -135,7 +135,25 @@ jobs:
           if-no-files-found: error
 
   # ─────────────────────────────────────────────────────────────────────────────
-  # JOB 2 — Create the GitHub Release (only on git tag push: v*.*.*)
+  # JOB 2 — Python scripts (scripts/): lint, formatting and unit tests
+  # ─────────────────────────────────────────────────────────────────────────────
+  scripts:
+    name: "🐍 Scripts"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+
+      - name: Lint, formatting and unit tests
+        run: make test
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # JOB 3 — Create the GitHub Release (only on git tag push: v*.*.*)
   # ─────────────────────────────────────────────────────────────────────────────
   release:
     name: "🚀 Release"          # static: GitHub does not evaluate expressions in the name of a skipped job
