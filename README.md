@@ -156,8 +156,10 @@ The same design gives the social preview of the repository, the card shown when 
 ```text
 cv-latex/
 ├── .github/
+│   ├── dependabot.yml                   # updates twice a month: GitHub Actions, Python packages
 │   └── workflows/
-│       └── latex.yml                    # CI/CD: build the PDFs, release on tag
+│       ├── latex.yml                    # CI/CD: build and check the PDFs, release on tag
+│       └── links.yml                    # weekly check of the links of the CVs
 ├── src/
 │   ├── en/
 │   │   ├── cv-dmytro-palahin-en-d.tex   # CV source (English)
@@ -173,12 +175,27 @@ cv-latex/
 │   ├── build.sh                         # builds every language and theme
 │   ├── png/                             # banners, 3168 x 792 px
 │   └── pdf/                             # the same banners as vector PDF
-├── academic_profil/                     # academic programme 2021-2026 (EN / FR)
+├── social-preview/
+│   ├── social-preview.tex               # social preview source (TikZ)
+│   ├── build.sh                         # builds both themes
+│   └── social-preview-*.png             # previews, 2560 x 1280 px
+├── scripts/
+│   ├── check_ats.py                     # six text extractors read the PDFs
+│   ├── check_links.py                   # the links of the PDFs still open
+│   ├── match_offer.py                   # job offer against the CV and its Reserve
+│   ├── cvtext.py                        # shared helpers: words, .tex source as plain text
+│   ├── skills.txt                       # skills recognised by match_offer.py
+│   └── example-offer.txt                # fictional offer to try make match
+├── tests/                               # unit tests of the scripts (pytest)
+├── academic-profil/                     # academic programme 2021-2026 (EN / FR)
+├── .python-version                      # Python version of the scripts, read by uv
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
 ├── LICENSE
-├── Makefile                             # local shortcuts: build, try, check, preview, banner
-└── README.md
+├── Makefile                             # local shortcuts: build, try, check, ats, links, match...
+├── pyproject.toml                       # Python project: packages, Ruff and pytest settings
+├── README.md
+└── uv.lock                              # pinned versions of the Python packages
 ```
 
 ---
