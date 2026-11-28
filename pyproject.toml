@@ -1,0 +1,214 @@
+[project]
+name = "cv-latex"
+# the repository is versioned by its git tags (see CHANGELOG.md); nothing is built from this file
+version = "0.0.0"
+description = "Checks and tools for the LaTeX CV: text extraction (ATS), links, job-offer matching"
+requires-python = ">=3.12"
+# the PDF text extractors compared by scripts/check_ats.py
+dependencies = [
+    "pdfminer-six>=20260107",
+    "pdfplumber>=0.11.11",
+    "pymupdf>=2.2",
+    "pypdf>=7.2",
+    "pypdfium2>=5.15",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.12",
+]
+
+[tool.uv]
+# scripts-only project: nothing to build or install, just sync dependencies
+package = false
+
+
+# -----------------------------------------------------------------------------
+# ruff general configuration
+# -----------------------------------------------------------------------------
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+
+# apply safe automatic fixes on every `ruff check`, as the editor does on save;
+# with this on, `ruff check` exits 0 after fixing a file, so CI must run
+# `ruff check --no-fix` to fail on a problem instead of hiding it
+fix = true
+
+# do not apply potentially unsafe fixes automatically
+unsafe-fixes = false
+
+# display information about applied fixes
+show-fixes = true
+
+# respect exclusions defined in .gitignore
+respect-gitignore = true
+
+# exclude a path even when it is passed directly to ruff
+force-exclude = true
+
+# detailed terminal output
+output-format = "full"
+
+# tell ruff where the project's python modules are located; the same list as
+# the ruff settings of the editor, so both sort the imports the same way
+src = ["scripts", "src", "tests"]
+
+# additional paths excluded from linting and formatting
+extend-exclude = [
+    ".conda",
+    ".venv",
+    "__pycache__",
+    ".git",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".mypy_cache",
+    ".ipynb_checkpoints",
+    "build",
+    "dist",
+    "*.egg-info",
+]
+
+
+# -----------------------------------------------------------------------------
+# ruff formatter
+# -----------------------------------------------------------------------------
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
+# format python examples contained inside docstrings
+docstring-code-format = true
+docstring-code-line-length = 88
+
+
+# -----------------------------------------------------------------------------
+# ruff linter
+# -----------------------------------------------------------------------------
+[tool.ruff.lint]
+select = [
+    "F",      # pyflakes: undefined names, unused imports, syntax errors
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "I",      # isort: import sorting
+    "UP",     # pyupgrade: modern python syntax
+    "PL",     # pylint rules
+    "T20",    # flake8-print
+    "S",      # flake8-bandit: common security issues
+    "TC",     # flake8-type-checking
+    "RUF",    # ruff-specific rules
+    "B",      # flake8-bugbear
+    "SIM",    # flake8-simplify
+    "C90",    # mccabe complexity
+    "C4",     # flake8-comprehensions
+    "PERF",   # perflint performance rules
+    "ARG",    # flake8-unused-arguments
+]
+
+ignore = [
+    "PLR0913",  # too many function arguments
+    "E101",     # mixed spaces and tabs
+    "E203",     # whitespace before punctuation
+    "E204",     # whitespace after decorator
+    "E401",     # multiple imports on one line
+    "E501",     # line too long
+    "E701",     # multiple statements on one line
+    "PLE1206",  # logging call has too few arguments
+    "PLE1300",  # invalid format string in logging call
+    # rules that can conflict with ruff formatter
+    "W191",     # tab indentation
+    "E111",     # indentation not a multiple of four
+    "E114",     # comment indentation not a multiple of four
+    "E115",     # expected indented block comment
+    "E116",     # unexpected indentation comment
+    "E117",     # over-indented code
+]
+
+# allow ruff to fix every selected rule unless explicitly disabled below
+fixable = ["ALL"]
+
+# do not automatically remove unused imports
+unfixable = ["F401"]
+
+
+# -----------------------------------------------------------------------------
+# ruff mccabe complexity
+# -----------------------------------------------------------------------------
+[tool.ruff.lint.mccabe]
+max-complexity = 18
+
+
+# -----------------------------------------------------------------------------
+# ruff pylint settings
+# -----------------------------------------------------------------------------
+[tool.ruff.lint.pylint]
+max-args = 20
+max-branches = 15
+max-returns = 8
+max-statements = 60
+
+
+# -----------------------------------------------------------------------------
+# ruff import sorting
+# -----------------------------------------------------------------------------
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-sort-within-sections = true
+section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "first-party",
+    "local-folder",
+]
+
+
+# -----------------------------------------------------------------------------
+# ruff per-file ignores
+# -----------------------------------------------------------------------------
+[tool.ruff.lint.per-file-ignores]
+"scripts/**/*.py" = [
+    "T201",     # command-line scripts: print is how they report
+    "S603",     # they run Poppler (pdfinfo, pdftotext) on files named by the user
+    "S607",     # Poppler is found through PATH, like every other tool of the Makefile
+]
+
+"tests/**/*.py" = [
+    "T201",     # print is acceptable in tests
+    "S101",     # assert is expected in tests
+    "S108",     # temporary paths are acceptable in tests
+    "PLR2004",  # magic values are normal in assertions
+    "PLR0913",  # fixtures can produce functions with many arguments
+    "ARG001",   # fixtures or mocks may leave arguments unused
+]
+
+
+# -----------------------------------------------------------------------------
+# pytest
+# -----------------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["scripts"]
+
+addopts = [
+    "-ra",
+    "--strict-config",
+    "--strict-markers",
+]
+
+filterwarnings = [
+    "error",
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
+
+
+# -----------------------------------------------------------------------------
+# ty (type checker of the editor)
+# -----------------------------------------------------------------------------
+[tool.ty.environment]
+# the tests import the scripts as top-level modules: pytest finds the folder
+# through `pythonpath` above, ty through this line
+extra-paths = ["./scripts"]
