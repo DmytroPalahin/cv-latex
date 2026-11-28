@@ -133,6 +133,7 @@ The scripts form a small [uv](https://docs.astral.sh/uv/) project: [`pyproject.t
 - [Python for Data Science and Machine Learning Bootcamp](resources/docs/python_for_data_science_and_machine_learning_bootcamp.pdf) · Udemy, Jose Portilla / Pierian Training
 - [Artificial Intelligence and Applications](resources/docs/huawei_artificial_intelligence_and_applications.pdf) · Huawei
 - [Artificial Intelligence Technology and Applications](resources/docs/huawei_artificial_intelligence_technology_and_applications.pdf) · Huawei
+- [SAS Macro Language](resources/docs/sas_macro_language_training.pdf) · SAS Institute, 2-day training (certificate of attendance)
 
 ---
 
