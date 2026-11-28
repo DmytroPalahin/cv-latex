@@ -1,7 +1,7 @@
 # Local shortcuts for building and checking the CVs: run `make help`.
 #
-# make only wraps latexmk and repeats the checks of .github/workflows/latex.yml,
-# so that a change is verified the same way locally and in CI.
+# make only wraps latexmk and the Python scripts of scripts/, and repeats the checks of
+# .github/workflows/, so that a change is verified the same way locally and in CI.
 #
 #   make try L=fr                      one language instead of both
 #   make try CVS=src/fr/other/x.tex    any other .tex of the repository
@@ -10,6 +10,8 @@
 L         ?= en fr
 PUBLISHED  = $(foreach l,$(L),src/$(l)/cv-dmytro-palahin-$(l)-d.tex)
 CVS       ?= $(PUBLISHED)
+# The PDFs next to these sources: what ats works on.
+PDFS       = $(CVS:.tex=.pdf)
 
 # Auxiliary files and test builds are kept outside the repository.
 BUILD_DIR ?= /tmp/latex-build
@@ -28,12 +30,16 @@ PREVIEW_DPI   ?= 600
 # LinkedIn banner (linkedin-banner/): themes to build, for the languages of L.
 THEME         ?= dark light
 
+# Python scripts (scripts/): uv runs them in the environment of pyproject.toml, with the
+# versions of uv.lock (created in .venv on the first run).
+UV            ?= uv
+
 ifneq ($(filter /%,$(BUILD_DIR)),$(BUILD_DIR))
 $(error BUILD_DIR must be one absolute path without spaces, got '$(BUILD_DIR)')
 endif
 
 .DEFAULT_GOAL := all
-.PHONY: all build en fr try check preview banner watch clean help
+.PHONY: all build en fr try check ats preview banner watch clean help
 
 # Shell functions shared by the recipes. Every recipe below is one shell script
 # that starts with $(SH); no comment may appear inside this block.
@@ -69,7 +75,8 @@ text() { pdftotext "$$1" - | tr -s '[:space:]' ' '; }; \
 layout() { \
   pdftotext -layout "$$1" - | awk '{ if (gsub(/\f/, "")) print "-------- end of page --------"; print }'; \
 }; \
-poppler="install Poppler (brew install poppler)"
+poppler="install Poppler (brew install poppler)"; \
+uv="install uv (brew install uv, or see https://docs.astral.sh/uv/)"
 endef
 
 all: build
@@ -155,6 +162,12 @@ check:
 	if [ "$$bad" = 0 ]; then echo "All checks passed"; fi; \
 	exit $$bad
 
+# What an ATS does first: read the text of the PDF. Six extractors read the PDFs next to
+# the sources; their words are compared with each other and with the .tex source.
+ats:
+	@$(SH); need pdftotext "$$poppler"; need "$(UV)" "$$uv"; \
+	$(UV) run --quiet scripts/check_ats.py --pages $(PAGES) $(PDFS)
+
 # README previews of the published CVs, from the PDFs next to the sources.
 preview:
 	@$(SH); need pdftoppm "$$poppler"; \
@@ -187,13 +200,14 @@ help:
 	@echo "make en         build the English CV only (make fr: the French one)"
 	@echo "make try        test build outside the repository: page count, text changes"
 	@echo "make check      the CI checks on a fresh build: $(PAGES) page, ATS text, PDF up to date"
+	@echo "make ats        read the PDFs with six text extractors, as an ATS does, and compare"
 	@echo "make preview    regenerate the README previews in $(PREVIEW_DIR)/"
 	@echo "make banner     build the LinkedIn banner (PNG and PDF) in linkedin-banner/"
 	@echo "make watch      test build on every save (first CV of the list; L=fr for French)"
 	@echo "make clean      delete the build files in $(BUILD_DIR)"
 	@echo
 	@echo "Options:  L=fr                one language instead of both"
-	@echo "          CVS=path/to/cv.tex  another .tex (build, try, check, watch)"
+	@echo "          CVS=path/to/cv.tex  another .tex (build, try, check, ats, watch)"
 	@echo "          PAGES=2             expected number of pages"
 	@echo "          PREVIEW_DPI=200     resolution of the previews (default 600)"
 	@echo "          THEME=light         one theme of the banner instead of both"
