@@ -1,0 +1,25 @@
+# Dependabot: twice a month (on the 1st and the 15th), one pull request per group when
+# new versions exist. Merge it once its checks are green.
+# `interval` has no value for "every two weeks" (daily, weekly, monthly): hence the cron
+# expression.
+version: 2
+updates:
+  # the GitHub Actions used by the workflows
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: cron
+      cronjob: "0 6 1,15 * *"     # 06:00 UTC on the 1st and the 15th of each month
+    groups:
+      github-actions:
+        patterns: ["*"]
+
+  # the Python packages of pyproject.toml, pinned in uv.lock
+  - package-ecosystem: uv
+    directory: /
+    schedule:
+      interval: cron
+      cronjob: "0 6 1,15 * *"     # 06:00 UTC on the 1st and the 15th of each month
+    groups:
+      python:
+        patterns: ["*"]
