@@ -5,6 +5,33 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/): `[vMAJ
 
 ---
 
+## [Unreleased]
+
+### Added
+
+- `scripts/check_ats.py` and `make ats`: each PDF is read with six text extractors (Poppler, pypdf, pdfminer.six, pdfplumber, PyMuPDF, PDFium); their words are compared with each other and with the `.tex` source, and the page count, the fonts, the metadata and the order of the sections are checked
+- `scripts/check_links.py` and `make links`: every web link of the PDFs is requested; a page that no longer exists fails the check
+- `scripts/match_offer.py` and `make match OFFER=offer.txt`: skills of a job offer that are on the page of the CV, in its Reserve or missing, from the list in `scripts/skills.txt`
+- `social-preview/` and `make social`: social preview of the repository (2560 × 1280 px, dark and light), in the style of the LinkedIn banner
+- `pyproject.toml`, `uv.lock`, `.python-version`, `tests/` and `make test`: the scripts are a uv project with pinned package and Python versions; lint and formatting (Ruff) and unit tests (pytest)
+- `links.yml`: the links of the CVs are checked every Monday and whenever a PDF changes
+- `.github/dependabot.yml`: updates of the GitHub Actions and of the Python packages, twice a month (on the 1st and the 15th)
+- **Certifications**: SAS training (SAS macro language) at Société Générale Insurance, with a link to its certificate of attendance, `resources/docs/sas_macro_language_training.pdf` (SAS Institute, 2023), also listed in `README.md`
+
+### Changed
+
+- Layout: smaller gaps in the header (2 pt instead of 4 pt under the title, 1 pt instead of 3 pt above the languages), to keep the CV on one page with the new line
+- `latex.yml`: the build also runs `check_ats.py` on each compiled PDF; a new job lints and tests the scripts; the workflow also starts when the scripts, their tests, `pyproject.toml`, `uv.lock` or the `Makefile` change
+- `README.md`: section on the Python checks and tools, social preview, build commands, CI table, project structure
+- `CONTRIBUTING.md`: how to run the checks, match a job offer, build the social preview and test the scripts; the uv commands of the project; `make clean`, the options `PAGES`, `BUILD_DIR` and `V`, and the options of the scripts; a first run step by step, with what each command prints; which `make` commands run uv, and which uv commands are run directly
+- `.gitignore`: the social preview built from the editor stays local; `.python-version` is tracked
+
+### Fixed
+
+- **Certifications**: the two links to the Huawei certificates pointed to the former name and folder of the repository and returned a 404; they now open the PDFs in `resources/docs/`
+
+---
+
 ## [v2.3.1] - 2026-11-25
 
 ### Changed
