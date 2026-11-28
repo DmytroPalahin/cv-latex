@@ -7,17 +7,30 @@ on:
     paths:
       - 'src/en/**'
       - 'src/fr/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - 'Makefile'
       - '.github/workflows/latex.yml'
   pull_request:
     branches: [main]
     paths:
       - 'src/en/**'
       - 'src/fr/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - 'Makefile'
       - '.github/workflows/latex.yml'
   workflow_dispatch:              # manual run from the Actions tab
 
 permissions:
   contents: read
+
+env:
+  UV_LOCKED: "1"                  # uv uses the versions of uv.lock and fails if it is out of date
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -100,6 +113,12 @@ jobs:
           else
             echo "::warning file=$DIR/$FILE.pdf::The committed PDF does not match the .tex source: rebuild it locally and commit it"
           fi
+
+      - name: Install uv (runs the Python scripts)
+        uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+
+      - name: Check the text with six PDF extractors (ATS)
+        run: uv run scripts/check_ats.py "$DIR/$FILE.pdf"
 
       - name: Render PNG preview
         working-directory: ${{ env.DIR }}
