@@ -218,11 +218,12 @@ latexmk -pdf -cd -jobname=CV_Dmytro_Palahin_Data_Engineer -auxdir=/tmp/latex-bui
 
 ## 🚀 CI/CD
 
-GitHub Actions ([`latex.yml`](.github/workflows/latex.yml)) compiles the English and French CVs in parallel whenever their sources or the workflow change, and publishes a release for every version tag. It can also be started by hand from the **Actions** tab.
+GitHub Actions ([`latex.yml`](.github/workflows/latex.yml)) compiles the English and French CVs in parallel whenever their sources, the scripts or the workflow change, and publishes a release for every version tag. It can also be started by hand from the **Actions** tab.
 
 ```text
 push / PR to main  ->  build EN + FR  ->  checks  ->  artifacts: PDF + PNG preview (30 days)
 git tag v*.*.*     ->  build EN + FR  ->  checks  ->  GitHub Release: PDFs + previews, notes from CHANGELOG.md
+every Monday       ->  links of the CVs (links.yml)
 ```
 
 | Check | Tool | Result |
@@ -230,8 +231,11 @@ git tag v*.*.*     ->  build EN + FR  ->  checks  ->  GitHub Release: PDFs + pre
 | The CV fits on one page | `pdfinfo` | ❌ fails the build |
 | Text is extractable: name, title, Python, SQL, GitHub link | `pdftotext` | ❌ fails the build |
 | The committed PDF matches its `.tex` source | `pdftotext` | ⚠️ warning |
+| Six text extractors read the same words, all of them words of the `.tex` source | [`check_ats.py`](scripts/check_ats.py) | ❌ fails the build |
+| Lint, formatting and unit tests of the scripts | Ruff, pytest | ❌ fails the build |
+| Every web link of the CVs opens ([`links.yml`](.github/workflows/links.yml): weekly, and when a PDF changes) | [`check_links.py`](scripts/check_links.py) | ❌ fails its own run |
 
-`make check` runs the same three checks locally, before the commit; there, an out-of-date PDF is an error.
+`make check`, `make ats`, `make test` and `make links` run the same checks locally, before the commit; there, an out-of-date PDF is an error. CI installs the Python packages at the versions of `uv.lock`; [Dependabot](.github/dependabot.yml) opens a pull request twice a month (on the 1st and the 15th) when these packages or the GitHub Actions used here have new versions.
 
 Create a release: add a `## [v2.0.0] - YYYY-MM-DD` section to [CHANGELOG.md](CHANGELOG.md), then
 
