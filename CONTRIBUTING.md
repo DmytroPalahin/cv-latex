@@ -114,6 +114,17 @@ make banner L=fr THEME=dark    # one variant
 - LinkedIn covers the bottom left corner with the profile photo: `GUIDES=1 sh linkedin-banner/build.sh fr light` draws that zone on a preview
 - `STATUS=0 sh linkedin-banner/build.sh` builds the banner without the status label (`-plain` files), `EMAIL=0` without the email address (`-noemail` files)
 
+### Social preview
+
+```sh
+make social                # dark and light
+make social THEME=dark     # one theme
+```
+
+- One source, `social-preview/social-preview.tex`, in the style of the banner: the texts are at the top of the file, the skills in the two `\matrix` blocks, the build commands at the end
+- Output: `social-preview/social-preview-dark.png` and `social-preview-light.png`, 2560 × 1280 px (twice the 1280 × 640 px GitHub recommends), under the 1 MB GitHub accepts
+- The image is uploaded by hand: on GitHub, **Settings > General > Social preview > Edit > Upload an image**
+
 ---
 
 ## ✍️ Editing rules (ATS)
