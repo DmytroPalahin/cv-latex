@@ -68,6 +68,21 @@ make links    # every web link of the PDFs still opens (needs the network)
 - Three more options work with these commands: `PAGES=2` for a CV of two pages (`make`, `try`, `check` and `ats` then expect two), `BUILD_DIR=/path` to keep the auxiliary files and the test builds somewhere else than `/tmp/latex-build` (an absolute path without spaces), `V=1` to show the output of `latexmk`
 - `make help` lists every command and option
 
+### Match a job offer
+
+```sh
+make match OFFER=path/to/offer.txt      # text or PDF file
+pbpaste | make match OFFER=-            # the offer copied from the browser (macOS)
+make match OFFER=scripts/example-offer.txt
+```
+
+The report sorts the skills of the offer in three groups: already on the page of the CV, waiting in the Reserve (commented lines of the `.tex`, with their line numbers: remove the `%` if the skill fits the offer and the CV stays on one page), and not in the CV at all.
+
+- Nothing leaves the machine: the script only reads the offer, the `.tex` source and `scripts/skills.txt`
+- Only the skills listed in `scripts/skills.txt` are recognised (one per line: `Name | other spelling | French wording`): add a line for a term the report misses
+- With both CVs (the default), the one written in the language of the offer is used; `L=en` or `L=fr` forces one
+- Keep private offers out of the repository folders that are published (`application/` is in `.gitignore`)
+
 ### README previews
 
 ```sh
