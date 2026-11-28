@@ -1,0 +1,135 @@
+% Social preview of the repository, 1280 x 640 px (2:1), built with pdfLaTeX + TikZ.
+%
+% This is the image shown when a link to the repository is shared (LinkedIn, Slack, messengers).
+% It is uploaded by hand: GitHub > Settings > General > Social preview > Edit > Upload an image.
+%
+% Same look as the LinkedIn banner (linkedin-banner/linkedin-banner.tex). Default variant: dark theme.
+% The commands that build both themes as PNG are at the end of this file.
+%
+% 1 unit of the drawing = 1 px of the 1280 x 640 image; the PNG is rendered at 2x (2560 x 1280).
+% Some sites crop the sides or the corners: everything stays at least 64 px away from the edges.
+
+\providecommand{\PreviewTheme}{dark}   % dark | light
+
+\documentclass{standalone}
+% same input, same PDF: no date, no random ID
+\pdfinfoomitdate=1 \pdftrailerid{} \pdfsuppressptexinfo=-1
+\pdfinfo{/Title (Social preview - Dmytro Palahin) /Author (Dmytro Palahin)}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{etoolbox}
+\usepackage{letterspace}
+\usepackage{tikz}
+\usetikzlibrary{fadings, matrix}
+
+% ---------- Text ----------
+\newcommand{\TxtLabel}{Curriculum Vitae}
+\newcommand{\TxtLanguages}{EN / FR}
+\newcommand{\TxtName}{Dmytro Palahin}
+\newcommand{\TxtRoleA}{Data Engineer}
+\newcommand{\TxtRoleB}{AI Engineer}
+\newcommand{\TxtRoleC}{Analytics}
+\newcommand{\TxtFootA}{LaTeX}
+\newcommand{\TxtFootB}{ATS-friendly}
+\newcommand{\TxtFootC}{built and tested in CI}
+% skills: one capsule each, see the two matrices at the end of the drawing
+
+% ---------- Colours (the ones of the LinkedIn banner) ----------
+\ifdefstring{\PreviewTheme}{light}{%
+  \definecolor{bg}{HTML}{F5F5F7}
+  \definecolor{ink}{HTML}{1D1D1F}      \definecolor{sub}{HTML}{6E6E73}
+  \definecolor{hair}{HTML}{D2D2D7}     \definecolor{capsule}{HTML}{FFFFFF}
+  \definecolor{glowA}{HTML}{B9D0FF}    \definecolor{glowB}{HTML}{DCCBFF}
+  \newcommand{\GlowOpacity}{0.55}
+  \newcommand{\CapsuleOpacity}{0.65}
+}{%
+  \definecolor{bg}{HTML}{000000}
+  \definecolor{ink}{HTML}{F5F5F7}      \definecolor{sub}{HTML}{98989D}
+  \definecolor{hair}{HTML}{3A3A3C}     \definecolor{capsule}{HTML}{1C1C1E}
+  \definecolor{glowA}{HTML}{2457D6}    \definecolor{glowB}{HTML}{6D3FD9}
+  \newcommand{\GlowOpacity}{0.42}
+  \newcommand{\CapsuleOpacity}{0.70}
+}
+
+% ---------- Font: Inter, sizes in px; #3 = tracking in 1/1000 em ----------
+\newcommand{\Sans}[2]{\fontencoding{T1}\fontfamily{Inter-LF}\fontseries{#1}\fontshape{n}%
+  \fontsize{#2bp}{#2bp}\selectfont}
+\newcommand{\Text}[4]{{\Sans{#1}{#2}\textls[#3]{#4}}}
+\newcommand{\RoleSep}{\hspace{16bp}{\color{sub}\Text{medium}{40}{0}{·}}\hspace{16bp}}
+\newcommand{\FootSep}{\hspace{11bp}\Text{medium}{22}{0}{·}\hspace{11bp}}
+
+\tikzfading[name=soft glow, inner color=transparent!0, outer color=transparent!100]
+\tikzset{
+  capsule/.style={draw=hair, line width=1.1bp, fill=capsule, fill opacity=\CapsuleOpacity,
+                  text opacity=1, text=ink, rounded corners=21bp, inner xsep=20bp, inner ysep=0pt,
+                  text height=28bp, text depth=14bp}}
+
+\begin{document}
+\begin{tikzpicture}[x=1bp, y=1bp]
+    \path[use as bounding box] (0,0) rectangle (1280,640);
+    \clip (0,0) rectangle (1280,640);
+
+    % ---------- Background: flat, with one quiet glow in the bottom right corner ----------
+    \fill[bg] (0,0) rectangle (1280,640);
+    \fill[glowA, opacity=\GlowOpacity, path fading=soft glow] (1270,-70) circle (470);
+    \fill[glowB, opacity=0.8*\GlowOpacity, path fading=soft glow] (930,-200) circle (420);
+
+    % ---------- Label ----------
+    \node[capsule, anchor=center, inner xsep=22bp, rounded corners=20bp,
+        text height=26bp, text depth=14bp] at (640,540)
+    {\Text{medium}{22}{4}{\TxtLabel}%
+        \hspace{9bp}{\color{sub}\Text{medium}{22}{4}{·}}\hspace{9bp}%
+        {\color{sub}\Text{medium}{22}{4}{\TxtLanguages}}};
+
+    % ---------- Name and roles (same weight for the three roles) ----------
+    \node[anchor=base, inner sep=0pt, text=ink] at (640,398)
+    {\Text{sb}{92}{-24}{\TxtName}};
+    \node[anchor=base, inner sep=0pt, text=ink] at (640,314)
+    {\Text{sb}{40}{-18}{\TxtRoleA}\RoleSep\Text{sb}{40}{-18}{\TxtRoleB}\RoleSep%
+        \Text{sb}{40}{-18}{\TxtRoleC}};
+
+    % ---------- Skills ----------
+    \matrix[anchor=center, column sep=12bp, inner sep=0pt,
+        nodes={capsule, font=\Sans{medium}{24}}] at (640,226) {
+        \node {Python};  & \node {SQL}; & \node {AWS S3}; & \node {Azure}; &
+        \node {Airflow}; & \node {dbt}; & \node {Git};                       \\
+    };
+    \matrix[anchor=center, column sep=12bp, inner sep=0pt,
+        nodes={capsule, font=\Sans{medium}{24}}] at (640,173) {
+        \node {Docker}; & \node {Kubernetes}; & \node {MLOps}; & \node {LLMs}; &
+        \node {RAG};    & \node {AI Agents};                                     \\
+    };
+
+    % ---------- What the repository is ----------
+    \node[anchor=base, inner sep=0pt, text=sub] at (640,82)
+    {\Text{medium}{22}{3}{\TxtFootA}\FootSep\Text{medium}{22}{3}{\TxtFootB}\FootSep%
+        \Text{medium}{22}{3}{\TxtFootC}};
+\end{tikzpicture}
+\end{document}
+
+
+
+/*
+# all commands run from the repository root
+
+# both themes: social-preview/social-preview-dark.png and social-preview-light.png
+make social
+make social THEME=dark
+make social THEME=light
+
+# the same without make (argument: themes)
+sh social-preview/build.sh
+sh social-preview/build.sh dark
+
+# option: PNG at 1280 x 640 px instead of 2560 x 1280 px
+DPI=72 sh social-preview/build.sh dark
+
+# by hand: the default variant (dark) as social-preview/social-preview.pdf
+latexmk -pdf -cd -auxdir=/tmp/latex-build/social-preview -outdir=. social-preview/social-preview.tex
+
+# by hand: one PDF per theme, then PDF to PNG
+latexmk -pdf -cd -jobname=social-preview-dark  -usepretex='\def\PreviewTheme{dark}'  -auxdir=/tmp/latex-build/social-preview -outdir=/tmp/latex-build/social-preview social-preview/social-preview.tex
+latexmk -pdf -cd -jobname=social-preview-light -usepretex='\def\PreviewTheme{light}' -auxdir=/tmp/latex-build/social-preview -outdir=/tmp/latex-build/social-preview social-preview/social-preview.tex
+pdftoppm -png -r 144 -singlefile /tmp/latex-build/social-preview/social-preview-dark.pdf  social-preview/social-preview-dark
+pdftoppm -png -r 144 -singlefile /tmp/latex-build/social-preview/social-preview-light.pdf social-preview/social-preview-light
+*/

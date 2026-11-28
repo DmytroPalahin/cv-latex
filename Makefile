@@ -27,7 +27,7 @@ V             ?=
 PREVIEW_DIR   ?= resources/img
 PREVIEW_DPI   ?= 600
 
-# LinkedIn banner (linkedin-banner/): themes to build, for the languages of L.
+# LinkedIn banner (linkedin-banner/) and social preview (social-preview/): themes to build.
 THEME         ?= dark light
 
 # Python scripts (scripts/): uv runs them in the environment of pyproject.toml, with the
@@ -40,7 +40,7 @@ $(error BUILD_DIR must be one absolute path without spaces, got '$(BUILD_DIR)')
 endif
 
 .DEFAULT_GOAL := all
-.PHONY: all build en fr try check ats links match preview banner test watch clean help
+.PHONY: all build en fr try check ats links match preview banner social test watch clean help
 
 # Shell functions shared by the recipes. Every recipe below is one shell script
 # that starts with $(SH); no comment may appear inside this block.
@@ -198,6 +198,11 @@ banner:
 	@BUILD_DIR="$(BUILD_DIR)/linkedin-banner" LATEXMK="$(LATEXMK)" \
 	  sh linkedin-banner/build.sh "$(L)" "$(THEME)"
 
+# Social preview of the repository: one PNG per theme (THEME).
+social:
+	@BUILD_DIR="$(BUILD_DIR)/social-preview" LATEXMK="$(LATEXMK)" \
+	  sh social-preview/build.sh "$(THEME)"
+
 # The Python scripts themselves: lint, formatting and unit tests (settings in pyproject.toml).
 # --no-fix: report a problem instead of fixing it, as CI must.
 test:
@@ -228,6 +233,7 @@ help:
 	@echo "make match      compare a job offer with the CV: make match OFFER=offer.txt"
 	@echo "make preview    regenerate the README previews in $(PREVIEW_DIR)/"
 	@echo "make banner     build the LinkedIn banner (PNG and PDF) in linkedin-banner/"
+	@echo "make social     build the social preview of the repository in social-preview/"
 	@echo "make test       lint and test the Python scripts of scripts/"
 	@echo "make watch      test build on every save (first CV of the list; L=fr for French)"
 	@echo "make clean      delete the build files in $(BUILD_DIR)"
@@ -237,6 +243,6 @@ help:
 	@echo "          OFFER=offer.txt     the job offer of make match: text or PDF file, or - for stdin"
 	@echo "          PAGES=2             expected number of pages"
 	@echo "          PREVIEW_DPI=200     resolution of the previews (default 600)"
-	@echo "          THEME=light         one theme of the banner instead of both"
+	@echo "          THEME=light         one theme of the banner and the social preview instead of both"
 	@echo "          BUILD_DIR=/path     where auxiliary files and test builds go"
 	@echo "          V=1                 show the output of latexmk"
