@@ -40,7 +40,7 @@ $(error BUILD_DIR must be one absolute path without spaces, got '$(BUILD_DIR)')
 endif
 
 .DEFAULT_GOAL := all
-.PHONY: all build en fr try check ats links match preview banner watch clean help
+.PHONY: all build en fr try check ats links match preview banner test watch clean help
 
 # Shell functions shared by the recipes. Every recipe below is one shell script
 # that starts with $(SH); no comment may appear inside this block.
@@ -198,6 +198,14 @@ banner:
 	@BUILD_DIR="$(BUILD_DIR)/linkedin-banner" LATEXMK="$(LATEXMK)" \
 	  sh linkedin-banner/build.sh "$(L)" "$(THEME)"
 
+# The Python scripts themselves: lint, formatting and unit tests (settings in pyproject.toml).
+# --no-fix: report a problem instead of fixing it, as CI must.
+test:
+	@$(SH); need "$(UV)" "$$uv"; \
+	$(UV) run --quiet ruff check --no-fix scripts tests; \
+	$(UV) run --quiet ruff format --check scripts tests; \
+	$(UV) run --quiet pytest -q
+
 # Rebuild the first CV of the list on every save, as a test build (stop with Ctrl-C).
 watch:
 	@$(SH); need "$(LATEXMK)" "install TeX Live or MacTeX"; \
@@ -220,6 +228,7 @@ help:
 	@echo "make match      compare a job offer with the CV: make match OFFER=offer.txt"
 	@echo "make preview    regenerate the README previews in $(PREVIEW_DIR)/"
 	@echo "make banner     build the LinkedIn banner (PNG and PDF) in linkedin-banner/"
+	@echo "make test       lint and test the Python scripts of scripts/"
 	@echo "make watch      test build on every save (first CV of the list; L=fr for French)"
 	@echo "make clean      delete the build files in $(BUILD_DIR)"
 	@echo
