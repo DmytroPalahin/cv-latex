@@ -28,6 +28,63 @@ Offer-specific CVs (`src/other/`), older versions (`src/old/`), other variants, 
 - Optional, for the `make` shortcuts: GNU Make (preinstalled on macOS) and [Poppler](https://poppler.freedesktop.org/) for `pdfinfo`, `pdftotext` and `pdftoppm` (`brew install poppler`)
 - Optional, for the Python scripts (`make ats`, `links`, `match`, `test`): [uv](https://docs.astral.sh/uv/) (`brew install uv`). The first `uv run` creates the environment in `.venv`, with the Python version of `.python-version` (uv downloads it if it is missing) and the package versions of `uv.lock`: there is nothing to install by hand. The commands are listed under [Python scripts and uv](#python-scripts-and-uv)
 
+### First run, step by step
+
+For a first contact with the repository: every command, in the order to run it, with what a successful run prints. All of them run from the repository root.
+
+#### Once
+
+| Step | Command | What it does | What to expect |
+| :---: | --- | --- | --- |
+| 1 | `brew install poppler uv` | installs the tools of the checks; TeX itself is in [Prerequisites](#prerequisites) | `pdfinfo -v` and `uv --version` then print a version |
+| 2 | `make help` | lists every command and option | the list; nothing is built |
+| 3 | `uv sync` | creates `.venv`: Python and the packages of `uv.lock`. Optional: the first `make ats` does the same | `Resolved … packages`, then the packages it installs |
+
+#### After every change of a `.tex`
+
+| Step | Command | What it does | What to expect |
+| :---: | --- | --- | --- |
+| 4 | `make try` | test build in `/tmp/latex-build/try`: nothing in the repository changes | `ok: 1 page(s)`, then `text: same as …` or the lines that changed (`-` before, `+` after) |
+| 5 | `make` | builds both PDFs next to their sources | `ok: src/en/cv-dmytro-palahin-en-d.pdf, 1 page(s)`, and the same line for `fr` |
+| 6 | `make preview` | regenerates the two previews of the README | `resources/img/cv-dmytro-palahin-en-d.png`, and the same line for `fr` |
+| 7 | `make check` | the checks of CI on a fresh build: one page, text found, PDF up to date | `ok:` lines, then `All checks passed` |
+| 8 | `make ats` | six programs read the PDFs, as an ATS does, and their words are compared | `ok:` lines, then `All ATS checks passed`. A `warning:` line is not a failure |
+| 9 | `make links` | requests every web link of the PDFs (needs the network) | a last line such as `16 fine, 1 not verified, 0 failing`: what counts is `0 failing` |
+| 10 | `git add`, `git commit`, `git push` | publishes the change; CI repeats steps 7 and 8 | green runs in the **Actions** tab of GitHub |
+
+Steps 5 to 9 in one line: `make && make preview && make check && make ats && make links`.
+
+#### After a change of a Python script (`scripts/`, `tests/`)
+
+| Step | Command | What it does | What to expect |
+| :---: | --- | --- | --- |
+| 11 | `make test` | lint, formatting and unit tests; nothing is modified | `All checks passed!`, `7 files already formatted`, `18 passed` |
+| 12 | `uv run ruff check scripts tests` | only if step 11 reports a lint problem: fixes what can be fixed safely | `Fixed 1 error`; what it cannot fix stays listed, to correct by hand |
+| 13 | `uv run ruff format scripts tests` | only if step 11 reports a file to reformat | `1 file reformatted, 6 files left unchanged` |
+| 14 | `make test && make ats` | once more before the commit: the scripts still pass, and still read the PDFs the same way | as in steps 11 and 8 |
+
+#### When needed
+
+| Command | What it does | What to expect |
+| --- | --- | --- |
+| `make match OFFER=scripts/example-offer.txt` | compares a job offer with the CV, here the example offer | three lists (`In the CV`, `In the Reserve only`, `Not in the CV`), then `24 of the 37 skills of the offer are on the page (65 %)` |
+| `make banner` | builds the LinkedIn banner | the PNG and PDF files written in `linkedin-banner/` |
+| `make social` | builds the social preview of the repository | `social-preview/social-preview-dark.png`, and the same line for `light` |
+| `make watch` | repeats the test build on every save | it keeps running: stop it with Ctrl-C |
+| `make clean` | deletes the build files in `/tmp/latex-build` | `rm -rf "/tmp/latex-build"` |
+
+#### When a command fails
+
+A check that fails prints a line that starts with `FAIL:` or `error:`, and `make` ends with a line such as `make: *** [check] Error 1`.
+
+| Message | What to do |
+| --- | --- |
+| `FAIL: 2 pages, expected 1` | the CV no longer fits on one page: shorten a line or move one to the Reserve, then `make try` again |
+| `FAIL: … does not match its source, run 'make'` | the PDF is older than its `.tex`: run `make`, then `make check` again |
+| `FAIL: HTTP 404: the page does not exist`, in `make links` | the link printed on that line is dead: correct the address in both `.tex`, then `make` |
+| `error: 'uv' not found` (or `'pdfinfo'`) | a tool is missing: step 1 |
+| Ruff lists a problem, in `make test` | steps 12 and 13 |
+
 ### Build
 
 ```sh
