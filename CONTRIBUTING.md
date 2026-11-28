@@ -26,6 +26,7 @@ Offer-specific CVs (`src/other/`), older versions (`src/old/`), other variants, 
 - **pdfLaTeX** with `latexmk`: [TeX Live](https://www.tug.org/texlive/) / [MacTeX](https://www.tug.org/mactex/) 2021 or newer, or [MiKTeX](https://miktex.org/)
 - Packages: `lmodern`, `microtype`, `enumitem`, `geometry`, `hyperref`, `bookmark`, `babel` (english, french); for the LinkedIn banner: `standalone`, `tikz`, `inter`, `etoolbox`
 - Optional, for the `make` shortcuts: GNU Make (preinstalled on macOS) and [Poppler](https://poppler.freedesktop.org/) for `pdfinfo`, `pdftotext` and `pdftoppm` (`brew install poppler`)
+- Optional, for the Python scripts (`make ats`, `links`, `match`, `test`): [uv](https://docs.astral.sh/uv/) (`brew install uv`). The first `uv run` creates the environment in `.venv`, with the Python version of `.python-version` (uv downloads it if it is missing) and the package versions of `uv.lock`: there is nothing to install by hand. The commands are listed under [Python scripts and uv](#python-scripts-and-uv)
 
 ### Build
 
@@ -53,12 +54,19 @@ latexmk -pdf -cd -jobname=CV_Dmytro_Palahin_Data_Engineer -auxdir=/tmp/latex-bui
 ```sh
 make try      # test build in /tmp/latex-build/try: nothing in the repository changes
 make check    # the CI checks: one page, extractable text, PDF up to date
+make ats      # six text extractors read the PDFs next to the sources
+make links    # every web link of the PDFs still opens (needs the network)
 ```
 
 - `make try` prints the page count and the lines of text that change compared with the current PDF, so a line that wraps or a section pushed to a second page shows at once
 - `make check` is the gate before a commit: run `make` first, otherwise the PDF is reported as out of date
-- `L=fr` limits a command to one language; `CVS=src/fr/other/<file>.tex` runs `build`, `try`, `check` or `watch` on another `.tex`
-- `make watch` repeats the test build on every save; `make help` lists the other commands and options
+- `make ats` reads each PDF with Poppler, pypdf, pdfminer.six, pdfplumber, PyMuPDF and PDFium. It fails when an extractor reads other words than the rest, when a word read from the PDF is not a word of the `.tex` source (glued, cut in two or hyphenated), when the sections are not in the order of the source, or when a font has no Unicode map. A keyword of `pdfkeywords` that is not in the text of the page gives a warning
+- `make links` fails on a page that does not exist (HTTP 404 or 410, unknown host). A site that refuses automated requests (LinkedIn, Udemy) gives a warning, not a failure: open that link by hand from time to time
+- `L=fr` limits a command to one language; `CVS=src/fr/other/<file>.tex` runs `build`, `try`, `check`, `ats`, `links`, `match` or `watch` on another `.tex`
+- `make watch` repeats the test build on every save (stop it with Ctrl-C)
+- `make clean` deletes `/tmp/latex-build`: the auxiliary files of `latexmk` and the test builds. Nothing in the repository is removed
+- Three more options work with these commands: `PAGES=2` for a CV of two pages (`make`, `try`, `check` and `ats` then expect two), `BUILD_DIR=/path` to keep the auxiliary files and the test builds somewhere else than `/tmp/latex-build` (an absolute path without spaces), `V=1` to show the output of `latexmk`
+- `make help` lists every command and option
 
 ### README previews
 
@@ -109,7 +117,7 @@ make banner L=fr THEME=dark    # one variant
 
 ```sh
 # 1. Edit the .tex, rebuild the PDF, regenerate the preview, run the checks
-make && make preview && make check
+make && make preview && make check && make ats && make links
 # 2. Add a "## [v2.0.1] - YYYY-MM-DD" section to CHANGELOG.md
 # 3. Commit and push
 git add .
@@ -122,7 +130,8 @@ git push origin v2.0.1
 # -> GitHub Actions builds the PDFs and creates the release
 ```
 
-- On every push or pull request that touches `src/en`, `src/fr` or the workflow, CI checks that each CV fits on **one page**, that its **text is extractable** (name, title, Python, SQL, GitHub link) and warns if the **committed PDF is older** than its `.tex` source
+- On every push or pull request that touches `src/en`, `src/fr`, the scripts or the workflow, CI checks that each CV fits on **one page**, that its **text is extractable** (name, title, Python, SQL, GitHub link), that **six text extractors read the same words** (`check_ats.py`), and warns if the **committed PDF is older** than its `.tex` source; a second job lints and tests the scripts
+- A separate workflow, `links.yml`, checks the **links of the CVs** every Monday and whenever a PDF changes; Dependabot proposes the updates of the GitHub Actions and of the Python packages twice a month (on the 1st and the 15th)
 - The release notes are the `CHANGELOG.md` section whose version matches the tag exactly (`## [v2.0.1] - ...`): add it before tagging
 - The README download buttons serve the PDFs from `main`, so they are up to date as soon as the new PDF is pushed
 - The release keeps the file names `cv-dmytro-palahin-en-d.pdf` / `cv-dmytro-palahin-fr-d.pdf`, so the "Latest release" links in the README always point to the newest release
