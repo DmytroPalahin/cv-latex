@@ -111,6 +111,21 @@ The template is built so that applicant tracking systems read the CV the way a r
 - **PDF metadata** (title, subject, keywords, language) set through `hyperref`
 - LinkedIn and GitHub links shown in plain text
 
+`make ats` repeats the check on every push with six extractors (Poppler, pypdf, pdfminer.six, pdfplumber, PyMuPDF, PDFium): they must read the same words, every word must exist in the `.tex` source (no word glued to its neighbour, cut in two or hyphenated) and the sections must come in the order of the source.
+
+---
+
+## 🐍 Checks and tools in Python
+
+| Command | Script | What it does |
+| --- | --- | --- |
+| `make ats` | [`check_ats.py`](scripts/check_ats.py) | Reads each PDF with six text extractors, as an ATS does first, and compares the words with each other and with the `.tex` source; also checks the page count, the fonts and the metadata |
+| `make links` | [`check_links.py`](scripts/check_links.py) | Requests every web link of the PDFs: a page that no longer exists fails the check |
+| `make match OFFER=offer.txt` | [`match_offer.py`](scripts/match_offer.py) | Compares a job offer with the CV: skills already on the page, skills waiting in the Reserve (commented lines of the `.tex`, with their line numbers), skills that are missing |
+| `make test` | [`tests/`](tests) | Lint and formatting (Ruff) and unit tests (pytest) of the scripts |
+
+The scripts form a small [uv](https://docs.astral.sh/uv/) project: [`pyproject.toml`](pyproject.toml) lists the packages and holds the Ruff and pytest settings, `uv.lock` pins every version, `.python-version` sets the Python version, and the first `uv run` creates the environment in `.venv`; the uv commands of the project are listed in [CONTRIBUTING.md](CONTRIBUTING.md#python-scripts-and-uv). `make match` works offline, on the text of the offer and the skills listed in [`skills.txt`](scripts/skills.txt); try it with `make match OFFER=scripts/example-offer.txt`.
+
 ---
 
 ## 🏅 Certificates
@@ -165,17 +180,21 @@ cv-latex/
 
 ## ⚙️ Build locally
 
-Requirements: **pdfLaTeX** with `latexmk`, from [TeX Live](https://www.tug.org/texlive/) / [MacTeX](https://www.tug.org/mactex/) 2021 or newer, or [MiKTeX](https://miktex.org/). The `make` shortcuts also use [Poppler](https://poppler.freedesktop.org/) for the checks and the previews (`brew install poppler`).
+Requirements: **pdfLaTeX** with `latexmk`, from [TeX Live](https://www.tug.org/texlive/) / [MacTeX](https://www.tug.org/mactex/) 2021 or newer, or [MiKTeX](https://miktex.org/). The `make` shortcuts also use [Poppler](https://poppler.freedesktop.org/) for the checks and the previews (`brew install poppler`), and [uv](https://docs.astral.sh/uv/) for the Python scripts (`brew install uv`).
 
 ```sh
 make            # build both CVs (make en, make fr: one of them)
 make try        # test build outside the repository: page count and changed lines
 make check      # the CI checks: one page, extractable text, PDF up to date
+make ats        # six text extractors read the PDFs, as an ATS does
+make links      # every web link of the PDFs still opens
+make match OFFER=offer.txt    # skills of a job offer: in the CV, in its Reserve, missing
 make preview    # regenerate the README previews
 make banner     # LinkedIn banner: PNG and PDF, French and English, light and dark
+make test       # lint and unit tests of the Python scripts
 ```
 
-`make help` lists every command and option. `make` only wraps `latexmk`; the explicit form, from the repository root, is:
+`make help` lists every command and option. `make` only wraps `latexmk` and the Python scripts; the explicit form of a build, from the repository root, is:
 
 ```sh
 latexmk -pdf -cd -auxdir=/tmp/latex-build -outdir=. src/en/cv-dmytro-palahin-en-d.tex
