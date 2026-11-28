@@ -1,0 +1,279 @@
+# Skills that scripts/match_offer.py recognises in a job offer and in the CV.
+#
+# One skill per line: the name shown in the report, then its other spellings after "|"
+# (other names, abbreviations, French wording).
+#
+# The matching already accepts, without a line of its own:
+#   - any case: "python" finds Python (except names of 1 or 2 letters: Go, R, C, BI)
+#   - missing accents: "qualite des donnees"
+#   - a space, a hyphen, a slash or nothing between two words: PowerBI, data-lake, CI CD
+#   - a final "s": LLMs, pipelines
+#
+# A term the report misses: add a line. A term found by mistake: remove its line.
+
+# ---------- Languages ----------
+Python
+SQL
+Java
+Scala
+C | C11 | C99 | langage C | C language
+C++
+C#
+.NET
+TypeScript | TS
+JavaScript | JS
+Bash | Shell | shell scripting
+Go | Golang
+Rust
+R | RStudio
+Julia
+Haskell
+MATLAB
+SAS
+VBA
+PL/SQL
+T-SQL
+
+# ---------- Data engineering ----------
+Spark | PySpark | Apache Spark
+Airflow | Apache Airflow
+Kedro
+Dagster
+Prefect
+dbt
+Kafka | Apache Kafka
+Flink | Apache Flink
+Hadoop
+Hive
+Databricks
+Snowflake
+BigQuery
+Redshift
+Synapse
+Microsoft Fabric | MS Fabric
+Azure Data Factory | ADF
+AWS Glue | Glue
+Athena
+EMR
+Kinesis
+AWS Lambda | Lambda
+Dataflow
+Dataproc
+Pub/Sub
+Talend
+Informatica
+SSIS
+NiFi
+Delta Lake
+Iceberg | Apache Iceberg
+Parquet
+Avro
+Trino | Presto
+ClickHouse
+DuckDB
+Polars
+Pandas
+NumPy
+ETL
+ELT
+Data Pipelines | data pipeline | pipeline de données | pipelines de données | pipeline de donnée
+Data Ingestion | ingestion de données | ingestion
+Data Migration | migration de données
+Data Modeling | data modelling | modélisation de données | modélisation des données
+Data Warehouse | Data Warehousing | DWH | entrepôt de données | entrepôts de données
+Data Lake | Datalake | lac de données
+Lakehouse
+Data Mesh
+Data Quality | qualité des données | qualité de données | qualité de la donnée
+Data Governance | gouvernance des données | gouvernance de la donnée
+Data Catalog | catalogue de données
+Data Lineage | lineage
+CDC | Change Data Capture
+Great Expectations
+Streaming | temps réel | real-time
+Batch processing | traitement batch | traitements batch | batch
+Big Data
+Orchestration
+
+# ---------- Cloud and infrastructure ----------
+AWS | Amazon Web Services
+S3 | Amazon S3
+EC2
+Azure | Microsoft Azure
+Azure OpenAI
+GCP | Google Cloud | Google Cloud Platform
+Terraform
+Ansible
+CloudFormation
+Infrastructure as Code | IaC
+Docker
+Kubernetes | K8s
+Helm
+OpenShift
+Linux | Unix
+
+# ---------- DevOps and delivery ----------
+CI/CD | intégration continue | continuous integration | déploiement continu
+GitHub Actions
+GitLab CI
+Jenkins
+Argo CD | ArgoCD
+Git
+GitHub
+GitLab
+Bitbucket
+Prometheus
+Grafana
+Datadog
+ELK | Elastic Stack | Kibana
+SonarQube
+Jira
+Confluence
+Agile | agilité | méthodes agiles | méthode agile
+Scrum
+Kanban
+DevOps
+MLOps
+DataOps
+FinOps
+LLMOps
+Observability | observabilité
+Monitoring | supervision
+
+# ---------- Databases ----------
+PostgreSQL | Postgres
+MySQL
+Oracle
+SQL Server | MSSQL | MS SQL
+MariaDB
+SQLite
+MongoDB
+Cassandra
+Redis
+Elasticsearch | OpenSearch
+Neo4j
+DynamoDB
+Cosmos DB
+HBase
+NoSQL
+Teradata
+
+# ---------- Analytics and BI ----------
+Business Intelligence | BI | informatique décisionnelle
+Power BI
+Tableau
+Looker | Looker Studio
+Qlik | QlikView | Qlik Sense
+Apache Superset | Superset
+Metabase
+Excel | Microsoft Excel
+Dataiku
+Alteryx
+SAP
+Reporting
+Dashboards | dashboard | tableau de bord | tableaux de bord
+Data Visualization | data visualisation | dataviz | visualisation de données
+KPI | indicateurs de performance
+A/B Testing | tests A/B | test A/B
+Statistics | statistiques | statistical
+
+# ---------- Machine learning ----------
+Machine Learning | ML | apprentissage automatique
+Deep Learning
+NLP | Natural Language Processing | traitement du langage naturel | traitement automatique du langage
+Computer Vision | vision par ordinateur
+Scikit-Learn | sklearn
+TensorFlow
+Keras
+PyTorch
+XGBoost
+LightGBM
+CatBoost
+MLflow
+Kubeflow
+SageMaker
+Vertex AI
+Azure Machine Learning | Azure ML
+Feature Engineering
+Feature Store
+Model Evaluation | évaluation de modèles | évaluation des modèles
+Time Series | séries temporelles
+Hugging Face
+Jupyter | Jupyter Notebook | JupyterLab | JupyterHub
+
+# ---------- Generative AI ----------
+Artificial Intelligence | AI | IA | intelligence artificielle
+LLM | Large Language Model
+Generative AI | GenAI | Gen AI | IA générative | IA Gen
+RAG | Retrieval-Augmented Generation
+AI Agents | AI agent | agents IA | agent IA | agentic | agentique | multi-agent
+LangChain
+LangGraph
+LlamaIndex
+MCP | Model Context Protocol
+OpenAI API | OpenAI | GPT
+Claude | Anthropic
+Mistral
+Gemini
+GitHub Copilot | Copilot
+Claude Code
+Cursor
+Prompt Engineering | prompting
+Fine-tuning
+Embeddings
+Vector Database | vector store | base vectorielle | bases vectorielles | base de données vectorielle
+Pinecone
+Qdrant
+Weaviate
+Chroma | ChromaDB
+pgvector
+FAISS
+LLM-as-a-Judge | LLM evaluation | évaluation de LLM
+Guardrails
+Prompt Injection
+Jailbreak
+Amazon Bedrock | AWS Bedrock | Bedrock
+Ollama
+CrewAI
+AutoGen
+n8n
+
+# ---------- APIs and software ----------
+FastAPI
+Flask
+Django
+REST APIs | REST API | API REST | APIs REST | RESTful
+GraphQL
+gRPC
+Microservices | micro-services
+Spring Boot
+Node.js | NodeJS
+Pydantic
+SQLAlchemy
+RabbitMQ
+Streamlit
+Design Patterns
+UML
+OOP | Object-Oriented Programming | programmation orientée objet | POO
+
+# ---------- Tests and code quality ----------
+pytest
+Unit Tests | unit test | unit testing | tests unitaires | test unitaire
+Automated Testing | test automation | tests automatisés | automatisation des tests
+Selenium
+Playwright
+Cypress
+TDD
+Code Review | revue de code | revues de code
+Ruff
+
+# ---------- Security and compliance ----------
+Cybersecurity | cybersécurité
+IAM
+OAuth
+GDPR | RGPD
+Encryption | chiffrement
+
+# ---------- Spoken languages ----------
+English | anglais
+French | français

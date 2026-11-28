@@ -1,0 +1,20 @@
+Data Engineer (H/F) - CDI - Paris
+Exemple fictif, pour essayer : make match OFFER=scripts/example-offer.txt
+
+Au sein de l'équipe Data Platform, vous concevez et maintenez les pipelines de données
+qui alimentent notre data warehouse Snowflake et nos tableaux de bord Power BI.
+
+Vos missions
+- Développer des pipelines ELT en Python et SQL, orchestrés avec Airflow
+- Modéliser les données avec dbt et garantir la qualité des données (tests, monitoring)
+- Migrer les traitements batch historiques vers AWS (S3, Glue, Lambda)
+- Industrialiser les déploiements : Docker, Kubernetes, CI/CD avec GitLab CI, Terraform
+- Mettre à disposition des données pour les équipes Machine Learning et IA générative
+  (LLM, RAG, bases vectorielles)
+
+Votre profil
+- Bac+5 en informatique, première expérience en Data Engineering
+- Très bonne maîtrise de Python et de SQL, pratique de Spark ou de Databricks
+- Connaissance de Kafka et des tests automatisés (Selenium est un plus)
+- Méthodes agiles (Scrum), Git, revue de code
+- Anglais professionnel

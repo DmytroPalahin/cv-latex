@@ -31,15 +31,16 @@ PREVIEW_DPI   ?= 600
 THEME         ?= dark light
 
 # Python scripts (scripts/): uv runs them in the environment of pyproject.toml, with the
-# versions of uv.lock (created in .venv on the first run).
+# versions of uv.lock (created in .venv on the first run). OFFER is the job offer of `make match`.
 UV            ?= uv
+OFFER         ?=
 
 ifneq ($(filter /%,$(BUILD_DIR)),$(BUILD_DIR))
 $(error BUILD_DIR must be one absolute path without spaces, got '$(BUILD_DIR)')
 endif
 
 .DEFAULT_GOAL := all
-.PHONY: all build en fr try check ats links preview banner watch clean help
+.PHONY: all build en fr try check ats links match preview banner watch clean help
 
 # Shell functions shared by the recipes. Every recipe below is one shell script
 # that starts with $(SH); no comment may appear inside this block.
@@ -173,6 +174,15 @@ links:
 	@$(SH); need pdfinfo "$$poppler"; need "$(UV)" "$$uv"; \
 	$(UV) run --quiet scripts/check_links.py $(PDFS)
 
+# Skills of a job offer: on the page of the CV, in its Reserve (commented lines), or missing.
+match:
+	@$(SH); need "$(UV)" "$$uv"; \
+	if [ -z "$(OFFER)" ]; then \
+	  echo "usage: make match OFFER=path/to/offer.txt   (try: OFFER=scripts/example-offer.txt)" >&2; \
+	  exit 1; \
+	fi; \
+	$(UV) run --quiet scripts/match_offer.py "$(OFFER)" $(foreach tex,$(CVS),--cv $(tex))
+
 # README previews of the published CVs, from the PDFs next to the sources.
 preview:
 	@$(SH); need pdftoppm "$$poppler"; \
@@ -207,13 +217,15 @@ help:
 	@echo "make check      the CI checks on a fresh build: $(PAGES) page, ATS text, PDF up to date"
 	@echo "make ats        read the PDFs with six text extractors, as an ATS does, and compare"
 	@echo "make links      check that every web link of the PDFs still opens"
+	@echo "make match      compare a job offer with the CV: make match OFFER=offer.txt"
 	@echo "make preview    regenerate the README previews in $(PREVIEW_DIR)/"
 	@echo "make banner     build the LinkedIn banner (PNG and PDF) in linkedin-banner/"
 	@echo "make watch      test build on every save (first CV of the list; L=fr for French)"
 	@echo "make clean      delete the build files in $(BUILD_DIR)"
 	@echo
 	@echo "Options:  L=fr                one language instead of both"
-	@echo "          CVS=path/to/cv.tex  another .tex (build, try, check, ats, links, watch)"
+	@echo "          CVS=path/to/cv.tex  another .tex (build, try, check, ats, links, match, watch)"
+	@echo "          OFFER=offer.txt     the job offer of make match: text or PDF file, or - for stdin"
 	@echo "          PAGES=2             expected number of pages"
 	@echo "          PREVIEW_DPI=200     resolution of the previews (default 600)"
 	@echo "          THEME=light         one theme of the banner instead of both"
