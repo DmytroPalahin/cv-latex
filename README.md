@@ -145,6 +145,10 @@ The profile banner is code too: one TikZ source, [`linkedin-banner.tex`](linkedi
 
 <img src="linkedin-banner/png/linkedin-banner-en-light.png" alt="LinkedIn banner, light theme" width="100%">
 
+The same design gives the social preview of the repository, the card shown when its link is shared: [`social-preview.tex`](social-preview/social-preview.tex), 2560 × 1280 px, dark and light.
+
+<img src="social-preview/social-preview-dark.png" alt="Social preview of the repository, dark theme" width="640">
+
 ---
 
 ## 📁 Project structure
@@ -192,6 +196,7 @@ make links      # every web link of the PDFs still opens
 make match OFFER=offer.txt    # skills of a job offer: in the CV, in its Reserve, missing
 make preview    # regenerate the README previews
 make banner     # LinkedIn banner: PNG and PDF, French and English, light and dark
+make social     # social preview of the repository: PNG, light and dark
 make test       # lint and unit tests of the Python scripts
 ```
 
