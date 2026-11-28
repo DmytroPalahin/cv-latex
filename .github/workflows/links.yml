@@ -1,0 +1,51 @@
+name: Check links
+
+# Every web link of the published CVs is requested once a week, and whenever a PDF changes.
+# A link that no longer opens fails the run: GitHub then sends an email.
+# GitHub pauses a scheduled workflow after 60 days without activity in the repository.
+# This is a rule of GitHub, with no setting to switch it off: a commit (a merged pull
+# request of Dependabot is one) starts the 60 days again. Once paused, the workflow is
+# switched on again from the Actions tab, or with: gh workflow enable links.yml
+
+on:
+  schedule:
+    - cron: '00 6 * * 1'          # every Monday, 06:00 UTC
+  push:
+    branches: [main]
+    paths:
+      - 'src/en/*.pdf'
+      - 'src/fr/*.pdf'
+      - 'scripts/check_links.py'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - '.github/workflows/links.yml'
+  workflow_dispatch:              # manual run from the Actions tab
+
+permissions:
+  contents: read
+
+env:
+  UV_LOCKED: "1"                  # uv uses the versions of uv.lock and fails if it is out of date
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  links:
+    name: "🔗 Links of the CVs"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install Poppler (pdfinfo)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+
+      - name: Install uv (runs the Python scripts)
+        uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+
+      - name: Check every web link of the published CVs
+        run: make links
